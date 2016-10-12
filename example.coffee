@@ -2,7 +2,7 @@ isPlainObject = require "lodash.isplainobject"
 busboy = require "."
 {createServer} = require "http"
 
-server = createServer (req, res) ->
+callback = (req, res) ->
   if req.method is "GET"
     res.statusCode = 404
     return res.end "Not Found"
@@ -25,4 +25,5 @@ server = createServer (req, res) ->
     .then onFulfilled
     .catch onRejected
 
-server.listen 2319, -> console.log "Server started on http://localhost:2319"
+createServer callback
+  .listen 2319, -> console.log "Server started on http://localhost:2319"
