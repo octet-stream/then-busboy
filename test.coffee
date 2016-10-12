@@ -5,23 +5,23 @@ Stream =  require "stream"
 
 busboy = require "."
 
-test "Should return a plain object", (t) ->
-  do t.pass
+test.beforeEach (t) ->
+  t.context.makeRequestMock = ->
+    req = new IncomingMessage new Socket({readeble: true})
+    req.headers =
+      "content-type": "
+        multipart/form-data; boundary=----WebKitFormBoundaryoyYHBQpNew47X0cp
+      "
+    req.method = "POST"
+    req
+  await return
+
+test "Should be a function", (t) ->
+  t.is typeof busboy, "function"
   await return
 
 test "Should return a promise", (t) ->
-  req = request()
-  bb = busboy(req)
-  t.is bb instanceof Promise, true
-
-request = ()->
-
-  req = new IncomingMessage new Socket({readeble: true})
-  req.headers =
-    'content-type': 'multipart/form-data; boundary=----WebKitFormBoundaryoyYHBQpNew47X0cp'
-  req.method = 'POST'
-  req
-
-
-
-
+  req = do t.context.makeRequestMock
+  bb = busboy req
+  t.true bb instanceof Promise
+  await return

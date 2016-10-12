@@ -4,15 +4,20 @@ Promise = require "pinkie-promise"
 Busboy = require "busboy"
 
 shortid = require "shortid"
-isPlainObject = require "lodash.isplainobject"
-assign = Object.assign or require "lodash.assign"
-reduceRight = Array::reduceRight or (args...) ->
-  require("lodash.reduceRight")([this, args...])
-includes = String::includes or (sub) -> String::indexOf.call(this, sub) > -1
 {tmpDir} = require "os"
 {extname} = require "path"
 {IncomingMessage} = require "http"
+{Readable} = require "stream"
 {createReadStream, createWriteStream} = require "fs"
+
+isPlainObject = require "lodash.isplainobject"
+assign = Object.assign or require "lodash.assign"
+
+reduceRight = Array::reduceRight or (args...) ->
+  require("lodash.reduceRight")([this, args...])
+
+includes = String::includes or (sub) ->
+  String::indexOf.call(this, sub) > -1
 
 ###
 # @api private
@@ -39,6 +44,7 @@ rescueObjStruct = (obj, target) ->
   [key] = Object.keys obj
   val = obj[key]
 
+  # console.log key, val
   if key of target
     res = if "#{Number key}" is "NaN" then {} else []
     res[key] = rescueObjStruct val, target[key]
@@ -46,7 +52,7 @@ rescueObjStruct = (obj, target) ->
   else
     res = if "#{Number key}" is "NaN" then {} else [target...]
     res[key] = val
-    # console.log res
+    # console.log key, val
 
   # return assign {}, target, res
   return res
