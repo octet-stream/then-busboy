@@ -90,7 +90,11 @@ reducer = (prev, next) ->
 getObjFields = (target, fieldname, value) ->
   keys = extractKeys fieldname
   if typeof keys is "string"
-    return assign {}, target, {"#{fieldname}": rescueTypes value}
+    unless "#{Number fieldname}" is "NaN"
+      throw new TypeError "Top-level field name must be a string"
+
+    target[fieldname] = rescueTypes value
+    return target
 
   res = reduce.call (do keys.reverse), reducer, rescueTypes value
   return rescueObjStruct res, target
@@ -119,7 +123,11 @@ thenBusboy = (req, op = {split: no}) -> new Promise (resolve, reject) ->
 
   bb = new Busboy assign {}, {headers: req.headers}, op
 
-  onField = (name, value) -> fields = getObjFields fields, name, value
+  onField = (name, value) ->
+    try
+      fields = getObjFields fields, name, value
+    catch err
+      return reject err
 
   onFile = (fieldname, stream, filename, enc, mime) ->
     tmpPath = "#{do tmpDir}/#{do shortid}#{extname filename}"
@@ -128,7 +136,10 @@ thenBusboy = (req, op = {split: no}) -> new Promise (resolve, reject) ->
       file.originalName = filename
       file.enc = enc
       file.mime = mime
-      files = getObjFields files, fieldname, file
+      try
+        files = getObjFields files, fieldname, file
+      catch err
+        return reject err
 
     stream
       .on "end", onFileStreamEnd
