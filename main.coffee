@@ -6,7 +6,8 @@ Busboy = require "busboy"
 shortid = require "shortid"
 isPlainObject = require "lodash.isplainobject"
 assign = Object.assign or require "lodash.assign"
-reduce = Array::reduce or (args...) -> require("lodash.reduce")([this, args...])
+reduceRight = Array::reduceRight or (args...) ->
+  require("lodash.reduceRight")([this, args...])
 includes = String::includes or (sub) -> String::indexOf.call(this, sub) > -1
 {tmpDir} = require "os"
 {extname} = require "path"
@@ -96,7 +97,7 @@ getObjFields = (target, fieldname, value) ->
     target[fieldname] = rescueTypes value
     return target
 
-  res = reduce.call (do keys.reverse), reducer, rescueTypes value
+  res = reduceRight.call keys, reducer, rescueTypes value
   return rescueObjStruct res, target
 
 ###
