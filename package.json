@@ -1,7 +1,7 @@
 {
   "name": "then-busboy",
   "version": "1.0.0",
-  "description": "",
+  "description": "Promise-based wrapper around Busboy, inspired by async-busboy",
   "main": "main.js",
   "scripts": {
     "test": "./node_modules/ava/cli.js",
@@ -15,12 +15,12 @@
   "author": "Nick K. <nick.kruchinin@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "busboy": "^0.2.13",
+    "busboy": "0.2.13",
     "lodash.assign": "^4.2.0",
     "lodash.isplainobject": "4.0.6",
     "lodash.reduce": "4.6.0",
     "pinkie-promise": "2.0.1",
-    "shortid": "^2.2.6"
+    "shortid": "2.2.6"
   },
   "devDependencies": {
     "ava": "0.16.0",
