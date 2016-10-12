@@ -142,7 +142,7 @@ thenBusboy = (req, op = {split: no}) -> new Promise (resolve, reject) ->
     field: onField
     file: onFile
     finish: ->
-      console.log {fields, files}
+      # console.log {fields, files}
       mapListeners listeners, bb.removeListener.bind bb
       resolve if op.split then {fields, files} else assign {}, fields, files
 
