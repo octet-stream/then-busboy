@@ -1,0 +1,8 @@
+.DS_Store
+main.coffee
+test.coffee
+example.coffee
+test.js
+example.js
+npm-debug.log
+node_modules
