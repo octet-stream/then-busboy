@@ -3,6 +3,12 @@
   "version": "1.0.0",
   "description": "Promise-based wrapper around Busboy, inspired by async-busboy",
   "main": "main.js",
+  "keywords": [
+    "multipart",
+    "promise",
+    "async",
+    "formdata"
+  ],
   "scripts": {
     "test": "./node_modules/ava/cli.js",
     "test:watch": "./node_modules/ava/cli.js --watch",
