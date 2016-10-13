@@ -56,11 +56,10 @@ rescueObjStruct = (obj, target) ->
   [key] = Object.keys obj
   val = obj[key]
 
+  res = if "#{Number key}" is "NaN" then {} else []
   if key of target
-    res = if "#{Number key}" is "NaN" then {} else []
     res[key] = rescueObjStruct val, target[key]
   else
-    res = if "#{Number key}" is "NaN" then {} else []
     res[key] = val
 
   return merge target, res
