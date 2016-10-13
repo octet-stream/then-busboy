@@ -12,6 +12,7 @@ shortid = require "shortid"
 
 isPlainObject = require "lodash.isplainobject"
 assign = Object.assign or require "lodash.assign"
+merge = require "lodash.merge"
 
 reduceRight = Array::reduceRight or (args...) ->
   require("lodash.reduceRight")([this, args...])
@@ -24,6 +25,7 @@ includes = String::includes or (sub) ->
 ###
 mapListeners = (listeners, fn) ->
   fn __name, __handler for __name, __handler of listeners
+  return
 
 ###
 # Trying to rescue field value actual type from string
@@ -40,22 +42,28 @@ rescueTypes = (value) ->
   return Number value if "#{Number value}" isnt "NaN" and value isnt ""
   return value
 
+###
+# Rescue target object structure
+#
+# @param object obj
+# @param object target
+#
+# @return object
+#
+# @api private
+###
 rescueObjStruct = (obj, target) ->
   [key] = Object.keys obj
   val = obj[key]
 
-  # console.log key, val
   if key of target
     res = if "#{Number key}" is "NaN" then {} else []
     res[key] = rescueObjStruct val, target[key]
-    # console.log res
   else
-    res = if "#{Number key}" is "NaN" then {} else [target...]
+    res = if "#{Number key}" is "NaN" then {} else []
     res[key] = val
-    # console.log key, val
 
-  # return assign {}, target, res
-  return res
+  return merge target, res
 
 ###
 # Extract keys from fieldname
@@ -97,14 +105,15 @@ reducer = (prev, next) ->
 getObjFields = (target, fieldname, value) ->
   keys = extractKeys fieldname
   if typeof keys is "string"
-    unless "#{Number fieldname}" is "NaN"
+    unless "#{Number keys}" is "NaN"
       throw new TypeError "Top-level field name must be a string"
 
     target[fieldname] = rescueTypes value
     return target
 
   res = reduceRight.call keys, reducer, rescueTypes value
-  return rescueObjStruct res, target
+  target = rescueObjStruct res, target
+  return target
 
 ###
 # Promise-based wrapper around Busboy, inspired by async-busboy
@@ -160,9 +169,8 @@ thenBusboy = (req, op = {split: no}) -> new Promise (resolve, reject) ->
     field: onField
     file: onFile
     finish: ->
-      # console.log {fields, files}
       mapListeners listeners, bb.removeListener.bind bb
-      resolve if op.split then {fields, files} else assign {}, fields, files
+      resolve if op.split then {fields, files} else merge fields, files
 
   mapListeners listeners, bb.on.bind bb
   req.pipe bb

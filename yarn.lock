@@ -1891,6 +1891,10 @@ lodash.isplainobject@4.0.6:
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/lodash.isplainobject/-/lodash.isplainobject-4.0.6.tgz#7c526a52d89b45c45cc690b88163be0497f550cb"
 
+lodash.merge@^4.6.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.0.tgz#69884ba144ac33fe699737a6086deffadd0f89c5"
+
 lodash.reduceright@4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/lodash.reduceright/-/lodash.reduceright-4.6.0.tgz#31e2a0a128e048094fa01a601eaf4f6fd219775c"

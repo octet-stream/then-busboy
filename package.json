@@ -18,6 +18,7 @@
     "busboy": "0.2.13",
     "lodash.assign": "4.2.0",
     "lodash.isplainobject": "4.0.6",
+    "lodash.merge": "4.6.0",
     "lodash.reduceright": "4.6.0",
     "pinkie-promise": "2.0.1",
     "shortid": "2.2.6"
