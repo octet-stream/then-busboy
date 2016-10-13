@@ -6,22 +6,21 @@ Stream =  require "stream"
 busboy = require "."
 
 test.beforeEach (t) ->
-  t.context.makeRequestMock = ->
+  t.context.reqMock = do ->
     req = new IncomingMessage new Socket({readeble: true})
     req.headers =
       "content-type": "
         multipart/form-data; boundary=----WebKitFormBoundaryoyYHBQpNew47X0cp
       "
     req.method = "POST"
-    req
-  await return
+    return req
 
 test "Should be a function", (t) ->
   t.is typeof busboy, "function"
   await return
 
 test "Should return a promise", (t) ->
-  req = do t.context.makeRequestMock
-  bb = busboy req
+  bb = busboy t.context.reqMock
   t.true bb instanceof Promise
+
   await return
