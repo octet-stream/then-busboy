@@ -23,7 +23,7 @@ Just import `then-busboy` and pass `request` object as first argument.
 
 For example:
 
-```
+```js
 var busboy = require("then-busboy");
 var createServer = require("http").createServer;
 
