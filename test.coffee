@@ -21,7 +21,8 @@ test "Should be a function", (t) ->
 test "Should return a promise", (t) ->
   bb = busboy t.context.reqMock
   t.true bb instanceof Promise
+  await return
 
-test "Should throw an error if request parameter isn't an instance of http.IncomingMessage", (t)->
+test "Should throw an error if request parameter isn't an instance of http.IncomingMessage", (t) ->
   t.throws busboy({}), "Request parameter must be an instance of http.IncomingMessage."
   await return
