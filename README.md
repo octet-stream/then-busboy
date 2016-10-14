@@ -63,7 +63,7 @@ createServer(callback)
 
 ```js
 // Some your awesome code with async workflow...
-await = busboy(req);
+var data = await busboy(req);
 ```
 
 ## License
