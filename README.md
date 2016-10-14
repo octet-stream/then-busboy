@@ -63,7 +63,7 @@ function callback(req, res) {
 }
 
 createServer(callback)
-  .listen(2319, () => console.log("Server started on http://localhost:2319"))
+  .listen(2319, () => console.log("Server started on http://localhost:2319"));
 ```
 
 `then-busboy` always return a Promise, so you can use it with
