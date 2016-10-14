@@ -1,6 +1,6 @@
 {
   "name": "then-busboy",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Promise-based wrapper around Busboy, inspired by async-busboy",
   "main": "main.js",
   "keywords": [
@@ -31,7 +31,8 @@
   },
   "devDependencies": {
     "ava": "0.16.0",
-    "coffee-script": "git+https://github.com/octet-stream/coffeescript.git"
+    "coffee-script": "git+https://github.com/octet-stream/coffeescript.git",
+    "istanbul": "0.4.5"
   },
   "repository": {
     "type": "git",

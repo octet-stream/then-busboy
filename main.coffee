@@ -15,7 +15,7 @@ assign = Object.assign or require "lodash.assign"
 merge = require "lodash.merge"
 
 reduceRight = Array::reduceRight or (args...) ->
-  require("lodash.reduceRight")([this, args...])
+  require("lodash.reduceRight")(this, args...)
 
 includes = String::includes or (sub) ->
   String::indexOf.call(this, sub) > -1

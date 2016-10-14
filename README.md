@@ -68,4 +68,4 @@ var data = await busboy(req);
 
 ## License
 
-[MIT](LICENSE)
+[MIT](https://github.com/octet-stream/then-busboy/blob/master/LICENSE)
