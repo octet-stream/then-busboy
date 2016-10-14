@@ -32,5 +32,12 @@
   "devDependencies": {
     "ava": "0.16.0",
     "coffee-script": "git+https://github.com/octet-stream/coffeescript.git"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/octet-stream/then-busboy.git"
+  },
+  "bugs": {
+    "url": "https://github.com/octet-stream/then-busboy/issues"
   }
 }
