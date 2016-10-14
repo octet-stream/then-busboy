@@ -2,6 +2,9 @@
 
 Promise-based wrapper around Busboy, inspired by async-busboy
 
+[![dependencies Status](https://david-dm.org/octet-stream/then-busboy/status.svg?style=flat-square)](https://david-dm.org/octet-stream/then-busboy)
+[![devDependencies Status](https://david-dm.org/octet-stream/then-busboy/dev-status.svg?style=flat-square)](https://david-dm.org/octet-stream/then-busboy?type=dev)
+
 ## Installation
 
 Use can install `then-pusboy` from npm:
