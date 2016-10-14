@@ -19,6 +19,14 @@ yarn
 
 ## Usage
 
+### busboy(request[, options]) -> Promise
+
+* http.IncomingMessage **request** - HTTP request object
+* object **options**
+  - boolean **split** - when this options passed with `true`, the `data`
+      object will contain two keys: `fields` and `files`.
+  - more information about busboy options [here](https://github.com/mscdex/busboy#busboy-methods).
+
 Just import `then-busboy` and pass `request` object as first argument.
 
 For example:
@@ -64,6 +72,12 @@ createServer(callback)
 ```js
 // Some your awesome code with async workflow...
 var data = await busboy(req);
+```
+
+And the same code, but with `split: true` option:
+
+```js
+var {fields, files} = await busboy(req, {split: true});
 ```
 
 ## License
