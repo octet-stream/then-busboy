@@ -1,6 +1,6 @@
 {
   "name": "then-busboy",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Promise-based wrapper around Busboy, inspired by async-busboy",
   "main": "main.js",
   "keywords": [
