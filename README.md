@@ -1,6 +1,6 @@
 # then-busboy
 
-Promise-based wrapper around Busboy, inspired by async-busboy
+Promise-based wrapper around Busboy, inspired by [async-busboy](https://github.com/m4nuC/async-busboy)
 
 [![dependencies Status](https://david-dm.org/octet-stream/then-busboy/status.svg?style=flat-square)](https://david-dm.org/octet-stream/then-busboy)
 [![devDependencies Status](https://david-dm.org/octet-stream/then-busboy/dev-status.svg?style=flat-square)](https://david-dm.org/octet-stream/then-busboy?type=dev)
@@ -26,8 +26,8 @@ yarn
 
 * http.IncomingMessage **request** - HTTP request object
 * object **options**
-  - boolean **split** - when this options passed with `true`, the `data`
-      object will contain two keys: `fields` and `files`.
+  - boolean **split** - If set as `true`, the `data`
+      object will be split into two other objects: `fields` and `files`.
   - more information about busboy options [here](https://github.com/mscdex/busboy#busboy-methods).
 
 Just import `then-busboy` and pass `request` object as first argument.
@@ -69,11 +69,11 @@ createServer(callback)
   .listen(2319, () => console.log("Server started on http://localhost:2319"));
 ```
 
-`then-busboy` always return a Promise, so you can use it with
+`then-busboy` always returns a Promise, so you can use it with
 [asynchronous function](https://github.com/tc39/ecmascript-asyncawait) syntax:
 
 ```js
-// Some your awesome code with async workflow...
+// Some of your awesome code with async workflow...
 var data = await busboy(req);
 ```
 
