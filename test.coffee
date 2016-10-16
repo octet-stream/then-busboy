@@ -6,16 +6,11 @@ request = require "supertest"
 busboy = require "."
 
 test.beforeEach (t) ->
-  t.context.reqMock = do ->
-    req = new IncomingMessage new Socket({readeble: true})
-    req.headers =
-      "content-type": "
-        multipart/form-data; boundary=----WebKitFormBoundaryoyYHBQpNew47X0cp
-      "
-    req.method = "POST"
-    return req
+  multipartHeaderMock = "
+    multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+  "
 
-  t.context.serverMock = createServer (req, res) ->
+  serverMock = (split = no) -> createServer (req, res) ->
     if req.method is "GET"
       res.statusCode = 404
       return res.end "Not Found"
@@ -33,9 +28,24 @@ test.beforeEach (t) ->
       res.statusCode = err.status or 500
       res.end String err
 
-    busboy req, split: on
+    busboy req, {split}
       .then onFulfilled
       .catch onRejected
+
+  reqMock = do ->
+    req = new IncomingMessage new Socket({readeble: true})
+    req.headers =
+      "content-type": "
+        multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+      "
+    req.method = "POST"
+    return req
+
+  t.context = {
+    multipartHeaderMock
+    serverMock
+    reqMock
+  }
 
 test "Should be a function", (t) ->
   t.is typeof busboy, "function"
@@ -54,3 +64,14 @@ test "
     Request parameter must be an instance of http.IncomingMessage.
   "
   await return
+
+test "Should return a correct string field", (t) ->
+  {body} = await request do t.context.serverMock
+    .post "/"
+    .set "content-type", t.context.multipartHeaderMock
+    .field "someValue", "In Soviet Moon, landscape see binoculars through you."
+
+  t.true "someValue" of body, "Result should contain someValue field"
+  t.is typeof body.someValue, "string", "someValue should be a string"
+  t.is body.someValue, "In Soviet Moon, landscape see binoculars through you.",
+    "someValue should contain a valid message in string"

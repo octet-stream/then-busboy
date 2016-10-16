@@ -1,4 +1,3 @@
-isPlainObject = require "lodash.isplainobject"
 busboy = require "."
 {createServer} = require "http"
 

@@ -27,13 +27,13 @@
     "lodash.merge": "4.6.0",
     "lodash.reduceright": "4.6.0",
     "pinkie-promise": "2.0.1",
-    "shortid": "2.2.6",
-    "supertest": "^2.0.0"
+    "shortid": "2.2.6"
   },
   "devDependencies": {
     "ava": "0.16.0",
     "coffee-script": "git+https://github.com/octet-stream/coffeescript.git",
-    "istanbul": "0.4.5"
+    "istanbul": "0.4.5",
+    "supertest": "2.0.0"
   },
   "repository": {
     "type": "git",
