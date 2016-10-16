@@ -1,3 +1,4 @@
+Promise = require "pinkie-promise"
 test = require "ava"
 request = require "supertest"
 isPlainObject = require "lodash.isplainobject"
