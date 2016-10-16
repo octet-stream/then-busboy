@@ -1,5 +1,6 @@
 test = require "ava"
 request = require "supertest"
+isPlainObject = require "lodash.isplainobject"
 {IncomingMessage, createServer} = require "http"
 {Socket} = require "net"
 
@@ -65,6 +66,20 @@ test "
   "
   await return
 
+test "Should return a plain object", (t) ->
+  {body} = await request do t.context.serverMock
+    .post "/"
+    .set "content-type", t.context.multipartHeaderMock
+
+  t.true isPlainObject(body), "Request should always returns a plain object"
+
+test "Should return files and fields in to others objects", (t) ->
+  {body} = await request t.context.serverMock on
+    .post "/"
+    .set "content-type", t.context.multipartHeaderMock
+
+  t.deepEqual body, {fields: {}, files: {}}
+
 test "Should return a correct string field", (t) ->
   {body} = await request do t.context.serverMock
     .post "/"
@@ -75,3 +90,21 @@ test "Should return a correct string field", (t) ->
   t.is typeof body.someValue, "string", "someValue should be a string"
   t.is body.someValue, "In Soviet Moon, landscape see binoculars through you.",
     "someValue should contain a valid message in string"
+
+test "Should rescue types", (t) ->
+  t.plan 4
+  {body: {
+    nullValue, falseValue,
+    trueValue, numberValue
+  }} = await request do t.context.serverMock
+    .post "/"
+    .set "content-type", t.context.multipartHeaderMock
+    .field "nullValue", "null"
+    .field "falseValue", "false"
+    .field "trueValue", "true"
+    .field "numberValue", "42"
+
+  t.is nullValue, null
+  t.is falseValue, no
+  t.is trueValue, yes
+  t.is numberValue, 42
