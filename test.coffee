@@ -35,7 +35,7 @@ test.beforeEach (t) ->
       .catch onRejected
 
   reqMock = do ->
-    req = new IncomingMessage new Socket({readeble: true})
+    req = new IncomingMessage new Socket readeble: on
     req.headers =
       "content-type": "
         multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
@@ -74,7 +74,7 @@ test "Should return a plain object", (t) ->
 
   t.true isPlainObject(body), "Request should always returns a plain object"
 
-test "Should return files and fields in to others objects", (t) ->
+test "Should return files and fields in two other objects", (t) ->
   {body} = await request t.context.serverMock on
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
@@ -94,6 +94,7 @@ test "Should return a correct string field", (t) ->
 
 test "Should rescue types", (t) ->
   t.plan 4
+
   {body: {
     nullValue, falseValue,
     trueValue, numberValue
