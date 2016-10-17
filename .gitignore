@@ -2,6 +2,7 @@ coverage
 .DS_Store
 main.js
 test.js
+errors.js
 example.js
 npm-debug.log
 node_modules

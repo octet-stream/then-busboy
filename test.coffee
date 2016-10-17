@@ -1,6 +1,7 @@
 Promise = require "pinkie-promise"
 test = require "ava"
 request = require "supertest"
+assign = require "lodash.assign"
 isPlainObject = require "lodash.isplainobject"
 {IncomingMessage, createServer} = require "http"
 {Socket} = require "net"
@@ -12,7 +13,7 @@ test.beforeEach (t) ->
     multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
   "
 
-  serverMock = (split = no) -> createServer (req, res) ->
+  serverMock = (split = no, limits = {}) -> createServer (req, res) ->
     if req.method is "GET"
       res.statusCode = 404
       return res.end "Not Found"
@@ -30,7 +31,7 @@ test.beforeEach (t) ->
       res.statusCode = err.status or 500
       res.end String err
 
-    busboy req, {split}
+    busboy req, assign {}, {limits}, {split}
       .then onFulfilled
       .catch onRejected
 
@@ -110,3 +111,14 @@ test "Should rescue types", (t) ->
   t.is falseValue, no
   t.is trueValue, yes
   t.is numberValue, 42
+
+test "Should return an error when fields limit reached", (t) ->
+  {error} = await request t.context.serverMock null, fields: 1
+    .post "/"
+    .set "content-type", t.context.multipartHeaderMock
+    .field "nullValue", "null"
+    .field "someExtraField", "Some value"
+
+  t.is error.status, 413, "Status should be 413"
+  t.is error.text, "RequestEntityTooLargeException: Fields limit reached",
+    "Error text should contain a valid message"

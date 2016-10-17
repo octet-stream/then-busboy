@@ -4,6 +4,7 @@ coverage
 .gitignore
 main.coffee
 test.coffee
+errors.coffee
 example.coffee
 test.js
 example.js

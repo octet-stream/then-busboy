@@ -2,8 +2,8 @@
 
 Promise-based wrapper around Busboy, inspired by [async-busboy](https://github.com/m4nuC/async-busboy)
 
-[![dependencies Status](https://david-dm.org/octet-stream/then-busboy/status.svg?style=flat-square)](https://david-dm.org/octet-stream/then-busboy)
-[![devDependencies Status](https://david-dm.org/octet-stream/then-busboy/dev-status.svg?style=flat-square)](https://david-dm.org/octet-stream/then-busboy?type=dev)
+[![dependencies Status](https://david-dm.org/octet-stream/then-busboy/status.svg)](https://david-dm.org/octet-stream/then-busboy)
+[![devDependencies Status](https://david-dm.org/octet-stream/then-busboy/dev-status.svg)](https://david-dm.org/octet-stream/then-busboy?type=dev)
 [![Build Status](https://travis-ci.org/octet-stream/then-busboy.svg?branch=master)](https://travis-ci.org/octet-stream/then-busboy)
 
 ## Installation

@@ -10,6 +10,10 @@ shortid = require "shortid"
 {Readable} = require "stream"
 {createReadStream, createWriteStream} = require "fs"
 
+{
+  PartsLimitException, FieldsLimitException, FilesLimitException
+} = require "./errors"
+
 isPlainObject = require "lodash.isplainobject"
 assign = Object.assign or require "lodash.assign"
 merge = require "lodash.merge"
@@ -24,7 +28,7 @@ includes = String::includes or (sub) ->
 # @api private
 ###
 mapListeners = (listeners, fn) ->
-  fn __name, __handler for __name, __handler of listeners
+  fn __name, __handler for own __name, __handler of listeners
   return
 
 ###
@@ -162,11 +166,20 @@ thenBusboy = (req, op = {split: no}) -> new Promise (resolve, reject) ->
 
   onError = (err) -> reject err
 
+  onPartsLimit = -> onError new PartsLimitException "Parts limit reached"
+
+  onFieldsLimit = -> onError new FieldsLimitException "Fields limit reached"
+
+  onFilesLimit = -> onError new FilesLimitException "Files limit reached"
+
   # Just for automate adding/removing listeners
   listeners =
     error: onError
     field: onField
     file: onFile
+    partsLimit: onPartsLimit
+    filesLimit: onFilesLimit
+    fieldsLimit: onFieldsLimit
     finish: ->
       mapListeners listeners, bb.removeListener.bind bb
       resolve if op.split then {fields, files} else merge fields, files

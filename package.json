@@ -1,6 +1,6 @@
 {
   "name": "then-busboy",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "Promise-based wrapper around Busboy, inspired by async-busboy",
   "main": "main.js",
   "keywords": [
@@ -13,9 +13,9 @@
     "test": "./node_modules/ava/cli.js",
     "test:watch": "./node_modules/ava/cli.js --watch",
     "tw": "npm run test:watch",
-    "make": "./node_modules/coffee-script/bin/coffee --no-header -b -c main.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -c test.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -c example.coffee",
+    "make": "./node_modules/coffee-script/bin/coffee --no-header -b -c main.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -c test.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -c example.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -c errors.coffee",
     "m": "npm run make",
-    "watch": "./node_modules/coffee-script/bin/coffee --no-header -b -w -c main.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -w -c test.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -w -c example.coffee",
+    "watch": "./node_modules/coffee-script/bin/coffee --no-header -b -w -c main.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -w -c test.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -w -c example.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -w -c errors.coffee",
     "w": "npm run watch"
   },
   "author": "Nick K. <nick.kruchinin@gmail.com>",
