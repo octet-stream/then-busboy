@@ -3,9 +3,11 @@ test = require "ava"
 request = require "supertest"
 assign = require "lodash.assign"
 isPlainObject = require "lodash.isplainobject"
+fs = require "fs"
 {IncomingMessage, createServer} = require "http"
 {Socket} = require "net"
-
+{tmpDir} = require "os"
+{readFile, access} = require "promise-fs"
 busboy = require "."
 
 test.beforeEach (t) ->
@@ -60,7 +62,7 @@ test "Should return a promise", (t) ->
   await return
 
 test "
-  Should throw an error if request parameter isn't an instance of 
+  Should throw an error if request parameter isn't an instance of
   http.IncomingMessage
 ", (t) ->
   t.throws busboy({}), "
@@ -122,3 +124,42 @@ test "Should return an error when fields limit reached", (t) ->
   t.is error.status, 413, "Status should be 413"
   t.is error.text, "RequestEntityTooLargeException: Fields limit reached",
     "Error text should contain a valid message"
+
+test "Should return error if Top-level field name must be a string", (t) ->
+  {error} = await request do t.context.serverMock
+    .post "/"
+    .set "content-type", t.context.multipartHeaderMock
+    .field "", "foo"
+
+  t.is error.status, 500, "Status should be 500"
+  t.is error.text, "TypeError: Top-level field name must be a string",
+    "Error text should contatin a valid message"
+
+test "Should create a temp file when file was attached", (t) ->
+  {body} = await request do t.context.serverMock
+    .post "/"
+    .set "content-type", t.context.multipartHeaderMock
+    .attach "foo", "LICENSE"
+
+  try
+    await access body.foo.path
+    t.pass()
+  catch e
+    t.fail()
+
+test "Temp file should be stored in operating system's default directory for temporary files", (t) ->
+  {body} = await request do t.context.serverMock
+  .post "/"
+  .set "content-type", t.context.multipartHeaderMock
+  .attach "foo", "LICENSE"
+
+  t.is body.foo.path.indexOf(do tmpDir), 0
+
+test "Temp file should have original file contents", (t) ->
+  {body} = await request do t.context.serverMock
+    .post "/"
+    .set "content-type", t.context.multipartHeaderMock
+    .attach "foo", "LICENSE"
+  tmpFileContents = await readFile body.foo.path, 'utf8'
+  licenseContents = await readFile 'LICENSE', 'utf8'
+  t.is tmpFileContents, licenseContents
