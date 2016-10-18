@@ -136,10 +136,10 @@ test "Should return error if Top-level field name must be a string", (t) ->
     "Error text should contatin a valid message"
 
 test "Should create a temp file when file was attached", (t) ->
-  { body } = await request do t.context.serverMock
+  {body} = await request do t.context.serverMock
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
-    .attach "foo", "data"
+    .attach "foo", "LICENSE"
 
   try
     fs.accessSync body.foo.path
@@ -148,17 +148,17 @@ test "Should create a temp file when file was attached", (t) ->
     t.fail()
 
 test "Temp file should be stored in operating system's default directory for temporary files", (t) ->
-  { body } = await request do t.context.serverMock
+  {body} = await request do t.context.serverMock
   .post "/"
   .set "content-type", t.context.multipartHeaderMock
-  .attach "foo", "data"
+  .attach "foo", "LICENSE"
 
   t.is body.foo.path.indexOf(do tmpDir), 0
 
 test "Temp file should have original file contents", (t) ->
-  { body } = await request do t.context.serverMock
+  {body} = await request do t.context.serverMock
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
-    .attach "foo", "data"
+    .attach "foo", "LICENSE"
 
-  t.is fs.readFileSync(body.foo.path, 'utf8'), fs.readFileSync('data', 'utf8')
+  t.is fs.readFileSync(body.foo.path, 'utf8'), fs.readFileSync('LICENSE', 'utf8')
