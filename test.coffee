@@ -7,7 +7,7 @@ fs = require "fs"
 {IncomingMessage, createServer} = require "http"
 {Socket} = require "net"
 {tmpDir} = require "os"
-
+{readFile, access} = require "promise-fs"
 busboy = require "."
 
 test.beforeEach (t) ->
@@ -142,7 +142,7 @@ test "Should create a temp file when file was attached", (t) ->
     .attach "foo", "LICENSE"
 
   try
-    fs.accessSync body.foo.path
+    await access body.foo.path
     t.pass()
   catch e
     t.fail()
@@ -160,5 +160,6 @@ test "Temp file should have original file contents", (t) ->
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
     .attach "foo", "LICENSE"
-
-  t.is fs.readFileSync(body.foo.path, 'utf8'), fs.readFileSync('LICENSE', 'utf8')
+  tmpFileContents = await readFile body.foo.path, 'utf8'
+  licenseContents = await readFile 'LICENSE', 'utf8'
+  t.is tmpFileContents, licenseContents
