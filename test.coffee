@@ -3,6 +3,7 @@ test = require "ava"
 request = require "supertest"
 assign = require "lodash.assign"
 isPlainObject = require "lodash.isplainobject"
+fs = require "fs"
 {IncomingMessage, createServer} = require "http"
 {Socket} = require "net"
 
@@ -127,9 +128,20 @@ test "Should return error if Top-level field name must be a string", (t) ->
   {error} = await request do t.context.serverMock
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
-    .field "", "data"
+    .field "", "foo"
 
   t.is error.status, 500, "Status should be 500"
   t.is error.text, "TypeError: Top-level field name must be a string",
     "Error text should contatin a valid message"
 
+test "Should create a temp file when file was attached", (t) ->
+  { body } = await request do t.context.serverMock
+    .post "/"
+    .set "content-type", t.context.multipartHeaderMock
+    .attach "foo", "data"
+
+  try
+    fs.accessSync body.foo.path
+    t.pass()
+  catch e
+    t.fail()
