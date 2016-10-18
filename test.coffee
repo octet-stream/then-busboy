@@ -145,3 +145,12 @@ test "Should create a temp file when file was attached", (t) ->
     t.pass()
   catch e
     t.fail()
+
+
+test "Temp file should have original file contents", (t) ->
+  { body } = await request do t.context.serverMock
+    .post "/"
+    .set "content-type", t.context.multipartHeaderMock
+    .attach "foo", "data"
+
+  t.is fs.readFileSync(body.foo.path, 'utf8'), fs.readFileSync('data', 'utf8')
