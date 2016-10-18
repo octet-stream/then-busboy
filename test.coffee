@@ -6,6 +6,7 @@ isPlainObject = require "lodash.isplainobject"
 fs = require "fs"
 {IncomingMessage, createServer} = require "http"
 {Socket} = require "net"
+{tmpDir} = require "os"
 
 busboy = require "."
 
@@ -146,6 +147,13 @@ test "Should create a temp file when file was attached", (t) ->
   catch e
     t.fail()
 
+test "Temp file should be stored in operating system's default directory for temporary files", (t) ->
+  { body } = await request do t.context.serverMock
+  .post "/"
+  .set "content-type", t.context.multipartHeaderMock
+  .attach "foo", "data"
+
+  t.is body.foo.path.indexOf(do tmpDir), 0
 
 test "Temp file should have original file contents", (t) ->
   { body } = await request do t.context.serverMock
