@@ -2,6 +2,8 @@ node_modules
 coverage
 .DS_Store
 .gitignore
+.nyc_output
+coverage.lcov
 main.coffee
 test.coffee
 errors.coffee

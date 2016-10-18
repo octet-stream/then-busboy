@@ -1,8 +1,10 @@
+node_modules
 coverage
 .DS_Store
+.nyc_output
+coverage.lcov
 main.js
 test.js
 errors.js
 example.js
 npm-debug.log
-node_modules

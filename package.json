@@ -16,12 +16,19 @@
     "make": "./node_modules/coffee-script/bin/coffee --no-header -b -c main.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -c test.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -c example.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -c errors.coffee",
     "m": "npm run make",
     "watch": "./node_modules/coffee-script/bin/coffee --no-header -b -w -c main.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -w -c test.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -w -c example.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -w -c errors.coffee",
-    "w": "npm run watch"
+    "w": "npm run watch",
+    "report": "./node_modules/nyc/bin/nyc.js report --reporter=html npm run test",
+    "r": "npm run report",
+    "cover": "./node_modules/nyc/bin/nyc.js npm run test",
+    "c": "npm run cover",
+    "codecov": "./node_modules/nyc/bin/nyc.js report --reporter=lcov npm run test > coverage.lcov && ./node_modules/codecov/bin/codecov",
+    "o": "npm run codecov"
   },
   "author": "Nick K. <nick.kruchinin@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "busboy": "0.2.13",
+    "codecov": "^1.0.1",
     "lodash.assign": "4.2.0",
     "lodash.isplainobject": "4.0.6",
     "lodash.merge": "4.6.0",
@@ -32,8 +39,8 @@
   "devDependencies": {
     "ava": "0.16.0",
     "coffee-script": "git+https://github.com/octet-stream/coffeescript.git",
-    "istanbul": "0.4.5",
-    "promise-fs": "^1.1.0",
+    "nyc": "8.3.1",
+    "promise-fs": "1.1.0",
     "supertest": "2.0.0"
   },
   "repository": {

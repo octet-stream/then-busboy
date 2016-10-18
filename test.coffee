@@ -8,6 +8,7 @@ fs = require "fs"
 {Socket} = require "net"
 {tmpDir} = require "os"
 {readFile, access} = require "promise-fs"
+
 busboy = require "."
 
 test.beforeEach (t) ->
@@ -59,6 +60,11 @@ test "Should be a function", (t) ->
 test "Should return a promise", (t) ->
   bb = busboy t.context.reqMock
   t.true bb instanceof Promise
+  await return
+
+test "Should throw an error if non-object value passed as 2nd argument", (t) ->
+  t.throws busboy(t.context.reqMock, "not object"),
+    "Options argument must be a plain object."
   await return
 
 test "
@@ -125,6 +131,28 @@ test "Should return an error when fields limit reached", (t) ->
   t.is error.text, "RequestEntityTooLargeException: Fields limit reached",
     "Error text should contain a valid message"
 
+test "Should return an error when parts limit reached", (t) ->
+  {error} = await request t.context.serverMock null, parts: 1
+    .post "/"
+    .set "content-type", t.context.multipartHeaderMock
+    .field "someKey", "Some value"
+    .attach "license", "LICENSE"
+
+  t.is error.status, 413, "Status should be 413"
+  t.is error.text, "RequestEntityTooLargeException: Parts limit reached",
+    "Error text should contain a valid message"
+
+test "Should return an error when files limit reached", (t) ->
+  {error, body} = await request t.context.serverMock null, files: 1
+    .post "/"
+    .set "content-type", t.context.multipartHeaderMock
+    .attach "readme", "README.md"
+    .attach "license", "LICENSE"
+
+  t.is error.status, 413, "Status should be 413"
+  t.is error.text, "RequestEntityTooLargeException: Files limit reached",
+    "Error text should contain a valid message"
+
 test "Should return error if Top-level field name must be a string", (t) ->
   {error} = await request do t.context.serverMock
     .post "/"
@@ -136,30 +164,34 @@ test "Should return error if Top-level field name must be a string", (t) ->
     "Error text should contatin a valid message"
 
 test "Should create a temp file when file was attached", (t) ->
-  {body} = await request do t.context.serverMock
+  {body: {license}} = await request do t.context.serverMock
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
-    .attach "foo", "LICENSE"
+    .attach "license", "LICENSE"
 
   try
-    await access body.foo.path
-    t.pass()
-  catch e
-    t.fail()
+    await access license.path
+    do t.pass
+  catch err
+    do t.fail
 
-test "Temp file should be stored in operating system's default directory for temporary files", (t) ->
-  {body} = await request do t.context.serverMock
-  .post "/"
-  .set "content-type", t.context.multipartHeaderMock
-  .attach "foo", "LICENSE"
-
-  t.is body.foo.path.indexOf(do tmpDir), 0
-
-test "Temp file should have original file contents", (t) ->
-  {body} = await request do t.context.serverMock
+test "
+  Temp file should be stored in operating system's 
+  default directory for temporary files
+", (t) ->
+  {body: {license}} = await request do t.context.serverMock
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
-    .attach "foo", "LICENSE"
-  tmpFileContents = await readFile body.foo.path, 'utf8'
+    .attach "license", "LICENSE"
+
+  t.true license.path.startsWith do tmpDir
+
+test "Temp file should have original file contents", (t) ->
+  {body: {license}} = await request do t.context.serverMock
+    .post "/"
+    .set "content-type", t.context.multipartHeaderMock
+    .attach "license", "LICENSE"
+
+  tmpFileContents = await readFile license.path, 'utf8'
   licenseContents = await readFile 'LICENSE', 'utf8'
   t.is tmpFileContents, licenseContents
