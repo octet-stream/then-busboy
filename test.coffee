@@ -60,7 +60,7 @@ test "Should return a promise", (t) ->
   await return
 
 test "
-  Should throw an error if request parameter isn't an instance of 
+  Should throw an error if request parameter isn't an instance of
   http.IncomingMessage
 ", (t) ->
   t.throws busboy({}), "
@@ -122,3 +122,14 @@ test "Should return an error when fields limit reached", (t) ->
   t.is error.status, 413, "Status should be 413"
   t.is error.text, "RequestEntityTooLargeException: Fields limit reached",
     "Error text should contain a valid message"
+
+test "Should return error if Top-level field name must be a string", (t) ->
+  {error} = await request do t.context.serverMock
+    .post "/"
+    .set "content-type", t.context.multipartHeaderMock
+    .field "", "data"
+
+  t.is error.status, 500, "Status should be 500"
+  t.is error.text, "TypeError: Top-level field name must be a string",
+    "Error text should contatin a valid message"
+
