@@ -209,7 +209,7 @@ test "
   shortId = basename file.path, '.md'
   extension = extname file.path
 
-  t.true shortidSpy.returnValues.indexOf(shortId) > -1
+  t.true shortidSpy.returned shortId 
   t.is extension, ".md"
 
 test "Temp file should have original file contents", (t) ->
