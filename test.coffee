@@ -1,15 +1,24 @@
 Promise = require "pinkie-promise"
+proxyquire = require "proxyquire"
+sinon = require "sinon"
+shortid = require "shortid"
 test = require "ava"
 request = require "supertest"
 assign = require "lodash.assign"
 isPlainObject = require "lodash.isplainobject"
+{basename, extname} = require "path"
 fs = require "fs"
 {IncomingMessage, createServer} = require "http"
 {Socket} = require "net"
 {tmpDir} = require "os"
 {readFile, access} = require "promise-fs"
 
-busboy = require "."
+shortidSpy = sinon.spy(shortid)
+
+busboy = proxyquire ".",
+  shortid: shortidSpy
+
+#require "."
 
 test.beforeEach (t) ->
   multipartHeaderMock = "
@@ -179,12 +188,29 @@ test "
   Temp file should be stored in operating system's 
   default directory for temporary files
 ", (t) ->
+
   {body: {license}} = await request do t.context.serverMock
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
     .attach "license", "LICENSE"
 
   t.true license.path.startsWith do tmpDir
+
+test "
+  Temp file should contain generated shortId
+  and should end with original extension
+", (t) ->
+
+  {body: {file}} = await request do t.context.serverMock
+    .post "/"
+    .set "content-type", t.context.multipartHeaderMock
+    .attach "file", "README.md"
+
+  shortId = basename file.path, '.md'
+  extension = extname file.path
+
+  t.true shortidSpy.returnValues.indexOf(shortId) > -1
+  t.is extension, ".md"
 
 test "Temp file should have original file contents", (t) ->
   {body: {license}} = await request do t.context.serverMock
