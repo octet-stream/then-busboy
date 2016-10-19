@@ -150,7 +150,6 @@ test "Should return a valid object", (t) ->
     .field "subject[skills][]", "CoffeeScript"
     .field "subject[skills][]", "JavaScript"
     .field "subject[skills][]", "Babel"
-    .field "subject[skills][]", "Python"
 
   t.deepEqual body, subject:
     firstName: "John"
@@ -164,9 +163,67 @@ test "Should return a valid object", (t) ->
       "CoffeeScript"
       "JavaScript"
       "Babel"
-      "Python"
     ]
 
+test "Should return a valid collection", (t) ->
+  t.plan 1
+
+  {body} = await request do t.context.serverMock
+    .post "/"
+    .set "content-type", t.context.multipartHeaderMock
+    .field "subjects[0][firstName]", "John"
+    .field "subjects[0][lastName]", "Doe"
+    .field "subjects[0][dob][day]", "1"
+    .field "subjects[0][dob][month]", "Jan."
+    .field "subjects[0][dob][year]", "1989"
+    .field "subjects[0][skills][]", "Node.js"
+    .field "subjects[0][skills][]", "CoffeeScript"
+    .field "subjects[0][skills][]", "JavaScript"
+    .field "subjects[0][skills][]", "Babel"
+    .field "subjects[1][firstName]", "Max"
+    .field "subjects[1][lastName]", "Doe"
+    .field "subjects[1][dob][day]", "12"
+    .field "subjects[1][dob][month]", "Mar."
+    .field "subjects[1][dob][year]", "1992"
+    .field "subjects[1][skills][]", "Python"
+    .field "subjects[1][skills][]", "Flask"
+    .field "subjects[1][skills][]", "JavaScript"
+    .field "subjects[1][skills][]", "Babel"
+    .field "subjects[1][skills][]", "React"
+    .field "subjects[1][skills][]", "Redux"
+
+  t.deepEqual body, subjects: [
+    {
+      firstName: "John"
+      lastName: "Doe"
+      dob:
+        day: 1
+        month: "Jan."
+        year: 1989
+      skills: [
+        "Node.js"
+        "CoffeeScript"
+        "JavaScript"
+        "Babel"
+      ]
+    }
+    {
+      firstName: "Max"
+      lastName: "Doe"
+      dob:
+        day: 12
+        month: "Mar."
+        year: 1992
+      skills: [
+        "Python"
+        "Flask"
+        "JavaScript"
+        "Babel"
+        "React"
+        "Redux"
+      ]
+    }
+  ]
 
 test "Should return an error when fields limit reached", (t) ->
   t.plan 2

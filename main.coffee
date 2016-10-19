@@ -66,7 +66,16 @@ rescueObjStruct = (obj, target) ->
   else
     if Array.isArray target
       res = [target...]
-      if not res[key] or Number key then res[key] = val else res.push val
+      if not res[key] or Number key
+        if isPlainObject val
+          res[key] = rescueObjStruct val, res[key]
+        else
+          res[key] = val
+      else
+        if isPlainObject val
+          res = rescueObjStruct val, res[key]
+        else
+          res.push val
     else
       res[key] = val
 
