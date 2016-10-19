@@ -61,10 +61,14 @@ rescueObjStruct = (obj, target) ->
   val = obj[key]
 
   res = if "#{Number key}" is "NaN" then {} else []
-  if key of target
+  if isPlainObject(target) and key of target
     res[key] = rescueObjStruct val, target[key]
   else
-    res[key] = val
+    if Array.isArray target
+      res = [target...]
+      if not res[key] or Number key then res[key] = val else res.push val
+    else
+      res[key] = val
 
   return merge target, res
 
