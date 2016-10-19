@@ -41,8 +41,8 @@
     "coffee-script": "git+https://github.com/octet-stream/coffeescript.git",
     "nyc": "8.3.1",
     "promise-fs": "1.1.0",
-    "proxyquire": "^1.7.10",
-    "sinon": "^1.17.6",
+    "proxyquire": "1.7.10",
+    "sinon": "1.17.6",
     "supertest": "2.0.0"
   },
   "repository": {

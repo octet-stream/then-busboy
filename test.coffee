@@ -18,7 +18,7 @@ shortidSpy = sinon.spy(shortid)
 busboy = proxyquire ".",
   shortid: shortidSpy
 
-#require "."
+# require "."
 
 test.beforeEach (t) ->
   multipartHeaderMock = "
@@ -128,6 +128,9 @@ test "Should rescue types", (t) ->
   t.is falseValue, no
   t.is trueValue, yes
   t.is numberValue, 42
+
+test "Should return a valid collection", (t) ->
+  {body} = await request do t.context.serverMock
 
 test "Should return an error when fields limit reached", (t) ->
   {error} = await request t.context.serverMock null, fields: 1
