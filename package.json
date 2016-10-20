@@ -21,7 +21,7 @@
     "r": "npm run report",
     "cover": "./node_modules/nyc/bin/nyc.js npm run test",
     "c": "npm run cover",
-    "codecov": "npm run cover && ./node_modules/nyc/bin/nyc.js report --reporter=lcov npm run test > coverage.lcov && ./node_modules/codecov/bin/codecov",
+    "codecov": "npm run cover && ./node_modules/nyc/bin/nyc.js report --reporter=text-lcov npm run test > coverage.lcov && ./node_modules/codecov/bin/codecov",
     "o": "npm run codecov"
   },
   "author": "Nick K. <nick.kruchinin@gmail.com>",
