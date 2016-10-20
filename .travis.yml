@@ -8,4 +8,5 @@ install:
 script:
   - npm run make
   - npm run test
+after_success:
   - npm run codecov
