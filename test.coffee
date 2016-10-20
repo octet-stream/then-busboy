@@ -254,7 +254,7 @@ test "Should return an error when parts limit reached", (t) ->
 test "Should return an error when files limit reached", (t) ->
   t.plan 2
 
-  {error, body} = await request t.context.serverMock null, files: 1
+  {error} = await request t.context.serverMock null, files: 1
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
     .attach "readme", "README.md"
