@@ -20,7 +20,7 @@ callback = (req, res) ->
     res.statusCode = err.status or 500
     res.end String err
 
-  busboy req, split: on
+  busboy req
     .then onFulfilled
     .catch onRejected
 

@@ -195,7 +195,7 @@ thenBusboy = (req, op = {split: no}) -> new Promise (resolve, reject) ->
     fieldsLimit: onFieldsLimit
     finish: ->
       mapListeners listeners, bb.removeListener.bind bb
-      resolve if op.split then {fields, files} else merge fields, files
+      resolve if op.split then {fields, files} else merge {}, fields, files
 
   mapListeners listeners, bb.on.bind bb
   req.pipe bb
