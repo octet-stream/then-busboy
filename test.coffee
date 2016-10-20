@@ -264,7 +264,7 @@ test "Should return an error when files limit reached", (t) ->
   t.is error.text, "RequestEntityTooLargeException: Files limit reached",
     "Error text should contain a valid message"
 
-test "Should return error if Top-level field name must be a string", (t) ->
+test "Should return error if Top-level field name is not a string", (t) ->
   t.plan 2
 
   {error} = await request do t.context.serverMock
