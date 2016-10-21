@@ -9,6 +9,9 @@ test.coffee
 errors.coffee
 example.coffee
 test.js
+main.js.map
+test.js.map
 example.js
+example.js.map
 npm-debug.log
 yarn.lock
