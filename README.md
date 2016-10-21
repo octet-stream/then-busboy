@@ -9,7 +9,7 @@ Promise-based wrapper around Busboy, inspired by [async-busboy](https://github.c
 
 ## Installation
 
-Use can install `then-pusboy` from npm:
+Use can install `then-busboy` from npm:
 
 ```bash
 npm install then-busboy --save

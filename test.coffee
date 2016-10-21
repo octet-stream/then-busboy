@@ -277,7 +277,7 @@ test "Should return error if Top-level field name is not a string", (t) ->
 
   t.is error.status, 500, "Status should be 500"
   t.is error.text, "TypeError: Top-level field name must be a string",
-    "Error text should contatin a valid message"
+    "Error text should contain a valid message"
 
 test "
   Should return error if Top-level field name of file is not a string
@@ -291,7 +291,7 @@ test "
 
   t.is error.status, 500, "Status should be 500"
   t.is error.text, "TypeError: Top-level field name must be a string",
-    "Error text should contatin a valid message"
+    "Error text should contain a valid message"
 
 test "Should create a temp file when file was attached", (t) ->
   t.plan 1
