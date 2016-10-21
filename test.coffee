@@ -15,8 +15,7 @@ isPlainObject = require "lodash.isplainobject"
 
 shortidSpy = sinon.spy(shortid)
 
-busboy = proxyquire ".",
-  shortid: shortidSpy
+busboy = proxyquire ".", shortid: shortidSpy
 
 test.beforeEach (t) ->
   multipartHeaderMock = "
@@ -59,10 +58,14 @@ test.beforeEach (t) ->
   }
 
 test "Should be a function", (t) ->
+  t.plan 1
+
   t.is typeof busboy, "function"
   await return
 
 test "Should return a promise", (t) ->
+  t.plan 1
+
   bb = busboy t.context.reqMock
   t.true bb instanceof Promise
   await return
@@ -271,6 +274,20 @@ test "Should return error if Top-level field name is not a string", (t) ->
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
     .field "", "You shall not pass!"
+
+  t.is error.status, 500, "Status should be 500"
+  t.is error.text, "TypeError: Top-level field name must be a string",
+    "Error text should contatin a valid message"
+
+test "
+  Should return error if Top-level field name of file is not a string
+", (t) ->
+  t.plan 2
+
+  {error} = await request do t.context.serverMock
+    .post "/"
+    .set "content-type", t.context.multipartHeaderMock
+    .attach "", "LICENSE"
 
   t.is error.status, 500, "Status should be 500"
   t.is error.text, "TypeError: Top-level field name must be a string",
