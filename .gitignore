@@ -4,7 +4,11 @@ coverage
 .nyc_output
 coverage.lcov
 main.js
+main.js.map
 test.js
+test.js.map
 errors.js
+errors.js.map
 example.js
+example.js.map
 npm-debug.log
