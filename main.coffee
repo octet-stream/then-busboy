@@ -4,7 +4,7 @@ Promise = require "pinkie-promise"
 Busboy = require "busboy"
 
 shortid = require "shortid"
-{tmpDir} = require "os"
+{tmpDir, tmpdir} = require "os"
 {extname} = require "path"
 {IncomingMessage} = require "http"
 {Readable} = require "stream"
@@ -17,6 +17,8 @@ shortid = require "shortid"
 isPlainObject = require "lodash.isplainobject"
 assign = Object.assign or require "lodash.assign"
 merge = require "lodash.merge"
+
+tmpdir ?= tmpDir
 
 reduceRight = Array::reduceRight or (args...) ->
   require("lodash.reduceRight")(this, args...)
@@ -162,7 +164,7 @@ thenBusboy = (req, op = {split: no}) -> new Promise (resolve, reject) ->
       return reject err
 
   onFile = (fieldname, stream, filename, enc, mime) ->
-    tmpPath = "#{do tmpDir}/#{do shortid}#{extname filename}"
+    tmpPath = "#{do tmpdir}/#{do shortid}#{extname filename}"
     onFileStreamEnd = ->
       file = createReadStream tmpPath
       file.originalName = filename
