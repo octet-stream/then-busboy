@@ -12,3 +12,4 @@ errors.js.map
 example.js
 example.js.map
 npm-debug.log
+*.map

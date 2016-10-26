@@ -1,36 +1,29 @@
 "use strict"
 
-Promise = require "pinkie-promise"
 Busboy = require "busboy"
-
 shortid = require "shortid"
-{tmpDir, tmpdir} = require "os"
 {extname} = require "path"
-{IncomingMessage} = require "http"
 {Readable} = require "stream"
+{tmpdir, tmpDir} = require "os"
+{IncomingMessage} = require "http"
 {createReadStream, createWriteStream} = require "fs"
+isPlainObject = require "lodash.isplainobject"
 
 {
   PartsLimitException, FieldsLimitException, FilesLimitException
 } = require "./errors"
 
-isPlainObject = require "lodash.isplainobject"
-assign = Object.assign or require "lodash.assign"
+assign = Object.assign
 merge = require "lodash.merge"
-
-tmpdir ?= tmpDir
-
-reduceRight = Array::reduceRight or (args...) ->
-  require("lodash.reduceRight")(this, args...)
-
-includes = String::includes or (sub) ->
-  String::indexOf.call(this, sub) > -1
+reduceRight = Array::reduceRight
+includes = String::includes
+tmpdir or= tmpDir
 
 ###
 # @api private
 ###
-mapListeners = (listeners, fn) ->
-  fn __name, __handler for own __name, __handler of listeners
+mapListeners = (listeners, fn, ctx = null) ->
+  fn.call ctx, __name, __handler for __name, __handler of listeners
   return
 
 ###
@@ -100,10 +93,12 @@ extractKeys = (str) ->
     .map (v) -> v.replace "]", ""
 
 ###
-# Just a callback for Array#reduce method
+# Just a callback for Array#reduceRight method
 #
 # @param any prev
 # @param any next
+#
+# @api private
 ###
 reducer = (prev, next) ->
   if "#{Number next}" is "NaN"
@@ -199,7 +194,8 @@ thenBusboy = (req, op = {split: no}) -> new Promise (resolve, reject) ->
       mapListeners listeners, bb.removeListener.bind bb
       resolve if op.split then {fields, files} else merge {}, fields, files
 
-  mapListeners listeners, bb.on.bind bb
+  mapListeners listeners, bb.on, bb
   req.pipe bb
+  return
 
 module.exports = exports.default = thenBusboy

@@ -1,4 +1,4 @@
-busboy = require "."
+busboy = require "./"
 {createServer} = require "http"
 
 callback = (req, res) ->

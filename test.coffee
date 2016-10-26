@@ -1,4 +1,3 @@
-Promise = require "pinkie-promise"
 test = require "ava"
 
 proxyquire = require "proxyquire"
@@ -14,10 +13,8 @@ isPlainObject = require "lodash.isplainobject"
 {readFile, access} = require "promise-fs"
 
 tmpdir ?= tmpDir
-
-shortidSpy = sinon.spy(shortid)
-
-busboy = proxyquire ".", shortid: shortidSpy
+shortidSpy = sinon.spy shortid
+busboy = proxyquire "./", shortid: shortidSpy
 
 test.beforeEach (t) ->
   multipartHeaderMock = "
@@ -69,7 +66,7 @@ test "Should return a promise", (t) ->
   t.plan 1
 
   bb = busboy t.context.reqMock
-  t.true bb instanceof Promise
+  t.is bb.constructor.name, "Promise"
   await return
 
 test "Should throw an error if non-object value passed as 2nd argument", (t) ->
