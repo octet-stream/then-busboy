@@ -10,8 +10,10 @@ isPlainObject = require "lodash.isplainobject"
 {basename, extname} = require "path"
 {IncomingMessage, createServer} = require "http"
 {Socket} = require "net"
-{tmpDir} = require "os"
+{tmpDir, tmpdir} = require "os"
 {readFile, access} = require "promise-fs"
+
+tmpdir ?= tmpDir
 
 shortidSpy = sinon.spy(shortid)
 
@@ -318,7 +320,7 @@ test "
     .set "content-type", t.context.multipartHeaderMock
     .attach "license", "LICENSE"
 
-  t.true license.path.startsWith do tmpDir
+  t.true license.path.startsWith do tmpdir
 
 test "
   Temp file should contain generated shortId
