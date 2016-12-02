@@ -13,20 +13,25 @@ class RequestEntityTooLargeException extends HttpException
 class PartsLimitException extends RequestEntityTooLargeException
   constructor: (message) ->
     @code = "EBUSBOY_PARTS_LIMIT"
-    super message ? "Parts Limit Reached"
+    super message
 
 class FieldsLimitException extends RequestEntityTooLargeException
   constructor: (message) ->
     @code = "EBUSBOY_FIELDS_LIMIT"
-    super message ? "Fields Limit Reached"
+    super message
 
 class FilesLimitException extends RequestEntityTooLargeException
   constructor: (message) ->
     @code = "EBUSBOY_FILES_LIMIT"
-    super message ? "Files Limit Reached"
+    super message
+
+class UnallowedMime extends HttpException
+  constructor: (message) ->
+    super "Unallowed Mime", message, 400, "EBUSBOY_UNALLOWED_MIME"
 
 module.exports = {
   PartsLimitException
   FieldsLimitException
   FilesLimitException
+  UnallowedMime
 }

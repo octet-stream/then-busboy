@@ -4,7 +4,6 @@ proxyquire = require "proxyquire"
 sinon = require "sinon"
 shortid = require "shortid"
 request = require "supertest"
-assign = Object.assign
 isPlainObject = require "lodash.isplainobject"
 {basename, extname} = require "path"
 {IncomingMessage, createServer} = require "http"
@@ -14,14 +13,14 @@ isPlainObject = require "lodash.isplainobject"
 
 tmpdir ?= tmpDir
 shortidSpy = sinon.spy shortid
-busboy = proxyquire "./", shortid: shortidSpy
+busboy = proxyquire ".", shortid: shortidSpy
 
 test.beforeEach (t) ->
   multipartHeaderMock = "
     multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
   "
 
-  serverMock = (split = no, limits = {}) -> createServer (req, res) ->
+  serverMock = (op) -> createServer (req, res) ->
     if req.method is "GET"
       res.statusCode = 404
       return res.end "Not Found"
@@ -39,7 +38,7 @@ test.beforeEach (t) ->
       res.statusCode = err.status or 500
       res.end String err
 
-    busboy req, assign {}, {limits}, {split}
+    busboy req, op
       .then onFulfilled
       .catch onRejected
 
@@ -99,7 +98,7 @@ test "Should return a plain object", (t) ->
 test "Should return files and fields in two different objects", (t) ->
   t.plan 1
 
-  {body} = await request t.context.serverMock on
+  {body} = await request t.context.serverMock split: on
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
 
@@ -230,7 +229,7 @@ test "Should return a valid collection", (t) ->
 test "Should return an error when fields limit reached", (t) ->
   t.plan 2
 
-  {error} = await request t.context.serverMock null, fields: 1
+  {error} = await request t.context.serverMock limits: fields: 1
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
     .field "nullValue", "null"
@@ -243,7 +242,7 @@ test "Should return an error when fields limit reached", (t) ->
 test "Should return an error when parts limit reached", (t) ->
   t.plan 2
 
-  {error} = await request t.context.serverMock null, parts: 1
+  {error} = await request t.context.serverMock limits: parts: 1
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
     .field "someKey", "Some value"
@@ -256,7 +255,7 @@ test "Should return an error when parts limit reached", (t) ->
 test "Should return an error when files limit reached", (t) ->
   t.plan 2
 
-  {error} = await request t.context.serverMock null, files: 1
+  {error} = await request t.context.serverMock limits: files: 1
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
     .attach "readme", "README.md"
@@ -347,3 +346,43 @@ test "Temp file should have original file contents", (t) ->
   tmpFileContents = await readFile license.path, 'utf8'
   licenseContents = await readFile 'LICENSE', 'utf8'
   t.is tmpFileContents, licenseContents
+
+test "Should process only allowed mimes", (t) ->
+  t.plan 1
+
+  op =
+    mimes:
+      ignoreUnallowed: yes
+      allowed:
+        text: ["x-markdown"]
+
+  {serverMock} = t.context
+  {body} = await request serverMock op
+    .post "/"
+    .set "content-type", t.context.multipartHeaderMock
+    .attach "license", "LICENSE"
+    .attach "readme", "README.md"
+
+  t.deepEqual Object.keys(body), ["readme"],
+    "Should response only README.md file"
+
+test "
+  Should return an error on unallowed type when ignoreUnallowed is not set
+", (t) ->
+  t.plan 2
+
+  op =
+    mimes:
+      text: ["x-markdown"]
+
+  {serverMock} = t.context
+  {error} = await request serverMock op
+    .post "/"
+    .set "content-type", t.context.multipartHeaderMock
+    .attach "license", "LICENSE"
+    .attach "readme", "README.md"
+
+  t.is error.status, 400
+  t.is error.text,
+    "Unallowed Mime: Unknown mime type: application/octet-stream",
+    "Error text should contain a valid message"

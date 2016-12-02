@@ -10,14 +10,25 @@ shortid = require "shortid"
 isPlainObject = require "lodash.isplainobject"
 
 {
-  PartsLimitException, FieldsLimitException, FilesLimitException
+  PartsLimitException
+  FieldsLimitException
+  FilesLimitException
+  UnallowedMime
 } = require "./errors"
 
+isArray = Array.isArray
 assign = Object.assign
 merge = require "lodash.merge"
+isEmpty = require "lodash.isempty"
 reduceRight = Array::reduceRight
 includes = String::includes
 tmpdir or= tmpDir
+
+defaults =
+  split: no
+  mimes:
+    ignoreUnallowed: no
+    allowed: null
 
 ###
 # @api private
@@ -129,16 +140,31 @@ getObjFields = (target, fieldname, value) ->
   return target
 
 ###
+# Check if current mime is allowed
+#
+# @param string current
+# @param object
+###
+checkMime = (current, allowed) ->
+  return yes if isEmpty allowed
+
+  [group, type] = current.split "/"
+
+  return group is k and type in v for k, v of allowed if isPlainObject allowed
+
+  return no
+
+###
 # Promise-based wrapper around Busboy, inspired by async-busboy
 #
 # @param http.IncomingMessage req
-# @param object
+# @param boolean|object
 #
 # @return Promise
 #
 # @api public
 ###
-thenBusboy = (req, op = {split: no}) -> new Promise (resolve, reject) ->
+thenBusboy = (req, op = {}) -> new Promise (resolve, reject) ->
   unless req instanceof IncomingMessage
     throw new TypeError "
       Request parameter must be an instance of http.IncomingMessage.
@@ -146,6 +172,8 @@ thenBusboy = (req, op = {split: no}) -> new Promise (resolve, reject) ->
 
   unless isPlainObject op
     throw new TypeError "Options argument must be a plain object."
+
+  op = assign {}, defaults, op
 
   fields = {}
   files = {}
@@ -159,7 +187,24 @@ thenBusboy = (req, op = {split: no}) -> new Promise (resolve, reject) ->
       return reject err
 
   onFile = (fieldname, stream, filename, enc, mime) ->
+    {mimes} = op
+
+    unless isPlainObject mimes
+      mimes = assign defaults.mimes, allowed: mimes
+
+    unless "ignoreUnallowed" of mimes and "allowed" of mimes
+      mimes = assign defaults.mimes, allowed: mimes
+
+    {ignoreUnallowed, allowed} = mimes
+    isAllowed = checkMime mime, allowed
+
+    if ignoreUnallowed is off and isAllowed is no
+      return onError new UnallowedMime "Unknown mime type: #{mime}"
+
+    return stream.emit "end" unless isAllowed
+
     tmpPath = "#{do tmpdir}/#{do shortid}#{extname filename}"
+
     onFileStreamEnd = ->
       file = createReadStream tmpPath
       file.originalName = filename
