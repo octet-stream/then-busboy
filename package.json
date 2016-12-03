@@ -37,9 +37,9 @@
     "shortid": "2.2.6"
   },
   "devDependencies": {
-    "ava": "0.16.0",
+    "ava": "0.17.0",
     "codecov": "1.0.1",
-    "coffee-script": "git+https://github.com/octet-stream/coffeescript.git",
+    "coffee-script": "https://github.com/octet-stream/coffeescript.git",
     "nyc": "8.3.1",
     "promise-fs": "1.2.3",
     "proxyquire": "1.7.10",
