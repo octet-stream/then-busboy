@@ -3,7 +3,6 @@
 Busboy = require "busboy"
 shortid = require "shortid"
 {extname} = require "path"
-{Readable} = require "stream"
 {tmpdir, tmpDir} = require "os"
 {IncomingMessage} = require "http"
 {createReadStream, createWriteStream} = require "fs"
@@ -20,8 +19,9 @@ isArray = Array.isArray
 assign = Object.assign
 merge = require "lodash.merge"
 isEmpty = require "lodash.isempty"
-reduceRight = Array::reduceRight
-includes = String::includes
+
+reduceRight = (arr, args...) -> Array::reduceRight.apply arr, args
+
 tmpdir or= tmpDir
 
 defaults =
@@ -34,8 +34,7 @@ defaults =
 # @api private
 ###
 mapListeners = (listeners, fn, ctx = null) ->
-  fn.call ctx, __name, __handler for __name, __handler of listeners
-  return
+  fn.call ctx, name, handler for name, handler of listeners; return
 
 ###
 # Trying to rescue field value actual type from string
@@ -49,7 +48,8 @@ rescueTypes = (value) ->
   return null if value is "null"
   return false if value is "false"
   return true if value is "true"
-  return Number value if "#{Number value}" isnt "NaN" and value isnt ""
+  # return Number value if "#{Number value}" isnt "NaN" and value isnt ""
+  return Number value if value isnt "" and not isNaN value
   return value
 
 ###
@@ -70,7 +70,7 @@ rescueObjStruct = (obj, target) ->
   if isPlainObject(target) and key of target
     res[key] = rescueObjStruct val, target[key]
   else
-    if Array.isArray target
+    if isArray target
       res = [target...]
       if not res[key] or Number key
         if isPlainObject val
@@ -135,7 +135,7 @@ getObjFields = (target, fieldname, value) ->
     target[fieldname] = rescueTypes value
     return target
 
-  res = reduceRight.call keys, reducer, rescueTypes value
+  res = reduceRight keys, reducer, rescueTypes value
   target = rescueObjStruct res, target
   return target
 
