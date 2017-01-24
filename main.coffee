@@ -48,7 +48,6 @@ rescueTypes = (value) ->
   return null if value is "null"
   return false if value is "false"
   return true if value is "true"
-  # return Number value if "#{Number value}" isnt "NaN" and value isnt ""
   return Number value if value isnt "" and not isNaN value
   return value
 
@@ -150,7 +149,9 @@ checkMime = (current, allowed) ->
 
   [group, type] = current.split "/"
 
-  return group is k and type in v for k, v of allowed if isPlainObject allowed
+  if isPlainObject allowed
+    for k, v of allowed
+      return group is k and v.includes type
 
   return no
 

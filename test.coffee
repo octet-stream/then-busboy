@@ -11,6 +11,8 @@ isPlainObject = require "lodash.isplainobject"
 {tmpDir, tmpdir} = require "os"
 {readFile, access} = require "promise-fs"
 
+errors = require "./errors"
+
 tmpdir ?= tmpDir
 shortidSpy = sinon.spy shortid
 busboy = proxyquire ".", shortid: shortidSpy
@@ -55,6 +57,16 @@ test.beforeEach (t) ->
     reqMock
   }
 
+# Error classes tests
+test "HttpException should have default error message and code", (t) ->
+  t.plan 2
+
+  err = new errors.HttpException
+
+  t.is err.message, "Internal Server Error"
+  t.is err.code, "EHTTP_INTERNAL_SERVER_ERROR"
+
+# then-busboy tests
 test "Should be a function", (t) ->
   t.plan 1
 

@@ -30,6 +30,7 @@ class UnallowedMime extends HttpException
     super "Unallowed Mime", message, 400, "EBUSBOY_UNALLOWED_MIME"
 
 module.exports = {
+  HttpException
   PartsLimitException
   FieldsLimitException
   FilesLimitException
