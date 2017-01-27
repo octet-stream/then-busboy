@@ -7,6 +7,9 @@ shortid = require "shortid"
 {IncomingMessage} = require "http"
 {createReadStream, createWriteStream} = require "fs"
 isPlainObject = require "lodash.isplainobject"
+isBoolean = require "lodash.isboolean"
+isEmpty = require "lodash.isempty"
+merge = require "lodash.merge"
 
 {
   PartsLimitException
@@ -17,8 +20,6 @@ isPlainObject = require "lodash.isplainobject"
 
 isArray = Array.isArray
 assign = Object.assign
-merge = require "lodash.merge"
-isEmpty = require "lodash.isempty"
 
 reduceRight = (arr, args...) -> Array::reduceRight.apply arr, args
 
@@ -33,7 +34,7 @@ defaults =
 ###
 # @api private
 ###
-mapListeners = (listeners, fn, ctx = null) ->
+mapListeners = (listeners, fn, ctx) ->
   fn.call ctx, name, handler for name, handler of listeners; return
 
 ###
@@ -142,18 +143,17 @@ getObjFields = (target, fieldname, value) ->
 # Check if current mime is allowed
 #
 # @param string current
-# @param object
+# @param object allowed
 ###
 checkMime = (current, allowed) ->
   return yes if isEmpty allowed
 
   [group, type] = current.split "/"
 
-  if isPlainObject allowed
-    for k, v of allowed
-      return group is k and v.includes type
+  for k, v of allowed
+    v = [v] unless isArray v
 
-  return no
+    return group is k and v.includes type
 
 ###
 # Promise-based wrapper around Busboy, inspired by async-busboy
@@ -171,10 +171,30 @@ thenBusboy = (req, op = {}) -> new Promise (resolve, reject) ->
       Request parameter must be an instance of http.IncomingMessage.
     "
 
+  op = split: op if isBoolean op
+
   unless isPlainObject op
     throw new TypeError "Options argument must be a plain object."
 
   op = assign {}, defaults, op
+
+  {mimes} = op
+
+  unless isPlainObject mimes
+    throw new TypeError "The \"mimes\" parameter should be a plain object."
+
+  if ("ignoreUnallowed" of mimes) is no and ("allowed" of mimes) is no
+    mimes = assign {}, defaults.mimes, allowed: mimes
+
+  unless "ignoreUnallowed" of mimes
+    mimes = assign {}, defaults.mimes, mimes
+
+  {ignoreUnallowed, allowed} = mimes
+
+  if isEmpty(allowed) is no and isPlainObject(allowed) is no
+    throw new TypeError "
+      The list of allowed mime-types should be a plain object.
+    "
 
   fields = {}
   files = {}
@@ -188,19 +208,10 @@ thenBusboy = (req, op = {}) -> new Promise (resolve, reject) ->
       return reject err
 
   onFile = (fieldname, stream, filename, enc, mime) ->
-    {mimes} = op
-
-    unless isPlainObject mimes
-      mimes = assign defaults.mimes, allowed: mimes
-
-    unless "ignoreUnallowed" of mimes and "allowed" of mimes
-      mimes = assign defaults.mimes, allowed: mimes
-
-    {ignoreUnallowed, allowed} = mimes
     isAllowed = checkMime mime, allowed
 
     if ignoreUnallowed is off and isAllowed is no
-      return onError new UnallowedMime "Unknown mime type: #{mime}"
+      return reject new UnallowedMime "Unknown mime type: #{mime}"
 
     return stream.emit "end" unless isAllowed
 
@@ -211,6 +222,7 @@ thenBusboy = (req, op = {}) -> new Promise (resolve, reject) ->
       file.originalName = filename
       file.enc = enc
       file.mime = mime
+
       try
         files = getObjFields files, fieldname, file
       catch err
@@ -220,28 +232,29 @@ thenBusboy = (req, op = {}) -> new Promise (resolve, reject) ->
       .on "end", onFileStreamEnd
       .pipe createWriteStream tmpPath
 
-  onError = (err) -> reject err
+  onPartsLimit = -> reject new PartsLimitException "Parts limit reached"
 
-  onPartsLimit = -> onError new PartsLimitException "Parts limit reached"
+  onFieldsLimit = -> reject new FieldsLimitException "Fields limit reached"
 
-  onFieldsLimit = -> onError new FieldsLimitException "Fields limit reached"
-
-  onFilesLimit = -> onError new FilesLimitException "Files limit reached"
+  onFilesLimit = -> reject new FilesLimitException "Files limit reached"
 
   # Just for automate adding/removing listeners
   listeners =
-    error: onError
+    error: reject
     field: onField
     file: onFile
     partsLimit: onPartsLimit
     filesLimit: onFilesLimit
     fieldsLimit: onFieldsLimit
     finish: ->
-      mapListeners listeners, bb.removeListener.bind bb
+      mapListeners listeners, bb.removeListener, bb
       resolve if op.split then {fields, files} else merge {}, fields, files
+      return
 
   mapListeners listeners, bb.on, bb
+
   req.pipe bb
+
   return
 
 module.exports = exports.default = thenBusboy

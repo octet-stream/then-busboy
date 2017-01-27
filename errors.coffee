@@ -31,6 +31,8 @@ class UnallowedMime extends HttpException
 
 module.exports = {
   HttpException
+  RequestEntityTooLargeException
+
   PartsLimitException
   FieldsLimitException
   FilesLimitException

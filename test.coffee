@@ -58,13 +58,26 @@ test.beforeEach (t) ->
   }
 
 # Error classes tests
-test "HttpException should have default error message and code", (t) ->
+test "
+  HttpException should have default error message and code if they not passed
+", (t) ->
   t.plan 2
 
   err = new errors.HttpException
 
   t.is err.message, "Internal Server Error"
   t.is err.code, "EHTTP_INTERNAL_SERVER_ERROR"
+
+test "
+  RequestEntityTooLargeException should have default error message and code
+  if they not passed
+", (t) ->
+  t.plan 2
+
+  err = new errors.RequestEntityTooLargeException
+
+  t.is err.message, "Request Entity Too Large"
+  t.is err.code, "EHTTP_REQUEST_ENTITY_TOO_LARGE"
 
 # then-busboy tests
 test "Should be a function", (t) ->
@@ -78,6 +91,9 @@ test "Should return a promise", (t) ->
 
   bb = busboy t.context.reqMock
   t.is bb.constructor.name, "Promise"
+
+  t.context.reqMock.emit "end"
+
   await return
 
 test "Should throw an error if non-object value passed as 2nd argument", (t) ->
@@ -85,6 +101,9 @@ test "Should throw an error if non-object value passed as 2nd argument", (t) ->
 
   t.throws busboy(t.context.reqMock, "not object"),
     "Options argument must be a plain object."
+
+  t.context.reqMock.emit "end"
+
   await return
 
 test "
@@ -110,7 +129,7 @@ test "Should return a plain object", (t) ->
 test "Should return files and fields in two different objects", (t) ->
   t.plan 1
 
-  {body} = await request t.context.serverMock split: on
+  {body} = await request t.context.serverMock on
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
 
@@ -359,6 +378,7 @@ test "Temp file should have original file contents", (t) ->
   licenseContents = await readFile 'LICENSE', 'utf8'
   t.is tmpFileContents, licenseContents
 
+# then-busboy mime-types validation
 test "Should process only allowed mimes", (t) ->
   t.plan 1
 
@@ -369,6 +389,7 @@ test "Should process only allowed mimes", (t) ->
         text: ["x-markdown"]
 
   {serverMock} = t.context
+
   {body} = await request serverMock op
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
@@ -383,18 +404,60 @@ test "
 ", (t) ->
   t.plan 2
 
-  op =
-    mimes:
-      text: ["x-markdown"]
+  op = mimes: text: ["x-markdown"]
 
   {serverMock} = t.context
+
   {error} = await request serverMock op
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
     .attach "license", "LICENSE"
     .attach "readme", "README.md"
 
-  t.is error.status, 400
+  t.is error.status, 400, "Should have status 400 (Bad request)"
   t.is error.text,
     "Unallowed Mime: Unknown mime type: application/octet-stream",
     "Error text should contain a valid message"
+
+test "Should validate given mime-type even if it is not an array", (t) ->
+  t.plan 2
+
+  op = mimes: text: "x-markdown"
+
+  {serverMock} = t.context
+
+  {body, status} = await request serverMock op
+    .post "/"
+    .set "content-type", t.context.multipartHeaderMock
+    .attach "readme", "README.md"
+
+  t.is status, 200, "Should have have 200 (OK)"
+
+  t.deepEqual Object.keys(body), ["readme"],
+    "Should response README.md file"
+
+test "Should throw a TypeError when mimes is not plain JavaScript object", (t) ->
+  t.plan 1
+
+  op = mimes: ["image/png"]
+
+  t.throws busboy(t.context.reqMock, op), "
+    The \"mimes\" parameter should be a plain object.
+  "
+
+  t.context.reqMock.emit "end"
+
+  await return
+
+test "Should throw a TypeError if allowed list is not a plain object", (t) ->
+  t.plan 1
+
+  op = mimes: allowed: ["image/png"]
+
+  t.throws busboy(t.context.reqMock, op), "
+    The list of allowed mime-types should be a plain object.
+  "
+
+  t.context.reqMock.emit "end"
+
+  await return
