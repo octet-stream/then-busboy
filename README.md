@@ -29,7 +29,11 @@ yarn add then-busboy
 * object **options**
   - boolean **split** – If set as `true`, the `data`
       object will be split into two other objects: `fields` and `files`.
-  - object ****
+  - object **mimes** – list of allowed mime-types. This object contain two keys:
+      * boolean **ignoreUnallowed** – if set as true, `then-busboy` will skip
+          files with unmached mime-type (default = false, will throw an `UnallowedMime` exception);
+      * object **allowed** – object of allowed mime-types:
+        "group": ["types"]  ("image": ["png"] -> image/png)
   - more information about busboy options [here](https://github.com/mscdex/busboy#busboy-methods).
 
 Just import `then-busboy` and pass `request` object as first argument.
