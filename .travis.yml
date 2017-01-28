@@ -3,10 +3,9 @@ node_js:
   - "7"
   - "6"
   - "5"
-  - "4"
 install:
-  - npm install
+  - yarn install
 script:
-  - npm run make
+  - yarn run make
 after_success:
-  - npm run codecov
+  - yarn run codecov
