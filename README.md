@@ -27,10 +27,10 @@ yarn add then-busboy
 
 * http.IncomingMessage **request** – HTTP request object
 * object **options**
-  - boolean **split** – If set as `true`, the `data`
+  - boolean **split** – If set to `true`, `data`
       object will be split into two other objects: `fields` and `files`.
-  - object **mimes** – list of allowed mime-types. This object contain two keys:
-      * boolean **ignoreUnallowed** – if set as true, `then-busboy` will skip
+  - object **mimes** – list of allowed mime-types. This object contains two keys:
+      * boolean **ignoreUnallowed** – if set to true, `then-busboy` will skip
           files with unmached mime-type (default = false, will throw an `UnallowedMime` exception);
       * object **allowed** – object of allowed mime-types:
         + (key) string **type**
