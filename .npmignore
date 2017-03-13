@@ -17,3 +17,4 @@ example.js.map
 npm-debug.log
 yarn.lock
 *.map
+*.dockerfile

@@ -20,10 +20,10 @@
     "m": "npm run make",
     "watch": "./node_modules/coffee-script/bin/coffee --no-header -b -w -c -m main.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -w -c -m test.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -w -c -m example.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -w -c -m errors.coffee",
     "w": "npm run watch",
-    "report": "./node_modules/nyc/bin/nyc.js report --reporter=html npm run test",
-    "r": "npm run report",
     "cover": "./node_modules/nyc/bin/nyc.js npm run test",
     "c": "npm run cover",
+    "report": "npm run cover && ./node_modules/nyc/bin/nyc.js report --reporter=html npm run test",
+    "r": "npm run report",
     "o:make": "./node_modules/coffee-script/bin/coffee --no-header -b -c -m main.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -c test.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -c -m example.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -c -m errors.coffee",
     "o:report": "./node_modules/nyc/bin/nyc.js report --reporter=lcov npm run test",
     "o:deploy": "./node_modules/codecov/bin/codecov",
@@ -38,7 +38,8 @@
     "lodash.isempty": "4.4.0",
     "lodash.isplainobject": "4.0.6",
     "lodash.merge": "4.6.0",
-    "shortid": "2.2.6"
+    "shortid": "2.2.6",
+    "type-is": "^1.6.14"
   },
   "devDependencies": {
     "ava": "0.17.0",

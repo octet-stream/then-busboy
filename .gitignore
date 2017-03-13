@@ -13,3 +13,4 @@ example.js
 example.js.map
 npm-debug.log
 *.map
+*.dockerfile

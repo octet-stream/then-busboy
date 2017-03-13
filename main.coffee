@@ -10,6 +10,7 @@ isPlainObject = require "lodash.isplainobject"
 isBoolean = require "lodash.isboolean"
 isEmpty = require "lodash.isempty"
 merge = require "lodash.merge"
+typeIs = require "type-is"
 
 {
   PartsLimitException
@@ -66,11 +67,12 @@ rescueObjStruct = (obj, target) ->
   [key] = Object.keys obj
   val = obj[key]
 
-  res = if "#{Number key}" is "NaN" then {} else []
+  res = if isNaN key then {} else []
+
+  # TODO: Needs refactor.
   if isPlainObject(target) and key of target
     res[key] = rescueObjStruct val, target[key]
-  else
-    if isArray target
+  else if isArray target
       res = [target...]
       if not res[key] or Number key
         if isPlainObject val
@@ -82,8 +84,8 @@ rescueObjStruct = (obj, target) ->
           res = rescueObjStruct val, res[key]
         else
           res.push val
-    else
-      res[key] = val
+  else
+    res[key] = val
 
   return merge target, res
 
@@ -148,6 +150,8 @@ getObjFields = (target, fieldname, value) ->
 checkMime = (current, allowed) ->
   return yes if isEmpty allowed
 
+  return !!typeIs.is current, allowed if isArray allowed
+
   [group, type] = current.split "/"
 
   for k, v of allowed
@@ -178,7 +182,11 @@ thenBusboy = (req, op = {}) -> new Promise (resolve, reject) ->
 
   op = assign {}, defaults, op
 
-  {mimes} = op
+  mimes = op.mimes
+
+  mimes = [mimes] if typeof mimes is "string"
+
+  mimes = assign {}, defaults.mimes, allowed: mimes if isArray mimes
 
   unless isPlainObject mimes
     throw new TypeError "The \"mimes\" parameter should be a plain object."
@@ -189,12 +197,7 @@ thenBusboy = (req, op = {}) -> new Promise (resolve, reject) ->
   unless "ignoreUnallowed" of mimes
     mimes = assign {}, defaults.mimes, mimes
 
-  {ignoreUnallowed, allowed} = mimes
-
-  if isEmpty(allowed) is no and isPlainObject(allowed) is no
-    throw new TypeError "
-      The list of allowed mime-types should be a plain object.
-    "
+  {allowed, ignoreUnallowed} = mimes
 
   fields = {}
   files = {}

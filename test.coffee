@@ -436,26 +436,41 @@ test "Should validate given mime-type even if it is not an array", (t) ->
   t.deepEqual Object.keys(body), ["readme"],
     "Should response README.md file"
 
-test "Should throw a TypeError when mimes is not plain JavaScript object", (t) ->
+test "Should validate given mime-type by an array of patterns", (t) ->
+  t.plan 2
+
+  serverMock = t.context.serverMock
+
+  {body, status} = await request serverMock mimes: allowed: ["text/*"]
+    .post "/"
+    .set "content-type", t.context.multipartHeaderMock
+    .attach "readme", "README.md"
+
+  t.is status, 200, "Should have have 200 (OK)"
+
+  t.deepEqual Object.keys(body), ["readme"],
+    "Should response README.md file"
+
+test "Should validate mime when pattern passed as string", (t) ->
+  t.plan 2
+
+  serverMock = t.context.serverMock
+
+  {body, status} = await request serverMock mimes: "text/*"
+    .post "/"
+    .set "content-type", t.context.multipartHeaderMock
+    .attach "readme", "README.md"
+
+  t.is status, 200, "Should have have 200 (OK)"
+
+  t.deepEqual Object.keys(body), ["readme"],
+    "Should response README.md file"
+
+test "Should throw a TypeError when mimes option is not a valid type", (t) ->
   t.plan 1
 
-  op = mimes: ["image/png"]
-
-  t.throws busboy(t.context.reqMock, op), "
+  t.throws busboy(t.context.reqMock, mimes: 42), "
     The \"mimes\" parameter should be a plain object.
-  "
-
-  t.context.reqMock.emit "end"
-
-  await return
-
-test "Should throw a TypeError if allowed list is not a plain object", (t) ->
-  t.plan 1
-
-  op = mimes: allowed: ["image/png"]
-
-  t.throws busboy(t.context.reqMock, op), "
-    The list of allowed mime-types should be a plain object.
   "
 
   t.context.reqMock.emit "end"
