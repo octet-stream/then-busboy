@@ -1,10 +1,10 @@
 {
   "name": "then-busboy",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Promise-based wrapper around Busboy, inspired by async-busboy",
   "main": "main.js",
   "engines": {
-    "node": ">=5"
+    "node": ">=6"
   },
   "keywords": [
     "multipart",
