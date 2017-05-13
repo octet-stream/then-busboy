@@ -73,17 +73,17 @@ rescueObjStruct = (obj, target) ->
   if isPlainObject(target) and key of target
     res[key] = rescueObjStruct val, target[key]
   else if isArray target
-      res = [target...]
-      if not res[key] or Number key
-        if isPlainObject val
-          res[key] = rescueObjStruct val, res[key]
-        else
-          res[key] = val
+    res = [target...]
+    if not res[key] or Number key
+      if isPlainObject val
+        res[key] = rescueObjStruct val, res[key]
       else
-        if isPlainObject val
-          res = rescueObjStruct val, res[key]
-        else
-          res.push val
+        res[key] = val
+    else
+      if isPlainObject val
+        res = rescueObjStruct val, res[key]
+      else
+        res.push val
   else
     res[key] = val
 
