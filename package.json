@@ -4,7 +4,7 @@
   "description": "Promise-based wrapper around Busboy, inspired by async-busboy",
   "main": "./lib/main.js",
   "engines": {
-    "node": ">=6"
+    "node": ">=7.6.x"
   },
   "keywords": [
     "multipart",
