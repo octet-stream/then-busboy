@@ -3,8 +3,6 @@ node_js:
   - "7"
   - "6"
 install:
-  - npm install
+  - yarn
 script:
-  - npm run make
-after_success:
-  - npm run codecov
+  - yarn ci

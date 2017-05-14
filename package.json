@@ -2,7 +2,7 @@
   "name": "then-busboy",
   "version": "1.5.0",
   "description": "Promise-based wrapper around Busboy, inspired by async-busboy",
-  "main": "main.js",
+  "main": "./lib/main.js",
   "engines": {
     "node": ">=6"
   },
@@ -13,48 +13,53 @@
     "formdata"
   ],
   "scripts": {
-    "test": "./node_modules/ava/cli.js",
-    "test:watch": "./node_modules/ava/cli.js --watch",
-    "tw": "npm run test:watch",
-    "make": "./node_modules/coffee-script/bin/coffee --no-header -b -c main.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -c test.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -c example.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -c errors.coffee",
-    "m": "npm run make",
-    "watch": "./node_modules/coffee-script/bin/coffee --no-header -b -w -c -m main.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -w -c -m test.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -w -c -m example.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -w -c -m errors.coffee",
-    "w": "npm run watch",
-    "cover": "./node_modules/nyc/bin/nyc.js npm run test",
-    "c": "npm run cover",
-    "report": "npm run cover && ./node_modules/nyc/bin/nyc.js report --reporter=html npm run test",
-    "r": "npm run report",
-    "o:make": "./node_modules/coffee-script/bin/coffee --no-header -b -c -m main.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -c test.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -c -m example.coffee & ./node_modules/coffee-script/bin/coffee --no-header -b -c -m errors.coffee",
-    "o:report": "./node_modules/nyc/bin/nyc.js report --reporter=lcov npm run test",
-    "o:deploy": "./node_modules/codecov/bin/codecov",
-    "codecov": "npm run o:make && npm run cover && npm run o:report && npm run o:deploy",
-    "o": "npm run codecov"
+    "lint": "node_modules/.bin/coffeelint src",
+    "make": "node_modules/.bin/coffee --no-header -b -o . -c src/",
+    "watch": "node_modules/.bin/coffee --no-header -b -o . -cw src/",
+    "make:ci": "node_modules/.bin/coffee --no-header -b -o . -cm src/",
+    "test": "node_modules/.bin/ava",
+    "coverage": "node_modules/.bin/nyc npm run test",
+    "report": "yarn make:ci && yarn coverage && node_modules/.bin/nyc report --reporter=html yarn test",
+    "report:ci": "node_modules/.bin/nyc report --reporter=lcov yarn test",
+    "codecov": "node_modules/.bin/codecov",
+    "ci": "yarn make:ci && yarn coverage && yarn report:ci && yarn codecov",
+    "precommit": "yarn lint",
+    "prepush": "yarn make:ci && yarn coverage"
   },
   "author": "Nick K. <nick.kruchinin@gmail.com>",
   "license": "MIT",
+  "ava": {
+    "files": [
+      "test/unit"
+    ]
+  },
   "dependencies": {
     "busboy": "0.2.14",
+    "coffeescript": "2.0.0-beta1",
     "lodash.isboolean": "3.0.3",
     "lodash.isempty": "4.4.0",
+    "lodash.isinteger": "4.0.4",
     "lodash.isplainobject": "4.0.6",
     "lodash.merge": "4.6.0",
+    "require-dir": "0.3.1",
     "shortid": "2.2.6",
-    "type-is": "^1.6.14"
+    "type-is": "1.6.14"
   },
   "devDependencies": {
     "ava": "0.17.0",
+    "co": "4.6.0",
     "codecov": "1.0.1",
-    "coffee-script": "https://github.com/octet-stream/coffeescript.git",
+    "coffeelint": "1.16.0",
+    "gulp-plumber": "1.1.0",
+    "gulp-util": "3.0.8",
+    "husky": "0.13.3",
     "nyc": "10.1.2",
     "promise-fs": "1.2.3",
     "proxyquire": "1.7.11",
     "sinon": "1.17.7",
     "supertest": "2.0.1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/octet-stream/then-busboy.git"
-  },
+  "repository": "git+https://github.com/octet-stream/then-busboy.git",
   "bugs": {
     "url": "https://github.com/octet-stream/then-busboy/issues"
   }

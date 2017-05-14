@@ -1,4 +1,5 @@
 test = require "ava"
+co = require "co"
 
 proxyquire = require "proxyquire"
 sinon = require "sinon"
@@ -60,7 +61,8 @@ test.beforeEach (t) ->
 # Error classes tests
 test "
   HttpException should have default error message and code if they not passed
-", (t) ->
+",
+(t) ->
   t.plan 2
 
   err = new errors.HttpException
@@ -71,7 +73,8 @@ test "
 test "
   RequestEntityTooLargeException should have default error message and code
   if they not passed
-", (t) ->
+",
+(t) ->
   t.plan 2
 
   err = new errors.RequestEntityTooLargeException
@@ -84,7 +87,6 @@ test "Should be a function", (t) ->
   t.plan 1
 
   t.is typeof busboy, "function"
-  await return
 
 test "Should return a promise", (t) ->
   t.plan 1
@@ -94,8 +96,6 @@ test "Should return a promise", (t) ->
 
   t.context.reqMock.emit "end"
 
-  await return
-
 test "Should throw an error if non-object value passed as 2nd argument", (t) ->
   t.plan 1
 
@@ -104,41 +104,41 @@ test "Should throw an error if non-object value passed as 2nd argument", (t) ->
 
   t.context.reqMock.emit "end"
 
-  await return
+  yield return
 
 test "
   Should throw an error if request parameter isn't an instance of
   http.IncomingMessage
-", (t) ->
+",
+co.wrap (t) ->
   t.plan 1
 
-  t.throws busboy({}), "
+  yield t.throws busboy({}), "
     Request parameter must be an instance of http.IncomingMessage.
   "
-  await return
 
-test "Should return a plain object", (t) ->
+test "Should return a plain object", co.wrap (t) ->
   t.plan 1
 
-  {body} = await request do t.context.serverMock
+  {body} = yield request do t.context.serverMock
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
 
   t.true isPlainObject(body), "Request should always return a plain object"
 
-test "Should return files and fields in two different objects", (t) ->
+test "Should return files and fields in two different objects", co.wrap (t) ->
   t.plan 1
 
-  {body} = await request t.context.serverMock on
+  {body} = yield request t.context.serverMock on
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
 
   t.deepEqual body, {fields: {}, files: {}}
 
-test "Should return a valid string field", (t) ->
+test "Should return a valid string field", co.wrap (t) ->
   t.plan 3
 
-  {body} = await request do t.context.serverMock
+  {body} = yield request do t.context.serverMock
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
     .field "someValue", "In Soviet Moon, landscape see binoculars through you."
@@ -148,13 +148,13 @@ test "Should return a valid string field", (t) ->
   t.is body.someValue, "In Soviet Moon, landscape see binoculars through you.",
     "someValue field should contain a valid message in the string"
 
-test "Should rescue types", (t) ->
+test "Should rescue types", co.wrap (t) ->
   t.plan 4
 
   {body: {
     nullValue, falseValue,
     trueValue, numberValue
-  }} = await request do t.context.serverMock
+  }} = yield request do t.context.serverMock
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
     .field "nullValue", "null"
@@ -167,10 +167,10 @@ test "Should rescue types", (t) ->
   t.is trueValue, yes
   t.is numberValue, 42
 
-test "Should return a valid object", (t) ->
+test "Should return a valid object", co.wrap (t) ->
   t.plan 1
 
-  {body} = await request do t.context.serverMock
+  {body} = yield request do t.context.serverMock
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
     .field "subject[firstName]", "John"
@@ -197,10 +197,10 @@ test "Should return a valid object", (t) ->
       "Babel"
     ]
 
-test "Should return a valid collection", (t) ->
+test "Should return a valid collection", co.wrap (t) ->
   t.plan 1
 
-  {body} = await request do t.context.serverMock
+  {body} = yield request do t.context.serverMock
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
     .field "subjects[0][firstName]", "John"
@@ -257,10 +257,10 @@ test "Should return a valid collection", (t) ->
     }
   ]
 
-test "Should return an error when fields limit reached", (t) ->
+test "Should return an error when fields limit reached", co.wrap (t) ->
   t.plan 2
 
-  {error} = await request t.context.serverMock limits: fields: 1
+  {error} = yield request t.context.serverMock limits: fields: 1
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
     .field "nullValue", "null"
@@ -270,10 +270,10 @@ test "Should return an error when fields limit reached", (t) ->
   t.is error.text, "RequestEntityTooLargeException: Fields limit reached",
     "Error text should contain a valid message"
 
-test "Should return an error when parts limit reached", (t) ->
+test "Should return an error when parts limit reached", co.wrap (t) ->
   t.plan 2
 
-  {error} = await request t.context.serverMock limits: parts: 1
+  {error} = yield request t.context.serverMock limits: parts: 1
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
     .field "someKey", "Some value"
@@ -283,10 +283,10 @@ test "Should return an error when parts limit reached", (t) ->
   t.is error.text, "RequestEntityTooLargeException: Parts limit reached",
     "Error text should contain a valid message"
 
-test "Should return an error when files limit reached", (t) ->
+test "Should return an error when files limit reached", co.wrap (t) ->
   t.plan 2
 
-  {error} = await request t.context.serverMock limits: files: 1
+  {error} = yield request t.context.serverMock limits: files: 1
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
     .attach "readme", "README.md"
@@ -296,10 +296,11 @@ test "Should return an error when files limit reached", (t) ->
   t.is error.text, "RequestEntityTooLargeException: Files limit reached",
     "Error text should contain a valid message"
 
-test "Should return error if Top-level field name is not a string", (t) ->
+test "Should return error if Top-level field name is not a string",
+co.wrap (t) ->
   t.plan 2
 
-  {error} = await request do t.context.serverMock
+  {error} = yield request do t.context.serverMock
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
     .field "", "You shall not pass!"
@@ -310,10 +311,11 @@ test "Should return error if Top-level field name is not a string", (t) ->
 
 test "
   Should return error if Top-level field name of file is not a string
-", (t) ->
+",
+co.wrap (t) ->
   t.plan 2
 
-  {error} = await request do t.context.serverMock
+  {error} = yield request do t.context.serverMock
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
     .attach "", "LICENSE"
@@ -322,27 +324,28 @@ test "
   t.is error.text, "TypeError: Top-level field name must be a string",
     "Error text should contain a valid message"
 
-test "Should create a temp file when file was attached", (t) ->
+test "Should create a temp file when file was attached", co.wrap (t) ->
   t.plan 1
 
-  {body: {license}} = await request do t.context.serverMock
+  {body: {license}} = yield request do t.context.serverMock
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
     .attach "license", "LICENSE"
 
   try
-    await access license.path
+    yield access license.path
     do t.pass
   catch err
     do t.fail
 
 test "
-  Temp file should be stored in operating system's 
+  Temp file should be stored in operating system's
   default directory for temporary files
-", (t) ->
+",
+co.wrap (t) ->
   t.plan 1
 
-  {body: {license}} = await request do t.context.serverMock
+  {body: {license}} = yield request do t.context.serverMock
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
     .attach "license", "LICENSE"
@@ -352,10 +355,11 @@ test "
 test "
   Temp file should contain generated shortId
   and should end with original extension
-", (t) ->
+",
+co.wrap (t) ->
   t.plan 2
 
-  {body: {file}} = await request do t.context.serverMock
+  {body: {file}} = yield request do t.context.serverMock
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
     .attach "file", "README.md"
@@ -366,20 +370,20 @@ test "
   t.true shortidSpy.returned shortId
   t.is extension, ".md"
 
-test "Temp file should have original file contents", (t) ->
+test "Temp file should have original file contents", co.wrap (t) ->
   t.plan 1
 
-  {body: {license}} = await request do t.context.serverMock
+  {body: {license}} = yield request do t.context.serverMock
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
     .attach "license", "LICENSE"
 
-  tmpFileContents = await readFile license.path, 'utf8'
-  licenseContents = await readFile 'LICENSE', 'utf8'
+  tmpFileContents = yield readFile license.path, 'utf8'
+  licenseContents = yield readFile 'LICENSE', 'utf8'
   t.is tmpFileContents, licenseContents
 
 # then-busboy mime-types validation
-test "Should process only allowed mimes", (t) ->
+test "Should process only allowed mimes", co.wrap (t) ->
   t.plan 1
 
   op =
@@ -390,7 +394,7 @@ test "Should process only allowed mimes", (t) ->
 
   {serverMock} = t.context
 
-  {body} = await request serverMock op
+  {body} = yield request serverMock op
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
     .attach "license", "LICENSE"
@@ -401,14 +405,15 @@ test "Should process only allowed mimes", (t) ->
 
 test "
   Should return an error on unallowed type when ignoreUnallowed is not set
-", (t) ->
+",
+co.wrap (t) ->
   t.plan 2
 
   op = mimes: text: ["x-markdown"]
 
   {serverMock} = t.context
 
-  {error} = await request serverMock op
+  {error} = yield request serverMock op
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
     .attach "license", "LICENSE"
@@ -419,14 +424,15 @@ test "
     "Unallowed Mime: Unknown mime type: application/octet-stream",
     "Error text should contain a valid message"
 
-test "Should validate given mime-type even if it is not an array", (t) ->
+test "Should validate given mime-type even if it is not an array",
+co.wrap (t) ->
   t.plan 2
 
   op = mimes: text: "x-markdown"
 
   {serverMock} = t.context
 
-  {body, status} = await request serverMock op
+  {body, status} = yield request serverMock op
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
     .attach "readme", "README.md"
@@ -436,12 +442,13 @@ test "Should validate given mime-type even if it is not an array", (t) ->
   t.deepEqual Object.keys(body), ["readme"],
     "Should response README.md file"
 
-test "Should validate given mime-type by an array of patterns", (t) ->
+test "Should validate given mime-type by an array of patterns",
+co.wrap (t) ->
   t.plan 2
 
   serverMock = t.context.serverMock
 
-  {body, status} = await request serverMock mimes: allowed: ["text/*"]
+  {body, status} = yield request serverMock mimes: allowed: ["text/*"]
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
     .attach "readme", "README.md"
@@ -451,12 +458,12 @@ test "Should validate given mime-type by an array of patterns", (t) ->
   t.deepEqual Object.keys(body), ["readme"],
     "Should response README.md file"
 
-test "Should validate mime when pattern passed as string", (t) ->
+test "Should validate mime when pattern passed as string", co.wrap (t) ->
   t.plan 2
 
   serverMock = t.context.serverMock
 
-  {body, status} = await request serverMock mimes: "text/*"
+  {body, status} = yield request serverMock mimes: "text/*"
     .post "/"
     .set "content-type", t.context.multipartHeaderMock
     .attach "readme", "README.md"
@@ -474,5 +481,3 @@ test "Should throw a TypeError when mimes option is not a valid type", (t) ->
   "
 
   t.context.reqMock.emit "end"
-
-  await return

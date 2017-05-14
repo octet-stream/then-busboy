@@ -1,8 +1,17 @@
+lib/**/*.js
+test/**/*.js
+
 node_modules
 coverage
 .DS_Store
 .nyc_output
 coverage.lcov
+
+npm-debug.log
+*.map
+*.dockerfile
+
+# old
 main.js
 main.js.map
 test.js
@@ -11,6 +20,3 @@ errors.js
 errors.js.map
 example.js
 example.js.map
-npm-debug.log
-*.map
-*.dockerfile
