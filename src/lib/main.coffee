@@ -37,13 +37,17 @@ thenBusboy = (req, options = {}) -> new Promise (resolve, reject) ->
     "
 
   unless isPlainObject options
-    throw new TypeError "Options are allowed only as plain JavaScript object."
+    throw new TypeError "Options should be a plain JavaScript object."
 
   options = merge {}, defaults, options
 
   headers = req.headers
 
   bb = new Busboy assign {}, options, {headers}
+
+  onFinish = -> resolve {}
+
+  onError = (err) -> reject err
 
   # set listeners here
   bb = setListeners bb, listeners, assign {}, options
