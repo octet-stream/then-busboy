@@ -35,29 +35,30 @@
   },
   "dependencies": {
     "busboy": "0.2.14",
-    "coffeescript": "2.0.0-beta1",
     "lodash.isboolean": "3.0.3",
     "lodash.isempty": "4.4.0",
     "lodash.isinteger": "4.0.4",
     "lodash.isplainobject": "4.0.6",
     "lodash.merge": "4.6.0",
-    "require-dir": "0.3.1",
-    "shortid": "2.2.6",
-    "type-is": "1.6.14"
+    "require-dir": "0.3.2",
+    "shortid": "2.2.8",
+    "type-is": "1.6.15",
+    "vinyl": "2.0.2"
   },
   "devDependencies": {
-    "ava": "0.17.0",
+    "ava": "0.20.0",
     "co": "4.6.0",
-    "codecov": "1.0.1",
+    "codecov": "2.2.0",
     "coffeelint": "1.16.0",
+    "coffeescript": "2.0.0-beta2",
     "gulp-plumber": "1.1.0",
     "gulp-util": "3.0.8",
-    "husky": "0.13.3",
-    "nyc": "10.1.2",
+    "husky": "0.14.1",
+    "nyc": "11.0.3",
     "promise-fs": "1.2.3",
-    "proxyquire": "1.7.11",
-    "sinon": "1.17.7",
-    "supertest": "2.0.1"
+    "proxyquire": "1.8.0",
+    "sinon": "2.3.6",
+    "supertest": "3.0.0"
   },
   "repository": "git+https://github.com/octet-stream/then-busboy.git",
   "bugs": {
