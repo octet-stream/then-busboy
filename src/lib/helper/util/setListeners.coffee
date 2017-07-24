@@ -1,18 +1,21 @@
 firstCharToLowerCase = require "./firstCharToLowerCase"
 
 ###
-# Set listeners to a target object
+# Set listeners to a busboy object
 #
-# @param Function target
+# @param Function busboy
 # @param Object listeners
-# @param any args...
+# @param object options
+# @param function fulfill
+#
+# @return Busboy
 ###
-setListeners = (target, listeners, args...) ->
-  for name, listener of listeners
+setListeners = (busboy, listeners, options, fulfill) ->
+  for own name, listener of listeners when not name in ["onEnd", "end"]
     name = firstCharToLowerCase name[2..] if name.startsWith "on"
 
-    target.on name, listener args...
+    busboy.on name, listener options, fulfill
 
-  return target
+  return busboy
 
 module.exports = setListeners

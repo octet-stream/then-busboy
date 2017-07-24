@@ -11,14 +11,14 @@ shortid = require "shortid"
 merge = require "lodash.merge"
 rd = require "require-dir"
 
-mapFromPath = require "./helper/util/mapFromPath"
-setListeners = require "./helper/util/setListeners"
+mapFromEntries = require "./lib/helper/util/mapFromEntries"
+# setListeners = require "./lib/helper/util/setListeners"
 
 assign = Object.assign
 
 defaults = {}
 
-listeners = rd join __dirname, "listeners"
+# listeners = rd join __dirname, "listeners"
 
 ###
 # Promise-based wrapper around Busboy, inspired by async-busboy
@@ -46,15 +46,16 @@ thenBusboy = (req, options = {}) -> new Promise (resolve, reject) ->
 
   bb = new Busboy assign {}, options, {headers}
 
-  # The results object
-  body = {}
+  entries = []
 
-  # onFinish = -> resolve {}
+  onEnd = -> resolve mapFromEntries entries
 
-  # onError = (err) -> reject err
+  fulfill = (err, entry) -> if err? then reject err else entries.push entry
 
   # set listeners here
-  bb = setListeners bb, listeners, assign {}, options
+  bb = setListeners bb, listeners, options, fulfill
+
+  bb.on "end", onEnd
 
   # ...and then, start pipe request stream to Busboy
   req.pipe bb

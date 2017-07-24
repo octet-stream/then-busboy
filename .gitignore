@@ -20,3 +20,5 @@ errors.js
 errors.js.map
 example.js
 example.js.map
+then-busboy.js
+helper/**/*.js
