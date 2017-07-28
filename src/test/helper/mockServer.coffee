@@ -18,7 +18,7 @@ mockServer = (busboy) -> (options) -> createServer (req, res) ->
     res.statusCode = err.status or 500
     res.end String err
 
-  busboy req, op
+  busboy req, options
     .then onFulfilled, onRejected
 
   return

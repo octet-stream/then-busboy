@@ -1,18 +1,20 @@
-File = require "vinyl"
+File = require "../File"
 
 getFieldPath = require "../util/getFieldPath"
 
-onFile = (options, cb) -> (fieldname, stream, filename, enc, mime) ->
-  file = new File contents: stream
-
-  extra = {
+onFile = (options, cb) -> (fieldname, contents, filename, enc, mime) ->
+  file = new File {
+    contents
     filename
     mime
     enc
   }
 
-  file[name] = prop for own name, prop of extra when not name of file
+  path = getFieldPath fieldname
 
-  cb null, [fieldname, file]
+  cb null, [
+    path,
+    file
+  ]
 
 module.exports = onFile

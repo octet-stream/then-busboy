@@ -1,6 +1,10 @@
 lib/**/*.js
 test/**/*.js
 
+main.js
+
+!src/msin.js
+
 node_modules
 coverage
 .DS_Store
@@ -10,15 +14,3 @@ coverage.lcov
 npm-debug.log
 *.map
 *.dockerfile
-
-# old
-main.js
-main.js.map
-test.js
-test.js.map
-errors.js
-errors.js.map
-example.js
-example.js.map
-then-busboy.js
-helper/**/*.js
