@@ -1,6 +1,6 @@
 test = require "ava"
 
-getFieldPath = require "../../../lib/helper/util/getFieldPath"
+getFieldPath = require "../../../lib/util/getFieldPath"
 
 test "Should pass a simple field key", (t) ->
   t.plan 1

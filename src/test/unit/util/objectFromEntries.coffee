@@ -1,6 +1,6 @@
 test = require "ava"
 
-objectFromEntries = require "../../../lib/helper/util/objectFromEntries"
+objectFromEntries = require "../../../lib/util/objectFromEntries"
 
 entries = [
   [
@@ -53,3 +53,16 @@ test "Should create a complex flat object", (t) ->
     alicorn: "Nyx"
     ultimateAnswer: 42
     someNullValue: null
+
+test "Should correctly create an array", (t) ->
+  t.plan 1
+
+  obj = objectFromEntries [
+    [
+      ["foo", 0], 42
+    ]
+  ]
+
+  console.log obj
+
+  do t.pass

@@ -3,7 +3,7 @@ test/**/*.js
 
 main.js
 
-!src/msin.js
+!src/main.js
 
 node_modules
 coverage

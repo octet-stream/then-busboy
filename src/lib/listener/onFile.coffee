@@ -1,8 +1,10 @@
+typeIs = require "type-is"
+
 File = require "../File"
 
 getFieldPath = require "../util/getFieldPath"
 
-onFile = (options, cb) -> (fieldname, contents, filename, enc, mime) ->
+onFile = ({accept} = {}, cb) -> (fieldname, contents, filename, enc, mime) ->
   file = new File {
     contents
     filename

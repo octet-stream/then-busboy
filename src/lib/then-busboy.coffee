@@ -11,22 +11,25 @@ shortid = require "shortid"
 merge = require "lodash.merge"
 rd = require "require-dir"
 
-mapFromEntries = require "./lib/helper/util/mapFromEntries"
-# setListeners = require "./lib/helper/util/setListeners"
+objectFromEntries = require "./lib/util/objectFromEntries"
+setListeners = require "./lib/util/setListeners"
 
 assign = Object.assign
 
-defaults = {}
+defaults =
+  allow: "*/*"
 
-# listeners = rd join __dirname, "listeners"
+listeners = rd join __dirname, "listeners"
 
 ###
 # Promise-based wrapper around Busboy, inspired by async-busboy
 #
-# @param http.IncomingMessage req
-# @param boolean|object
+# @param {http.IncomingMessage} req
+# @param {object} options
 #
-# @return Promise
+# @return {Promise<object>}
+#
+# @throws {TypeError} on invalid arguments
 #
 # @api public
 ###
@@ -48,7 +51,7 @@ thenBusboy = (req, options = {}) -> new Promise (resolve, reject) ->
 
   entries = []
 
-  onEnd = -> resolve mapFromEntries entries
+  onEnd = -> resolve objectFromEntries entries
 
   fulfill = (err, entry) -> if err? then reject err else entries.push entry
 

@@ -1,6 +1,6 @@
 {
   "name": "then-busboy",
-  "version": "1.5.0",
+  "version": "2.0.0",
   "description": "Promise-based wrapper around Busboy, inspired by async-busboy",
   "main": "./main.js",
   "engines": {
@@ -17,6 +17,8 @@
     "make": "node_modules/.bin/coffee --no-header -b -o . -c src/",
     "watch": "node_modules/.bin/coffee --no-header -b -o . -cw src/",
     "make:ci": "node_modules/.bin/coffee --no-header -b -o . -cm src/",
+    "m": "yarn make",
+    "w": "yarn watch",
     "test": "node_modules/.bin/ava",
     "coverage": "node_modules/.bin/nyc npm run test",
     "report": "yarn make:ci && yarn coverage && node_modules/.bin/nyc report --reporter=html yarn test",
@@ -35,6 +37,7 @@
   },
   "dependencies": {
     "busboy": "0.2.14",
+    "koa-static": "4.0.1",
     "lodash.isboolean": "3.0.3",
     "lodash.isempty": "4.4.0",
     "lodash.isinteger": "4.0.4",
@@ -47,16 +50,16 @@
   "devDependencies": {
     "ava": "0.21.0",
     "co": "4.6.0",
-    "codecov": "2.2.0",
+    "codecov": "2.3.0",
     "coffee-script": "1.12.7",
     "coffeelint": "1.16.0",
     "gulp-plumber": "1.1.0",
     "gulp-util": "3.0.8",
     "husky": "0.14.3",
-    "nyc": "11.0.3",
+    "nyc": "11.1.0",
     "promise-fs": "1.2.3",
     "proxyquire": "1.8.0",
-    "sinon": "2.3.8",
+    "sinon": "3.2.0",
     "supertest": "3.0.0"
   },
   "repository": "git+https://github.com/octet-stream/then-busboy.git",

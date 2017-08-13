@@ -4,18 +4,22 @@ isInteger = require "lodash.isinteger"
 isEmpty = require "lodash.isempty"
 isPlainObject = require "lodash.isplainobject"
 
+merge = require "./merge"
+
 reduce = (arr, args...) -> Array::reduceRight.apply arr, args
 
 reducePath = (prev, next) ->
   unless isString(prev) or isInteger(next)
     throw new TypeError "Key of the filed can be only a string or an integer."
 
+  # Return an object property as is
   return "#{next}": prev if isNaN next
 
-  # arr = []
-  # arr[Number next] = prev
-
-  return [prev]
+  # Rescue this later from an array
+  return [
+    Number next
+    prev
+  ]
 
 ###
 # [["foo", "bar", 0], 451]
@@ -55,6 +59,8 @@ objectFromEntries = (entries, toObject = false) ->
       continue
 
     obj = objectFromPath path, val
+
+    res[root] = merge res[root], obj
 
   return res
 

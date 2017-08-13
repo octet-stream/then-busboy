@@ -1,5 +1,6 @@
 Stream = require "stream"
-{createReadStream} = require "fs"
+
+{createWriteStream} = require "fs"
 
 defineProperty = Object.defineProperty
 
@@ -21,7 +22,7 @@ class File
   ###
   # Read a file from stream
   #
-  # @return Promise<Buffer>
+  # @return {Promise<Buffer>}
   ###
   read: => new Promise (resolve, reject) =>
     data = []
@@ -40,7 +41,7 @@ class File
   ###
   # Write file to given destination path
   #
-  # @param string path
+  # @param {string} path
   ###
   write: (path = @path) => new Promise (resolve, reject) =>
     unless path? or isString path
