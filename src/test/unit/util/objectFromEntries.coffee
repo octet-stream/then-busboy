@@ -57,12 +57,43 @@ test "Should create a complex flat object", (t) ->
 test "Should correctly create an array", (t) ->
   t.plan 1
 
-  obj = objectFromEntries [
+  expected =
+    foo: [
+      42
+      "bar"
+      bar: "baz"
+    ]
+    bar:
+      baz: "boo"
+    field: "some whatever value"
+    lvl0:
+      lvl1: [
+        lvl2:
+          lvlN: 451
+      ]
+
+  actual = objectFromEntries [
     [
       ["foo", 0], 42
     ]
+    [
+      ["foo", 1], "bar"
+    ]
+    [
+      ["foo", 2, "bar"], "baz"
+    ]
+    [
+      ["bar", "baz"], "boo"
+    ]
+    [
+      ["field"], "some whatever value"
+    ]
+    [
+      ["lvl0", "lvl1", 0, "lvl2", "lvlN"], 451
+    ]
   ]
 
-  console.log obj
+  # console.log ""
+  # console.log JSON.stringify actual, null, 2
 
-  do t.pass
+  t.deepEqual actual, expected

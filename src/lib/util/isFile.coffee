@@ -10,4 +10,3 @@ File = require "../File"
 isFile = (value) -> value instanceof File
 
 module.exports = isFile
-module.exports.default = isFile

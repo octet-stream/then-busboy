@@ -11,15 +11,15 @@ shortid = require "shortid"
 merge = require "lodash.merge"
 rd = require "require-dir"
 
-objectFromEntries = require "./lib/util/objectFromEntries"
-setListeners = require "./lib/util/setListeners"
+objectFromEntries = require "./util/objectFromEntries"
+setListeners = require "./util/setListeners"
 
 assign = Object.assign
 
 defaults =
   allow: "*/*"
 
-listeners = rd join __dirname, "listeners"
+listeners = rd join __dirname, "listener"
 
 ###
 # Promise-based wrapper around Busboy, inspired by async-busboy

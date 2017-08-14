@@ -9,7 +9,7 @@ merge = require "./merge"
 reduce = (arr, args...) -> Array::reduceRight.apply arr, args
 
 reducePath = (prev, next) ->
-  unless isString(prev) or isInteger(next)
+  unless isString(next) or isInteger(next)
     throw new TypeError "Key of the filed can be only a string or an integer."
 
   # Return an object property as is
@@ -39,7 +39,7 @@ objectFromPath = (path, val) -> reduce path, reducePath, val
 #   }
 # }
 ###
-objectFromEntries = (entries, toObject = false) ->
+objectFromEntries = (entries) ->
   res = {}
 
   for [path, val] in entries
