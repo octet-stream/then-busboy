@@ -10,7 +10,7 @@ defineProperty = Object.defineProperty
 class File
   constructor: ({contents, mime, enc, filename} = {}) ->
     unless contents instanceof Stream
-      throw new TypeError "Contents should be a string"
+      throw new TypeError "Contents should be a Stream."
 
     @__filename = filename
     @__contents = contents
