@@ -3,7 +3,7 @@
 
 mockHeader = require "./mockHeader"
 
-mockRequest = ->
+mockRequest = do ->
   req = new IncomingMessage new Socket readeble: on
 
   req.headers = "content-type": mockHeader
