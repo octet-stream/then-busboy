@@ -1,11 +1,14 @@
 import {createWriteStream} from "fs"
-import {join} from "path"
+import {isString} from "util"
 import {tmpdir} from "os"
+import {join} from "path"
 
 import Stream from "stream"
 
 import invariant from "@octetstream/invariant"
 import nanoid from "nanoid"
+
+import getType from "lib/util/getType"
 
 class File {
   /**
@@ -16,10 +19,11 @@ class File {
    * @constructor
    */
   constructor({contents, filename, enc, mime} = {}) {
-    invariant(!contents, TypeError, "File contents required.")
+    invariant(!contents, "File contents required.")
 
     invariant(
-      !(contents instanceof Stream), TypeError, "Contents should be a Stream."
+      !(contents instanceof Stream), TypeError,
+      "Contents should be a Stream. Received %s", getType(contents)
     )
 
     this.__contents = contents
@@ -27,7 +31,7 @@ class File {
     this.__mime = mime
     this.__enc = enc
 
-    this.__path = join(tmpdir(), nanoid(), this.filename)
+    this.__path = join(tmpdir(), `${nanoid()}${this.filename}`)
   }
 
   get contents() {
@@ -50,6 +54,10 @@ class File {
     return this.__mime
   }
 
+  get path() {
+    return this.__path
+  }
+
   /**
    * Read file contents from a stream
    *
@@ -69,6 +77,10 @@ class File {
   })
 
   write = path => new Promise((resolve, reject) => {
+    if (!path || !isString(path)) {
+      path = this.path
+    }
+
     this.contents
       .on("erorr", reject)
       .on("end", resolve)
