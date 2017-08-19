@@ -9,7 +9,7 @@ import Busboy from "busboy"
 import each from "lib/util/eachListener"
 import getType from "lib/util/getType"
 
-const listeners = rd(join(__dirname, "listeners"))
+const listeners = rd(join(__dirname, "listener"))
 
 /**
  * Promise-based wrapper around Busboy. Inspired by async-busboy.
