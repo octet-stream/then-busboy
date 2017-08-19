@@ -4,7 +4,7 @@ import invariant from "@octetstream/invariant"
 
 import getType from "lib/util/getType"
 
-const allowed = /^([^[]\n]+)(\[[^[]]+\])*$/
+const format = /^([^[\]\n]+)(\[[^[\]]+\])*$/
 
 /**
  * Get a fild path
@@ -32,7 +32,7 @@ function getFieldPath(fieldname) {
   )
 
   invariant(
-    !allowed.test(fieldname), TypeError,
+    !format.test(fieldname), TypeError,
     "Unexpected name format of the field: %s", fieldname
   )
 
