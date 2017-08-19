@@ -13,10 +13,10 @@
     "formdata"
   ],
   "scripts": {
-    "lint": "node_modules/.bin/coffeelint src",
-    "make": "node_modules/.bin/coffee --no-header -b -o . -c src/",
-    "watch": "node_modules/.bin/coffee --no-header -b -o . -cw src/",
-    "make:ci": "node_modules/.bin/coffee --no-header -b -o . -cm src/",
+    "lint": "node_modules/.bin/eslint src",
+    "make": "node_modules/.bin/babel src -d .",
+    "watch": "node_modules/.bin/babel src -w -d .",
+    "make:ci": "node_modules/.bin/babel src -s -d .",
     "m": "yarn make",
     "w": "yarn watch",
     "test": "node_modules/.bin/ava",
@@ -32,34 +32,49 @@
   "license": "MIT",
   "ava": {
     "files": [
-      "test/unit"
+      "test/**/*.js",
+      "!test/**/__hook__/**",
+      "!test/**/__helper__/**",
+      "!test/helper/**"
+    ]
+  },
+  "nyc": {
+    "exclude": [
+      "test"
     ]
   },
   "dependencies": {
+    "@octetstream/invariant": "1.0.1",
     "busboy": "0.2.14",
-    "koa-static": "4.0.1",
     "lodash.isboolean": "3.0.3",
     "lodash.isempty": "4.4.0",
     "lodash.isinteger": "4.0.4",
     "lodash.isplainobject": "4.0.6",
     "lodash.merge": "4.6.0",
+    "nanoid": "0.2.0",
     "require-dir": "0.3.2",
     "shortid": "2.2.8",
     "type-is": "1.6.15"
   },
   "devDependencies": {
-    "ava": "0.21.0",
+    "@octetstream/eslint-config": "1.0.1",
+    "ava": "^0.22.0",
+    "babel-cli": "6.26.0",
+    "babel-plugin-module-resolver": "2.7.1",
+    "babel-plugin-transform-class-properties": "6.24.1",
+    "babel-plugin-transform-es2015-modules-commonjs": "6.26.0",
+    "babel-plugin-transform-export-extensions": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "6.26.0",
     "co": "4.6.0",
     "codecov": "2.3.0",
-    "coffee-script": "1.12.7",
-    "coffeelint": "1.16.0",
-    "gulp-plumber": "1.1.0",
-    "gulp-util": "3.0.8",
+    "eslint": "3.19.x",
+    "eslint-import-resolver-babel-module": "3.0.0",
+    "eslint-plugin-ava": "4.2.1",
     "husky": "0.14.3",
     "nyc": "11.1.0",
     "promise-fs": "1.2.3",
     "proxyquire": "1.8.0",
-    "sinon": "3.2.0",
+    "sinon": "^3.2.1",
     "supertest": "3.0.0"
   },
   "repository": "git+https://github.com/octet-stream/then-busboy.git",
