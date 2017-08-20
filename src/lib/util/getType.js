@@ -1,16 +1,18 @@
-const builtinTypes = [
+const basicTypes = [
   "null",
   "number",
   "object",
+  "array",
   "string",
   "function",
-  "undefined"
+  "undefined",
+  "boolean"
 ]
 
 function getType(val) {
   const type = Object.prototype.toString.call(val).slice(8, -1)
 
-  if (builtinTypes.includes(type.toLowerCase())) {
+  if (basicTypes.includes(type.toLowerCase())) {
     return type.toLowerCase()
   }
 
