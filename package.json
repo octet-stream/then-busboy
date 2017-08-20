@@ -32,6 +32,7 @@
   "author": "Nick K. <nick.kruchinin@gmail.com>",
   "license": "MIT",
   "ava": {
+    "babel": "inherit",
     "files": [
       "test/**/*.js",
       "!test/**/__hook__/**",
