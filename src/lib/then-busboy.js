@@ -8,6 +8,7 @@ import Busboy from "busboy"
 
 import each from "lib/util/eachListener"
 import getType from "lib/util/getType"
+import objectFromEntries from "lib/util/objectFromEntries"
 
 const listeners = rd(join(__dirname, "listener"))
 
@@ -19,7 +20,7 @@ const listeners = rd(join(__dirname, "listener"))
  * @param {http.IncomingMessage} request – HTTP request object
  * @param {object} options - then-busboy options
  *
- * @return {Promise<object | any[]>}
+ * @return {Promise<object|any[]>}
  */
 const thenBusboy = (request, options = {}) => new Promise((resolve, reject) => {
   invariant(
@@ -49,6 +50,12 @@ const thenBusboy = (request, options = {}) => new Promise((resolve, reject) => {
   function onFinish() {
     // Cleanup listeners
     each(busboy, listeners, (bb, name) => bb.removeListener(name))
+
+    try {
+      return resolve(objectFromEntries(entries))
+    } catch (err) {
+      return reject(err)
+    }
   }
 
   busboy

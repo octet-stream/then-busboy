@@ -31,13 +31,15 @@ function getFieldPath(fieldname) {
     "Field name should be a string. Received %s", getType(fieldname)
   )
 
+  invariant(!fieldname, "Field name cannot be empty.")
+
   invariant(
-    !format.test(fieldname), TypeError,
+    !format.test(fieldname),
     "Unexpected name format of the field: %s", fieldname
   )
 
   for (const element of fieldname.split("[")) {
-    const key = element.endsWith("]") ? element.slice(-1) : element
+    const key = element.endsWith("]") ? element.slice(0, -1) : element
 
     res.push(isNaN(key) ? key : Number(key))
   }
