@@ -1,4 +1,4 @@
-// import {isString} from "util"
+// import invariant from "@octetstream/invariant"
 
 /**
  * Create an object from given entries
@@ -9,10 +9,12 @@ function objectFromEntries(entries) {
   const res = {}
 
   for (const [paths, value] of entries) {
-    if (paths.length === 1) {
-      res[paths.pop()] = value
+    const root = paths.shift()
+
+    if (paths.length < 1) {
+      res[root] = value
     } else {
-      const root = paths.pop()
+      // noop
     }
   }
 
