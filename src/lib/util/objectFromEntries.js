@@ -4,6 +4,24 @@
  * Create an object from given entries
  *
  * @param {array} entries
+ *
+ * @return {object}
+ *
+ * @example
+ *
+ * const entries = [
+ *   [
+ *     ["name"], "John Doe"
+ *   ],
+ *   [
+ *     ["age"], 25
+ *   ],
+ *   [
+ *     ["gender"], "Male"
+ *   ]
+ * ]
+ *
+ * objectFromEntries(entries) // -> {name: "John Doe", age: 25, gender: "Male"}
  */
 function objectFromEntries(entries) {
   const res = {}
