@@ -55,7 +55,6 @@
     "lodash.merge": "4.6.0",
     "nanoid": "0.2.0",
     "require-dir": "0.3.2",
-    "shortid": "2.2.8",
     "type-is": "1.6.15"
   },
   "devDependencies": {
