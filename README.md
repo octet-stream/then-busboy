@@ -27,14 +27,7 @@ yarn add then-busboy
 
 * http.IncomingMessage **request** – HTTP request object
 * object **options**
-  - boolean **split** – If set to `true`, `data`
-      object will be split into two other objects: `fields` and `files`.
-  - object **mimes** – list of allowed mime-types. This object contains two keys:
-      * boolean **ignoreUnallowed** – if set to true, `then-busboy` will skip
-          files with unmached mime-type (default = false, will throw an `UnallowedMime` exception);
-      * object **allowed** – object of allowed mime-types:
-        + (key) string **type**
-        + (value) string|array **format**
+  - **boolean** restoreTypes – allow to restore type of each value (default – true)
   - more information about busboy options [here](https://github.com/mscdex/busboy#busboy-methods).
 
 Just import `then-busboy` and pass `request` object as first argument.
@@ -45,17 +38,7 @@ For example:
 const busboy = require("then-busboy")
 const createServer = require("http").createServer
 
-function callback(req, res) {
-  if (req.method === "GET") {
-    res.statusCode = 404
-    return res.end("Not Found")
-  }
-
-  if (req.method !== "POST") {
-    res.statusCode = 405
-    return res.end("Method Not Allowed")
-  }
-
+function handler(req, res) {
   // Get result from then-busboy
   function onFulfilled(data) {
     res.writeHead("Content-Type", "application/json")
@@ -72,7 +55,7 @@ function callback(req, res) {
   busboy(req).then(onFulfilled, onRejected)
 }
 
-createServer(callback)
+createServer(handler)
   .listen(2319, () => console.log("Server started on http://localhost:2319"))
 ```
 
@@ -81,13 +64,7 @@ createServer(callback)
 
 ```js
 // Some of your awesome code with async workflow...
-var data = await busboy(req)
-```
-
-And the same code, but with `split: true` option:
-
-```js
-var {fields, files} = await busboy(req, {split: true})
+const data = await busboy(req)
 ```
 
 ## License
