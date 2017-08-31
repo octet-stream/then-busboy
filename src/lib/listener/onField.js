@@ -1,6 +1,7 @@
 import getFieldPath from "lib/util/getFieldPath"
+import restoreType from "lib/util/restoreType"
 
-const onField = (_, cb) => (fieldname, value) => {
+const onField = (options, cb) => (fieldname, value) => {
   let path = null
   try {
     path = getFieldPath(fieldname)
@@ -9,7 +10,7 @@ const onField = (_, cb) => (fieldname, value) => {
   }
 
   cb(null, [
-    path, value
+    path, options.restoreTypes ? restoreType(value) : value
   ])
 }
 

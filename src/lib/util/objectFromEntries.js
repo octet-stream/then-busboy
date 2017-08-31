@@ -1,7 +1,15 @@
-function reconclieObjectStructure(target, path, value) {
+/**
+ * @param {array|object} target
+ * @param {array} path
+ * @param {any} value
+ *
+ * @return {array|object}
+ *
+ * @api private
+ */
+function restoreObjectStructure(target, path, value) {
   const currentPath = path.shift()
   const curr = isNaN(currentPath) ? {} : []
-  // const next = path[0]
 
   if (!target) {
     if (path.length === 0) {
@@ -10,7 +18,7 @@ function reconclieObjectStructure(target, path, value) {
       return curr
     }
 
-    curr[currentPath] = reconclieObjectStructure(curr[currentPath], path, value)
+    curr[currentPath] = restoreObjectStructure(curr[currentPath], path, value)
 
     return curr
   }
@@ -21,7 +29,7 @@ function reconclieObjectStructure(target, path, value) {
     return target
   }
 
-  target[currentPath] = reconclieObjectStructure(
+  target[currentPath] = restoreObjectStructure(
     target[currentPath], path, value
   )
 
@@ -62,11 +70,7 @@ function objectFromEntries(entries) {
     if (path.length < 1) {
       res[root] = value
     } else {
-      const foo = reconclieObjectStructure(res[root], path, value)
-
-      res[root] = foo
-
-      // console.log(res)
+      res[root] = restoreObjectStructure(res[root], path, value)
     }
   }
 

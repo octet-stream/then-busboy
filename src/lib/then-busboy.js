@@ -3,6 +3,7 @@ import {join} from "path"
 
 import invariant from "@octetstream/invariant"
 import isPlainObject from "lodash.isplainobject"
+import merge from "lodash.merge"
 import rd from "require-dir"
 import Busboy from "busboy"
 
@@ -11,6 +12,10 @@ import getType from "lib/util/getType"
 import objectFromEntries from "lib/util/objectFromEntries"
 
 const listeners = rd(join(__dirname, "listener"))
+
+const defaultOptions = {
+  restoreTypes: true
+}
 
 /**
  * Promise-based wrapper around Busboy. Inspired by async-busboy.
@@ -33,6 +38,8 @@ const thenBusboy = (request, options = {}) => new Promise((resolve, reject) => {
     !isPlainObject(options), TypeError,
     "Options should be an object. Received %s", getType(options)
   )
+
+  options = merge({}, defaultOptions, options)
 
   const headers = request.headers
 

@@ -29,6 +29,60 @@ test("Should just resolve a plain object", async t => {
   t.true(isPlainObject(body))
 })
 
+test("Should return an expected object", async t => {
+  t.plan(1)
+
+  const {body} = await request(mockServer(busboy)())
+    .post("/")
+    .set("content-type", mockHeader)
+    .field("subjects[0][firstName]", "John")
+    .field("subjects[0][lastName]", "Doe")
+    .field("subjects[0][dob][day]", "1")
+    .field("subjects[0][dob][month]", "Jan.")
+    .field("subjects[0][dob][year]", "1989")
+    .field("subjects[0][skills][0]", "Node.js")
+    .field("subjects[0][skills][1]", "CoffeeScript")
+    .field("subjects[0][skills][2]", "JavaScript")
+    .field("subjects[0][skills][3]", "Babel")
+    .field("subjects[1][firstName]", "Max")
+    .field("subjects[1][lastName]", "Doe")
+    .field("subjects[1][dob][day]", "12")
+    .field("subjects[1][dob][month]", "Mar.")
+    .field("subjects[1][dob][year]", "1992")
+    .field("subjects[1][skills][0]", "Python")
+    .field("subjects[1][skills][1]", "Flask")
+    .field("subjects[1][skills][2]", "JavaScript")
+    .field("subjects[1][skills][3]", "Babel")
+    .field("subjects[1][skills][4]", "React")
+    .field("subjects[1][skills][5]", "Redux")
+
+  const expected = {
+    subjects: [
+      {
+        firstName: "John",
+        lastName: "Doe",
+        dob: {
+          day: 1,
+          month: "Jan.",
+          year: 1989
+        },
+        skills: ["Node.js", "CoffeeScript", "JavaScript", "Babel"]
+      }, {
+        firstName: "Max",
+        lastName: "Doe",
+        dob: {
+          day: 12,
+          month: "Mar.",
+          year: 1992
+        },
+        skills: ["Python", "Flask", "JavaScript", "Babel", "React", "Redux"]
+      }
+    ]
+  }
+
+  t.deepEqual(body, expected)
+})
+
 test("Should throw an error when no request object given", async t => {
   t.plan(3)
 
