@@ -21,7 +21,7 @@ Or with yarn
 yarn add then-busboy
 ```
 
-## Usage
+## API
 
 ### busboy(request[, options]) -> Promise
 
@@ -30,13 +30,15 @@ yarn add then-busboy
   - **boolean** restoreTypes – allow to restore type of each value (default – true)
   - more information about busboy options [here](https://github.com/mscdex/busboy#busboy-methods).
 
+### constructor File
+
+## Usage
+
 Just import `then-busboy` and pass `request` object as first argument.
 
-For example:
-
 ```js
-const busboy = require("then-busboy")
-const createServer = require("http").createServer
+import busboy from "then-busboy"
+import {createServer} from "http"
 
 function handler(req, res) {
   // Get result from then-busboy

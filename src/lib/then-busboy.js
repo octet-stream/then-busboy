@@ -20,12 +20,12 @@ const defaultOptions = {
 /**
  * Promise-based wrapper around Busboy. Inspired by async-busboy.
  * You'll get exactly what you've sent from your client app.
- * All files and other fields in a single object/collection.
+ * All files and other fields in a single object.
  *
  * @param {http.IncomingMessage} request – HTTP request object
  * @param {object} options - then-busboy options
  *
- * @return {Promise<object|any[]>}
+ * @return {Promise<object>}
  */
 const thenBusboy = (request, options = {}) => new Promise((resolve, reject) => {
   invariant(
