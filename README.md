@@ -30,7 +30,38 @@ yarn add then-busboy
   - **boolean** restoreTypes – allow to restore type of each value (default – true)
   - more information about busboy options [here](https://github.com/mscdex/busboy#busboy-methods).
 
-### constructor File
+### constructor File(options)
+
+  - **object** options – an object that contains the following information about file:
+    + **stream.Readable** contents – the content of the file.
+    + **string** filename – name of the file (with an extension)
+    + **string** env – encoding of the file content
+    + **string** mime – file mime type
+
+#### Instance properties
+
+##### contents
+
+##### filename
+
+##### basename
+
+##### extname
+
+##### mime
+
+##### enc
+
+#### Instance methods
+
+##### read() => Promise<Buffer>
+
+Read a file from contents stream.
+
+##### write([path]) => Promise<void>
+
+Write a file content to disk. Optionally you can set a custom path.
+By default, file will be saved in system temporary directory `os.tmpdir()`.
 
 ## Usage
 
