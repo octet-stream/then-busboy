@@ -55,22 +55,11 @@ const thenBusboy = (request, options = {}) => new Promise((resolve, reject) => {
   each(listeners, (name, fn) => busboy.on(name, fn(options, fulfill)))
 
   function onFinish() {
-    // console.log(entries)
     // Cleanup listeners
     each(listeners, (name, fn) => busboy.removeListener(name, fn))
 
-    // console.log(entries)
-
     try {
-      // return resolve(objectFromEntries(entries))
-
-      // console.log(entries)
-      // console.log("")
-      // console.log("")
-
-      const res = objectFromEntries(entries)
-
-      return resolve(res)
+      return resolve(objectFromEntries(entries))
     } catch (err) {
       return reject(err)
     }
