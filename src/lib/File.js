@@ -79,7 +79,7 @@ class File {
   read = () => new Promise((resolve, reject) => {
     const data = []
 
-    const onData = ch => data.push(ch)
+    const onData = ch => void data.push(ch)
 
     const onEnd = () => resolve(Buffer.concat(data))
 

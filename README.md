@@ -9,21 +9,24 @@ Promise-based wrapper around Busboy, inspired by [async-busboy](https://github.c
 
 ## Installation
 
+Note: The current documentation is for 2.x versions of then-busboy.
+If you're looking for a previous version, check out the [1.x branch](https://github.com/octet-stream/then-busboy/tree/1.x).
+
 Use can install `then-busboy` from npm:
 
 ```bash
-npm install --save then-busboy
+npm install --save then-busboy@next
 ```
 
-Or with yarn
+Or with yarn:
 
 ```bash
-yarn add then-busboy
+yarn add then-busboy@next
 ```
 
 ## API
 
-### `busboy(request[, options]) -> Promise`
+### `busboy(request[, options]) -> Promise<Object>`
 
 * http.IncomingMessage **request** – HTTP request object
 * object **options**
@@ -42,17 +45,33 @@ yarn add then-busboy
 
 ##### `contents`
 
+A file contents Readable stream.
+
+##### `stream`
+
+An alias for [contents](#contents)
+
 ##### `filename`
+
+A full name of the file
 
 ##### `basename`
 
+A name of the file without extension
+
 ##### `extname`
 
+A file extension
+
 ##### `mime`
+
+A file mime type
 
 ##### `enc`
 
 ##### `path`
+
+Default path of the file
 
 #### Instance methods
 
@@ -63,7 +82,11 @@ Read a file from contents stream.
 ##### `write([path]) => Promise<void>`
 
 Write a file content to disk. Optionally you can set a custom path.
+
+  - **string** path
+
 By default, file will be saved in system temporary directory `os.tmpdir()`.
+You can take this path from [path](#path) property.
 
 ## Usage
 

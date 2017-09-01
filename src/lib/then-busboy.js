@@ -49,14 +49,14 @@ const thenBusboy = (request, options = {}) => new Promise((resolve, reject) => {
 
   const entries = []
 
-  const fulfill = (err, entry) => err ? reject(err) : entries.push(entry)
+  const fulfill = (err, entry) => void err ? reject(err) : entries.push(entry)
 
   // Set listeners before starting
-  each(listeners, (name, fn) => busboy.on(name, fn(options, fulfill)))
+  each(listeners, (name, fn) => void busboy.on(name, fn(options, fulfill)))
 
   function onFinish() {
     // Cleanup listeners
-    each(listeners, (name, fn) => busboy.removeListener(name, fn))
+    each(listeners, (name, fn) => void busboy.removeListener(name, fn))
 
     try {
       return resolve(objectFromEntries(entries))
