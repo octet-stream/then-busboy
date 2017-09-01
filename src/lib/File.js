@@ -36,7 +36,7 @@ class File {
     this.__mime = mime
     this.__enc = enc
 
-    this.__path = join(tmpdir(), `${nanoid()}${this.filename}`)
+    this.__path = join(tmpdir(), `${nanoid()}_${this.filename}`)
   }
 
   get contents() {
