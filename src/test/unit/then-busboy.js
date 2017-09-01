@@ -3,6 +3,8 @@ import test from "ava"
 import isPlainObject from "lodash.isplainobject"
 import request from "supertest"
 
+import {readFile} from "promise-fs"
+
 import busboy from "lib/then-busboy"
 
 import mockHeader from "test/helper/mockHeader"
@@ -81,6 +83,18 @@ test("Should return an expected object", async t => {
   }
 
   t.deepEqual(body, expected)
+})
+
+test("Should just receive file", async t => {
+  t.plan(1)
+
+  const {body} = await request(mockServer(busboy)())
+    .post("/")
+    .attach("file", __filename)
+
+  const expected = String(await readFile(__filename))
+
+  t.is(body.file, expected)
 })
 
 test("Should throw an error when no request object given", async t => {

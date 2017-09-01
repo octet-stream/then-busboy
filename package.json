@@ -1,10 +1,11 @@
 {
   "name": "then-busboy",
-  "version": "2.0.0-beta.1",
+  "version": "2.0.0-beta.2",
   "description": "Promise-based wrapper around Busboy, inspired by async-busboy",
+  "repository": "octet-stream/then-busboy",
   "main": "./main.js",
   "engines": {
-    "node": ">=7.6.x"
+    "node": ">=7.6"
   },
   "keywords": [
     "multipart",
@@ -48,6 +49,7 @@
   "dependencies": {
     "@octetstream/invariant": "1.0.1",
     "busboy": "0.2.14",
+    "cloneable-readable": "1.0.0",
     "lodash.isboolean": "3.0.3",
     "lodash.isempty": "4.4.0",
     "lodash.isinteger": "4.0.4",
@@ -78,9 +80,5 @@
     "rimraf": "2.6.1",
     "sinon": "3.2.1",
     "supertest": "3.0.0"
-  },
-  "repository": "git+https://github.com/octet-stream/then-busboy.git",
-  "bugs": {
-    "url": "https://github.com/octet-stream/then-busboy/issues"
   }
 }

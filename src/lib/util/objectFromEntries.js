@@ -64,8 +64,14 @@ function restoreObjectStructure(target, path, value) {
 function objectFromEntries(entries) {
   const res = {}
 
+  // console.log(entries[entries.length - 1])
+  // console.log("")
+
   for (const [path, value] of entries) {
     const root = path.shift()
+
+    // console.log(root, path, value)
+    // console.log("")
 
     if (path.length < 1) {
       res[root] = value
