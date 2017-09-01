@@ -23,14 +23,14 @@ yarn add then-busboy
 
 ## API
 
-### busboy(request[, options]) -> Promise
+### `busboy(request[, options]) -> Promise`
 
 * http.IncomingMessage **request** – HTTP request object
 * object **options**
   - **boolean** restoreTypes – allow to restore type of each value (default – true)
   - more information about busboy options [here](https://github.com/mscdex/busboy#busboy-methods).
 
-### constructor File(options)
+### `constructor File(options)`
 
   - **object** options – an object that contains the following information about file:
     + **stream.Readable** contents – the content of the file.
@@ -40,25 +40,27 @@ yarn add then-busboy
 
 #### Instance properties
 
-##### contents
+##### `contents`
 
-##### filename
+##### `filename`
 
-##### basename
+##### `basename`
 
-##### extname
+##### `extname`
 
-##### mime
+##### `mime`
 
-##### enc
+##### `enc`
+
+##### `path`
 
 #### Instance methods
 
-##### read() => Promise<Buffer>
+##### `read() => Promise<Buffer>`
 
 Read a file from contents stream.
 
-##### write([path]) => Promise<void>
+##### `write([path]) => Promise<void>`
 
 Write a file content to disk. Optionally you can set a custom path.
 By default, file will be saved in system temporary directory `os.tmpdir()`.
