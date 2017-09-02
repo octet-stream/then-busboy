@@ -15,13 +15,13 @@ If you're looking for a previous version, check out the [1.x branch](https://git
 Use can install `then-busboy` from npm:
 
 ```bash
-npm install --save then-busboy@next
+npm install --save then-busboy
 ```
 
 Or with yarn:
 
 ```bash
-yarn add then-busboy@next
+yarn add then-busboy
 ```
 
 ## API
