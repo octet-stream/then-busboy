@@ -1,4 +1,4 @@
-import Stream from "stream"
+import Stream, {Writable} from "stream"
 
 import {createReadStream} from "fs"
 import {basename, extname, join} from "path"
@@ -87,6 +87,94 @@ test("Should correctly read given file from Stream", async t => {
   const actual = await file.read()
 
   t.true(actual.equals(expected))
+})
+
+test("Should write file to disk", async t => {
+  t.plan(1)
+
+  const noop = spy()
+
+  function createWriteStream(path, options) {
+    const stream = new Writable(path, options)
+
+    const bufs = []
+    let len = 0
+
+    // eslint-disable-next-line
+    stream._write = function(ch, enc, cb) {
+      bufs.push(ch)
+      len += ch.length
+
+      noop(path, Buffer.concat(bufs, len), cb)
+    }
+
+    return stream
+  }
+
+  const File = pq("../../lib/File", {
+    fs: {
+      createWriteStream
+    }
+  }).default
+
+  const expected = await readFile(__filename)
+
+  const contents = createReadStream(__filename)
+
+  const filename = basename(__filename)
+
+  const file = new File({
+    contents,
+    filename,
+    mime: "text/javascript",
+    enc: "utf-8"
+  })
+
+  await file.write()
+
+  const actual = noop.lastCall.args[1]
+
+  t.true(actual.equals(expected))
+})
+
+test("Should write file to given path", async t => {
+  t.plan(1)
+
+  const noop = spy()
+
+  function createWriteStream(path, options) {
+    const stream = new Writable(path, options)
+
+    // eslint-disable-next-line
+    stream._write = () => void noop(path)
+
+    return stream
+  }
+
+  const File = pq("../../lib/File", {
+    fs: {
+      createWriteStream
+    }
+  }).default
+
+  const expected = "some/whatever/path"
+
+  const contents = createReadStream(__filename)
+
+  const filename = basename(__filename)
+
+  const file = new File({
+    contents,
+    filename,
+    mime: "text/javascript",
+    enc: "utf-8"
+  })
+
+  await file.write(expected)
+
+  const [actual] = noop.lastCall.args
+
+  t.is(actual, expected)
 })
 
 test("Should throw an error when no contents given", t => {
