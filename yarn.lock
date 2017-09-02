@@ -55,9 +55,9 @@
     eslint-plugin-jsx-a11y "4.0.0"
     eslint-plugin-react "6.9.0"
 
-"@octetstream/invariant@1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@octetstream/invariant/-/invariant-1.0.1.tgz#d5b212ae6a5e74f614a4e8047c1daa713d65235b"
+"@octetstream/invariant@1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@octetstream/invariant/-/invariant-1.0.2.tgz#d45ed5f0d532cf46cee2fd10d520584678b15fe1"
   dependencies:
     lodash.isfunction "3.0.8"
     lodash.isstring "4.0.1"
@@ -575,6 +575,16 @@ babel-helper-remap-async-to-generator@^6.16.0:
     babel-traverse "^6.18.0"
     babel-types "^6.18.0"
 
+babel-helper-remap-async-to-generator@^6.24.1:
+  version "6.24.1"
+  resolved "https://registry.yarnpkg.com/babel-helper-remap-async-to-generator/-/babel-helper-remap-async-to-generator-6.24.1.tgz#5ec581827ad723fecdd381f1c928390676e4551b"
+  dependencies:
+    babel-helper-function-name "^6.24.1"
+    babel-runtime "^6.22.0"
+    babel-template "^6.24.1"
+    babel-traverse "^6.24.1"
+    babel-types "^6.24.1"
+
 babel-helpers@^6.16.0:
   version "6.16.0"
   resolved "https://registry.yarnpkg.com/babel-helpers/-/babel-helpers-6.16.0.tgz#1095ec10d99279460553e67eb3eee9973d3867e3"
@@ -658,6 +668,14 @@ babel-plugin-transform-async-to-generator@^6.16.0:
     babel-helper-remap-async-to-generator "^6.16.0"
     babel-plugin-syntax-async-functions "^6.8.0"
     babel-runtime "^6.0.0"
+
+babel-plugin-transform-async-to-generator@^6.24.1:
+  version "6.24.1"
+  resolved "https://registry.yarnpkg.com/babel-plugin-transform-async-to-generator/-/babel-plugin-transform-async-to-generator-6.24.1.tgz#6536e378aff6cb1d5517ac0e40eb3e9fc8d08761"
+  dependencies:
+    babel-helper-remap-async-to-generator "^6.24.1"
+    babel-plugin-syntax-async-functions "^6.8.0"
+    babel-runtime "^6.22.0"
 
 babel-plugin-transform-class-properties@6.24.1:
   version "6.24.1"
