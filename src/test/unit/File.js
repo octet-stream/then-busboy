@@ -15,7 +15,7 @@ import {readFile} from "promise-fs"
 import File from "lib/File"
 
 test("Should create a File with given stream and metadata", t => {
-  t.plan(7)
+  t.plan(8)
 
   const contents = createReadStream(__filename)
 
@@ -33,11 +33,29 @@ test("Should create a File with given stream and metadata", t => {
 
   t.true(file instanceof File)
   t.true(file.contents instanceof Stream)
+  t.true(file.stream instanceof Stream)
   t.is(file.mime, "text/javascript")
   t.is(file.enc, "utf-8")
   t.is(file.filename, filename)
   t.is(file.basename, base)
   t.is(file.extname, ext)
+})
+
+test("Should return a correct string on inspect call", t => {
+  t.plan(1)
+
+  const contents = createReadStream(__filename)
+
+  const filename = basename(__filename)
+
+  const file = new File({
+    contents,
+    filename,
+    mime: "text/javascript",
+    enc: "utf-8"
+  })
+
+  t.is(file.inspect(), `[File: ${filename}]`)
 })
 
 test("Should have a correct default path", t => {

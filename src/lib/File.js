@@ -30,6 +30,7 @@ class File {
     const base = basename(filename, ext)
 
     this.__contents = contents
+    this.__stream = contents
     this.__filename = filename
     this.__basename = base
     this.__extname = ext
