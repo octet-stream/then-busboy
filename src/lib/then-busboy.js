@@ -4,14 +4,14 @@ import {join} from "path"
 import invariant from "@octetstream/invariant"
 import isPlainObject from "lodash.isplainobject"
 import merge from "lodash.merge"
-import rd from "require-dir"
 import Busboy from "busboy"
 
 import each from "lib/util/eachListener"
 import getType from "lib/util/getType"
+import readListeners from "lib/util/readListeners"
 import objectFromEntries from "lib/util/objectFromEntries"
 
-const listeners = rd(join(__dirname, "listener"))
+const listeners = readListeners(join(__dirname, "listener"))
 
 const defaultOptions = {
   restoreTypes: true
