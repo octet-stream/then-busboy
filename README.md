@@ -28,8 +28,8 @@ yarn add then-busboy
 
 ### `busboy(request[, options]) -> Promise<Object>`
 
-* http.IncomingMessage **request** – HTTP request object
-* object **options**
++ **http.IncomingMessage** request – HTTP request object
++ **object** options
   - **boolean** restoreTypes – allow to restore type of each value (default – true)
   - more information about busboy options [here](https://github.com/mscdex/busboy#busboy-methods).
 
@@ -68,6 +68,8 @@ A file extension
 A file mime type
 
 ##### `enc`
+
+File contents encoding
 
 ##### `path`
 
