@@ -10,14 +10,18 @@ const entries = Object.entries
  *
  * @api private
  */
-function eachListener(listeners, callee) {
+function mapListeners(listeners, callee) {
+  const res = {}
+
   for (const [key, fn] of entries(listeners)) {
     const name = key.startsWith("on") ? leadToLowerCase(key.slice(2)) : key
 
     if (!(["error", "end"].includes(name))) {
-      callee(name, fn.default)
+      res[name] = callee(fn, name)
     }
   }
+
+  return res
 }
 
-export default eachListener
+export default mapListeners

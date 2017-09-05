@@ -6,12 +6,12 @@ import isPlainObject from "lodash.isplainobject"
 import merge from "lodash.merge"
 import Busboy from "busboy"
 
-import each from "lib/util/eachListener"
+import map from "lib/util/mapListeners"
 import getType from "lib/util/getType"
 import readListeners from "lib/util/readListeners"
 import objectFromEntries from "lib/util/objectFromEntries"
 
-const listeners = readListeners(join(__dirname, "listener"))
+const initializers = readListeners(join(__dirname, "listener"))
 
 const defaultOptions = {
   restoreTypes: true
@@ -51,12 +51,14 @@ const thenBusboy = (request, options = {}) => new Promise((resolve, reject) => {
 
   const fulfill = (err, entry) => void err ? reject(err) : entries.push(entry)
 
+  const listeners = map(initializers, fn => fn(options, fulfill))
+
   // Set listeners before starting
-  each(listeners, (name, fn) => void busboy.on(name, fn(options, fulfill)))
+  void map(listeners, (fn, name) => busboy.on(name, fn))
 
   function onFinish() {
     // Cleanup listeners
-    each(listeners, (name, fn) => void busboy.removeListener(name, fn))
+    void map(listeners, (fn, name) => busboy.removeListener(name, fn))
 
     try {
       return resolve(objectFromEntries(entries))

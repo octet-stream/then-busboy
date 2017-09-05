@@ -10,9 +10,12 @@ function readListeners(path) {
   const dir = readdirSync(path)
 
   for (const filename of dir) {
-    const base = basename(filename, extname(filename))
+    const ext = extname(filename)
+    if (ext === ".js") {
+      const base = basename(filename, ext)
 
-    res[base] = require(join(path, base))
+      res[base] = require(join(path, base)).default
+    }
   }
 
   return res
