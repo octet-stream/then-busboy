@@ -1,6 +1,6 @@
 {
   "name": "then-busboy",
-  "version": "2.0.0-beta.5",
+  "version": "2.0.0-beta.6",
   "description": "Promise-based wrapper around Busboy, inspired by async-busboy",
   "repository": "octet-stream/then-busboy",
   "main": "./main.js",
