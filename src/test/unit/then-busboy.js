@@ -85,6 +85,53 @@ test("Should return an expected object", async t => {
   t.deepEqual(body, expected)
 })
 
+test("Should restore field type by default", async t => {
+  t.plan(1)
+
+  const {body} = await request(mockServer(busboy)())
+    .post("/")
+    .field("nullValue", "null")
+    .field("falseValue", "false")
+    .field("trueValue", "true")
+    .field("numberValue", "42")
+    .field("stringValue", "Some random string")
+
+  const expected = {
+    nullValue: null,
+    falseValue: false,
+    trueValue: true,
+    numberValue: 42,
+    stringValue: "Some random string"
+  }
+
+  t.deepEqual(body, expected)
+})
+
+test(
+  "Should not restore field type when options.restoreTypes turned to false",
+  async t => {
+    t.plan(1)
+
+    const {body} = await request(mockServer(busboy)({restoreTypes: false}))
+      .post("/")
+      .field("nullValue", "null")
+      .field("falseValue", "false")
+      .field("trueValue", "true")
+      .field("numberValue", "42")
+      .field("stringValue", "Some random string")
+
+    const expected = {
+      nullValue: "null",
+      falseValue: "false",
+      trueValue: "true",
+      numberValue: "42",
+      stringValue: "Some random string"
+    }
+
+    t.deepEqual(body, expected)
+  }
+)
+
 test("Should just receive file", async t => {
   t.plan(1)
 
@@ -135,5 +182,48 @@ test(
 
     t.true(err instanceof TypeError)
     t.is(err.message, "Options should be an object. Received string")
+  }
+)
+
+test(
+  "Should response with an error when assignin a property to primitive value",
+  async t => {
+    t.plan(1)
+
+    const {error} = await request(mockServer(busboy)())
+      .post("/")
+      .field("root[0]", "whatever")
+      .field("root[0][nop]", "oops")
+
+    t.is(
+      error.text,
+      "TypeError: Cannot create property 'nop' on string 'whatever'"
+    )
+  }
+)
+
+test("Should response an error on incorrect field name format", async t => {
+  t.plan(1)
+
+  const format = "some[totally[]][wrong]format[foo]"
+
+  const {error} = await request(mockServer(busboy)({foo: "foo"}))
+    .post("/")
+    .field(format, "You shall not pass!")
+
+  t.is(error.text, `Error: Unexpected name format of the field: ${format}`)
+})
+
+test("Should response an error on incorrect field name format of given file",
+  async t => {
+    t.plan(1)
+
+    const format = "some[totally[]][wrong]format[foo]"
+
+    const {error} = await request(mockServer(busboy)({foo: "foo"}))
+      .post("/")
+      .attach(format, __filename)
+
+    t.is(error.text, `Error: Unexpected name format of the field: ${format}`)
   }
 )

@@ -49,7 +49,7 @@ const thenBusboy = (request, options = {}) => new Promise((resolve, reject) => {
 
   const entries = []
 
-  const fulfill = (err, entry) => void err ? reject(err) : entries.push(entry)
+  const fulfill = (err, entry) => void (err ? reject(err) : entries.push(entry))
 
   const listeners = map(initializers, fn => fn(options, fulfill))
 
