@@ -23,7 +23,7 @@ const defaultOptions = {
  * All files and other fields in a single object.
  *
  * @param {http.IncomingMessage} request – HTTP request object
- * @param {object} options - then-busboy options
+ * @param {object} [options = {}] - then-busboy options
  *
  * @return {Promise<Object>}
  */

@@ -144,6 +144,34 @@ test("Should just receive file", async t => {
   t.is(body.file, expected)
 })
 
+test("Should receive files and fields at the same time", async t => {
+  t.plan(1)
+
+  const {body} = await request(mockServer(busboy)())
+    .post("/")
+    .field("message[sender]", "John Doe")
+    .field("message[text]", "Whatever test message text")
+    .field("message[attachments][0][description]", "Some test file")
+    .attach("message[attachments][0][file]", __filename)
+
+  const file = String(await readFile(__filename))
+
+  const expected = {
+    message: {
+      sender: "John Doe",
+      text: "Whatever test message text",
+      attachments: [
+        {
+          description: "Some test file",
+          file
+        }
+      ]
+    }
+  }
+
+  t.deepEqual(body, expected)
+})
+
 test("Should throw an error when no request object given", async t => {
   t.plan(3)
 
