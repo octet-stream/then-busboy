@@ -18,7 +18,9 @@ class File {
    *
    * @constructor
    */
-  constructor({contents, filename, enc, mime} = {}) {
+  constructor(file) {
+    const {contents, filename, enc, mime} = file
+
     invariant(!contents, "File contents required.")
 
     invariant(

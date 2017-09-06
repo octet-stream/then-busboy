@@ -242,7 +242,8 @@ test("Should response an error on incorrect field name format", async t => {
   t.is(error.text, `Error: Unexpected name format of the field: ${format}`)
 })
 
-test("Should response an error on incorrect field name format of given file",
+test(
+  "Should response an error on incorrect field name format of given file",
   async t => {
     t.plan(1)
 

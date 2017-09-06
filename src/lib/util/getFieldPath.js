@@ -3,6 +3,7 @@ import {isString} from "util"
 import invariant from "@octetstream/invariant"
 
 import getType from "lib/util/getType"
+import isNaN from "lib/util/isNaN"
 
 const format = /^([^[\]\n]+)(\[[^[\]]+\])*$/
 

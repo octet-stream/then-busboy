@@ -55,7 +55,7 @@
     "nanoid": "0.2.0"
   },
   "devDependencies": {
-    "@octetstream/eslint-config": "1.0.1",
+    "@octetstream/eslint-config": "2.0.2",
     "ava": "0.22.0",
     "babel-cli": "6.26.0",
     "babel-plugin-module-resolver": "2.7.1",
@@ -65,7 +65,7 @@
     "babel-plugin-transform-object-rest-spread": "6.26.0",
     "co": "4.6.0",
     "codecov": "2.3.0",
-    "eslint": "3.19.x",
+    "eslint": "^4.6.0",
     "eslint-import-resolver-babel-module": "3.0.0",
     "eslint-plugin-ava": "4.2.1",
     "husky": "0.14.3",

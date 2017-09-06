@@ -62,7 +62,7 @@ test("Should have a correct default path", t => {
   const spyo = spy(nanoid)
   const spydir = spy(tmpdir)
 
-  const File = pq("../../lib/File", {
+  const MockedFile = pq("../../lib/File", {
     nanoid: spyo,
     os: {
       tmpdir: spydir
@@ -72,7 +72,7 @@ test("Should have a correct default path", t => {
   const contents = createReadStream(__filename)
   const filename = basename(__filename)
 
-  const file = new File({
+  const file = new MockedFile({
     contents,
     filename,
     mime: "text/javascript",
@@ -129,7 +129,7 @@ test("Should write file to disk", async t => {
     return stream
   }
 
-  const File = pq("../../lib/File", {
+  const MockedFile = pq("../../lib/File", {
     fs: {
       createWriteStream
     }
@@ -141,7 +141,7 @@ test("Should write file to disk", async t => {
 
   const filename = basename(__filename)
 
-  const file = new File({
+  const file = new MockedFile({
     contents,
     filename,
     mime: "text/javascript",
@@ -169,7 +169,7 @@ test("Should write file to given path", async t => {
     return stream
   }
 
-  const File = pq("../../lib/File", {
+  const MockedFile = pq("../../lib/File", {
     fs: {
       createWriteStream
     }
@@ -181,7 +181,7 @@ test("Should write file to given path", async t => {
 
   const filename = basename(__filename)
 
-  const file = new File({
+  const file = new MockedFile({
     contents,
     filename,
     mime: "text/javascript",

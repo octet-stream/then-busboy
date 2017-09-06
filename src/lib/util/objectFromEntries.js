@@ -1,3 +1,5 @@
+import isNaN from "lib/util/isNaN"
+
 /**
  * @param {array|object} target
  * @param {array} path
