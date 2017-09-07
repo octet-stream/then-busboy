@@ -37,10 +37,24 @@ class File {
     // TODO: Add tests for these 3 lines
     invariant(!filename, "Filename required.")
 
+    invariant(
+      !isString(filename), TypeError,
+      "Filename should be a string. Received %s", getType(filename)
+    )
+
     invariant(!enc, "File encoding required.")
+
+    invariant(
+      !isString(enc), TypeError,
+      "File encoding should be a string. Received %s", getType(enc)
+    )
 
     invariant(!mime, "File mime type required.")
 
+    invariant(
+      !isString(mime), TypeError,
+      "File mime type should be a string. Received %s", getType(mime)
+    )
 
     const ext = extname(filename)
     const base = basename(filename, ext)

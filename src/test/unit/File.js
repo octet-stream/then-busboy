@@ -216,3 +216,76 @@ test("Should throw an error when contents is not a Stream", t => {
   t.true(err instanceof TypeError)
   t.is(err.message, "Contents should be a Stream. Received string")
 })
+
+test("Should throw an error when no filename given", t => {
+  t.plan(1)
+
+  const contents = createReadStream(__filename)
+
+  const trap = () => new File({contents})
+
+  t.throws(trap, "Filename required.")
+})
+
+test("Should throw an error when filename is not a string", t => {
+  t.plan(1)
+
+  const contents = createReadStream(__filename)
+
+  const trap = () => new File({contents, filename: 42})
+
+  t.throws(trap, "Filename should be a string. Received number")
+})
+
+test("Should throw an error when no enc given", t => {
+  t.plan(1)
+
+  const contents = createReadStream(__filename)
+
+  const trap = () => new File({contents, filename: basename(__filename)})
+
+  t.throws(trap, "File encoding required.")
+})
+
+test("Should throw an error when enc is not a string", t => {
+  t.plan(1)
+
+  const contents = createReadStream(__filename)
+
+  const trap = () => new File({
+    contents,
+    filename: basename(__filename),
+    enc: []
+  })
+
+  t.throws(trap, "File encoding should be a string. Received array")
+})
+
+test("Should throw an error when no mime given", t => {
+  t.plan(1)
+
+  const contents = createReadStream(__filename)
+
+  const trap = () => new File({
+    contents,
+    filename: basename(__filename),
+    enc: "utf-8"
+  })
+
+  t.throws(trap, "File mime type required.")
+})
+
+test("Should throw an error when mime is not a string", t => {
+  t.plan(1)
+
+  const contents = createReadStream(__filename)
+
+  const trap = () => new File({
+    contents,
+    filename: basename(__filename),
+    enc: "utf-8",
+    mime: /.*/
+  })
+
+  t.throws(trap, "File mime type should be a string. Received RegExp")
+})
