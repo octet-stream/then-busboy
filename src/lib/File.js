@@ -34,7 +34,6 @@ class File {
       "Contents should be a Stream. Received %s", getType(contents)
     )
 
-    // TODO: Add tests for these 3 lines
     invariant(!filename, "Filename required.")
 
     invariant(
