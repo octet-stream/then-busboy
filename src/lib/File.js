@@ -27,18 +27,20 @@ class File {
 
     const {contents, filename, enc, mime} = options
 
-    invariant(!filename, "Filename required.")
-
-    invariant(!enc, "File encoding required.")
-
-    invariant(!mime, "File mime type required.")
-
     invariant(!contents, "File contents required.")
 
     invariant(
       !(contents instanceof Stream), TypeError,
       "Contents should be a Stream. Received %s", getType(contents)
     )
+
+    // TODO: Add tests for these 3 lines
+    invariant(!filename, "Filename required.")
+
+    invariant(!enc, "File encoding required.")
+
+    invariant(!mime, "File mime type required.")
+
 
     const ext = extname(filename)
     const base = basename(filename, ext)
