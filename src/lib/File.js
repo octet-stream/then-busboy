@@ -5,6 +5,7 @@ import {join, basename, extname} from "path"
 
 import Stream from "stream"
 
+import isPlainObject from "lodash/isPlainObject"
 import invariant from "@octetstream/invariant"
 import nanoid from "nanoid"
 
@@ -14,12 +15,23 @@ class File {
   /**
    * File class.
    *
-   * @param {object} file
+   * @param {object} options
    *
    * @constructor
    */
-  constructor(file) {
-    const {contents, filename, enc, mime} = file
+  constructor(options) {
+    invariant(
+      !isPlainObject(options), TypeError,
+      "File options should be a plain object. Received", getType(options)
+    )
+
+    const {contents, filename, enc, mime} = options
+
+    invariant(!filename, "Filename required.")
+
+    invariant(!enc, "File encoding required.")
+
+    invariant(!mime, "File mime type required.")
 
     invariant(!contents, "File contents required.")
 

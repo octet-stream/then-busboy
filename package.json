@@ -1,7 +1,7 @@
 {
   "name": "then-busboy",
   "version": "2.0.0-beta.7",
-  "description": "Promise-based wrapper around Busboy, inspired by async-busboy",
+  "description": "Promise-based wrapper around Busboy. Process multipart/form-data content and returns it as a single object.",
   "repository": "octet-stream/then-busboy",
   "main": "./main.js",
   "engines": {
@@ -63,7 +63,6 @@
     "babel-plugin-transform-es2015-modules-commonjs": "6.26.0",
     "babel-plugin-transform-export-extensions": "6.22.0",
     "babel-plugin-transform-object-rest-spread": "6.26.0",
-    "co": "4.6.0",
     "codecov": "2.3.0",
     "eslint": "^4.6.0",
     "eslint-import-resolver-babel-module": "3.0.0",

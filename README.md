@@ -1,6 +1,6 @@
 # then-busboy
 
-Promise-based wrapper around Busboy, inspired by [async-busboy](https://github.com/m4nuC/async-busboy)
+Promise-based wrapper around Busboy. Process multipart/form-data content and returns it as a single object.
 
 [![dependencies Status](https://david-dm.org/octet-stream/then-busboy/status.svg)](https://david-dm.org/octet-stream/then-busboy)
 [![devDependencies Status](https://david-dm.org/octet-stream/then-busboy/dev-status.svg)](https://david-dm.org/octet-stream/then-busboy?type=dev)
@@ -89,6 +89,54 @@ Write a file content to disk. Optionally you can set a custom path.
 
 By default, file will be saved in system temporary directory `os.tmpdir()`.
 You can take this path from [path](#path) property.
+
+## Fields format
+
+then-busboy can restore an object structure from form-data field names
+if you will follow the special naming format with bracket notation:
+
+```
+# Note that the following example is just a pseudo code
+rootField[nestedField] = "I beat Twilight Sparkle and all I got was this lousy t-shirt"
+```
+
+then-busboy will return the this object for an example from above:
+
+```js
+{
+  rootField: {
+    nestedField: "I beat Twilight Sparkle and all I got was this lousy t-shirt"
+  }
+}
+```
+
+You can also send an arrays and collections using bracket format:
+
+```
+message[sender] = "John Doe"
+message[text] = "Some whatever text message."
+message[attachments][0][file] = <here is the file content>
+message[attachments][0][description] = "Here is a description of the file"
+```
+
+then-busboy returns the following object:
+
+```js
+{
+  message: {
+    sender: "John Doe",
+    text: "Some whatever text message.",
+    attachments: [
+      {
+        file: File, // this field will be represended as a File instance
+        description: "Here is a description of the file"
+      }
+    ]
+  }
+}
+```
+
+**Note that there is no an implementation for arrays as *root field* for now!**
 
 ## Usage
 
