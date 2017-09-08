@@ -52,7 +52,8 @@
     "cloneable-readable": "1.0.0",
     "lodash.isplainobject": "4.0.6",
     "lodash.merge": "4.6.0",
-    "nanoid": "0.2.0"
+    "nanoid": "0.2.0",
+    "through2": "^2.0.3"
   },
   "devDependencies": {
     "@octetstream/eslint-config": "2.0.2",

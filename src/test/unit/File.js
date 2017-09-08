@@ -113,18 +113,19 @@ test("Should write file to disk", async t => {
   const noop = spy()
 
   function createWriteStream(path, options) {
-    const stream = new Writable(path, options)
-
     const bufs = []
     let len = 0
 
-    // eslint-disable-next-line
-    stream._write = function(ch, enc, cb) {
+    function write(ch, enc, cb) {
       bufs.push(ch)
       len += ch.length
 
       noop(path, Buffer.concat(bufs, len), cb)
     }
+
+    const stream = new Writable({
+      ...options, write
+    })
 
     return stream
   }
@@ -161,10 +162,11 @@ test("Should write file to given path", async t => {
   const noop = spy()
 
   function createWriteStream(path, options) {
-    const stream = new Writable(path, options)
+    const write = () => void noop(path)
 
-    // eslint-disable-next-line
-    stream._write = () => void noop(path)
+    const stream = new Writable({
+      ...options, write
+    })
 
     return stream
   }

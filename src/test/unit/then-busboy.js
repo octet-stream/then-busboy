@@ -137,9 +137,9 @@ test("Should just receive file", async t => {
 
   const {body} = await request(mockServer(busboy)())
     .post("/")
-    .attach("file", __filename)
+    .attach("file", "/usr/share/dict/words")
 
-  const expected = String(await readFile(__filename))
+  const expected = String(await readFile("/usr/share/dict/words"))
 
   t.is(body.file, expected)
 })
