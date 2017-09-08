@@ -11,7 +11,7 @@ const onFile = (options, cb) => (fieldname, stream, filename, enc, mime) => {
       read() { /* noop */ }
     })
 
-    const onData = ch => contents.push(ch)
+    const onData = ch => void contents.push(ch)
 
     const onEnd = () => {
       contents.push(null)
