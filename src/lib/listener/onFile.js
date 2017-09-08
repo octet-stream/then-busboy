@@ -24,6 +24,7 @@ const onFile = (options, cb) => (fieldname, stream, filename, enc, mime) => {
     }
 
     stream
+      .on("error", cb)
       .on("data", onData)
       .on("end", onEnd)
   } catch (err) {
