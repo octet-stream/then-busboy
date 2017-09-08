@@ -85,7 +85,7 @@ Read a file from contents stream.
 
 Write a file content to disk. Optionally you can set a custom path.
 
-  - **string** path
+  - **string** path – a path where File content should be saved. (default – [File#path](#path))
 
 By default, file will be saved in system temporary directory `os.tmpdir()`.
 You can take this path from [path](#path) property.
