@@ -14,11 +14,13 @@ import mockServer from "test/helper/mockServer"
 test("Should return a Promise", t => {
   t.plan(1)
 
-  const res = busboy(mockRequest)
+  const req = mockRequest()
+
+  const res = busboy(req)
 
   t.true(res instanceof Promise)
 
-  mockRequest.emit("end")
+  req.emit("end")
 })
 
 test("Should just resolve a plain object", async t => {
@@ -205,7 +207,7 @@ test(
     t.plan(3)
 
     const err = await t.throws(
-      busboy(mockRequest, "totally not a plain object")
+      busboy(mockRequest(), "totally not a plain object")
     )
 
     t.true(err instanceof TypeError)

@@ -3,9 +3,13 @@ import {IncomingMessage} from "http"
 
 import mockHeader from "./mockHeader"
 
-const mockRequest = new IncomingMessage(new Socket({readeble: true}))
+function mockRequest() {
+  const req = new IncomingMessage(new Socket({readeble: true}))
 
-mockRequest.headers = {"content-type": mockHeader}
-mockRequest.method = "POST"
+  req.headers["content-type"] = mockHeader
+  req.method = "POST"
+
+  return req
+}
 
 export default mockRequest
