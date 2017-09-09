@@ -6,18 +6,18 @@ const entries = Object.entries
  * Walk throght listeners object and execute given function on each of them.
  *
  * @param {object} listeners
- * @param {function} callee
+ * @param {function} fn
  *
  * @api private
  */
-function mapListeners(listeners, callee) {
+function mapListeners(listeners, fn) {
   const res = {}
 
-  for (const [key, fn] of entries(listeners)) {
+  for (const [key, value] of entries(listeners)) {
     const name = key.startsWith("on") ? leadToLowerCase(key.slice(2)) : key
 
     if (!(["error", "end"].includes(name))) {
-      res[name] = callee(fn, name)
+      res[name] = fn(value, name)
     }
   }
 

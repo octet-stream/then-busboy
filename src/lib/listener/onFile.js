@@ -3,6 +3,11 @@ import {Readable} from "stream"
 import File from "lib/File"
 import getFieldPath from "lib/util/getFieldPath"
 
+/**
+ * Get a file from part and push it to entries array
+ *
+ * @api private
+ */
 const onFile = (options, cb) => (fieldname, stream, filename, enc, mime) => {
   try {
     const path = getFieldPath(fieldname)
@@ -13,7 +18,7 @@ const onFile = (options, cb) => (fieldname, stream, filename, enc, mime) => {
 
     const onData = ch => void contents.push(ch)
 
-    const onEnd = () => {
+    function onEnd() {
       contents.push(null)
 
       const file = new File({filename, contents, enc, mime})
@@ -23,6 +28,8 @@ const onFile = (options, cb) => (fieldname, stream, filename, enc, mime) => {
       ])
     }
 
+    // Busboy doesn't emit an "end" event while file stream have not been read.
+    // So, we just read the stream and push it to the other [Readable] one. o_O
     stream
       .on("error", cb)
       .on("data", onData)

@@ -26,6 +26,8 @@ const defaultOptions = {
  * @param {object} [options = {}] - then-busboy options
  *
  * @return {Promise<Object>}
+ *
+ * @api public
  */
 const thenBusboy = (request, options = {}) => new Promise((resolve, reject) => {
   invariant(

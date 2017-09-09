@@ -12,9 +12,10 @@ const format = /^([^[\]\n]+)(\[[^[\]]+\])*$/
  *
  * @param {string} fieldname
  *
- * @return {array<string|number>}
+ * @return {Array<string|number>}
  *
- * @throws {TypeError}
+ * @throws {TypeError} when given fieldname is not a string
+ * @throws {Error} on unexpected fieldname format
  *
  * @example
  *

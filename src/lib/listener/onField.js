@@ -1,6 +1,9 @@
 import getFieldPath from "lib/util/getFieldPath"
 import restoreType from "lib/util/restoreType"
 
+/**
+ * @api private
+ */
 const onField = (options, cb) => (fieldname, value) => {
   try {
     const path = getFieldPath(fieldname)

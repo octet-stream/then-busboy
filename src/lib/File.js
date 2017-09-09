@@ -18,6 +18,8 @@ class File {
    * @param {object} options
    *
    * @constructor
+   *
+   * @api private
    */
   constructor(options) {
     invariant(

@@ -6,6 +6,8 @@ import isNaN from "lib/util/isNaN"
  * @param {any} value
  *
  * @return {any}
+ *
+ * @api private
  */
 function restoreType(value) {
   if (value === "null") {
