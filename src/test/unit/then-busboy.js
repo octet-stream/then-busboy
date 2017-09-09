@@ -235,7 +235,7 @@ test("Should response an error on incorrect field name format", async t => {
 
   const format = "some[totally[]][wrong]format[foo]"
 
-  const {error} = await request(mockServer(busboy)({foo: "foo"}))
+  const {error} = await request(mockServer(busboy)())
     .post("/")
     .field(format, "You shall not pass!")
 
@@ -249,7 +249,7 @@ test(
 
     const format = "some[totally[]][wrong]format[foo]"
 
-    const {error} = await request(mockServer(busboy)({foo: "foo"}))
+    const {error} = await request(mockServer(busboy)())
       .post("/")
       .attach(format, __filename)
 
