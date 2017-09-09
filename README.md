@@ -7,7 +7,7 @@ Promise-based wrapper around Busboy. Process multipart/form-data content and ret
 [![Build Status](https://travis-ci.org/octet-stream/then-busboy.svg?branch=master)](https://travis-ci.org/octet-stream/then-busboy)
 [![Code Coverage](https://codecov.io/github/octet-stream/then-busboy/coverage.svg?branch=master)](https://codecov.io/github/octet-stream/then-busboy?branch=master)
 
-Note: The current documentation is for 2.x versions of then-busboy.
+Note: The current documentation is for 2.x version of then-busboy.
 If you're looking for a previous version, check out the [1.x branch](https://github.com/octet-stream/then-busboy/tree/1.x).
 
 ## Installation
