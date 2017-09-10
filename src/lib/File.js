@@ -69,6 +69,9 @@ class File {
     this.__enc = enc
 
     this.__path = join(tmpdir(), `${nanoid()}_${this.filename}`)
+
+    this.toJSON = this.toJSON.bind(this)
+    this.inspect = this.inspect.bind(this)
   }
 
   get contents() {
@@ -140,8 +143,13 @@ class File {
       .pipe(createWriteStream(path))
   })
 
+  // TODO: Add a test for this method.
+  toJSON() {
+    return this.inspect()
+  }
+
   inspect() {
-    return `[File: ${this.filename}]`
+    return `<File: ${this.filename}>`
   }
 }
 

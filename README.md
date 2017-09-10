@@ -12,7 +12,7 @@ If you're looking for a previous version, check out the [1.x branch](https://git
 
 ## Installation
 
-Use can install `then-busboy` from npm:
+You can install `then-busboy` from npm:
 
 ```bash
 npm install --save then-busboy
@@ -146,7 +146,8 @@ then-busboy returns the following object:
 
 ## Usage
 
-Just import `then-busboy` and pass `request` object as first argument.
+then-busboy works fine even with a pure Node.js HTTP server.
+Let's take a look to the tiny example:
 
 ```js
 import busboy from "then-busboy"
@@ -156,6 +157,8 @@ function handler(req, res) {
   // Get result from then-busboy
   function onFulfilled(body) {
     res.writeHead("Content-Type", "application/json")
+
+    // You can also do something with each file and a field.
     res.end(JSON.stringify(body))
   }
 
@@ -173,8 +176,8 @@ createServer(handler)
   .listen(2319, () => console.log("Server started on http://localhost:2319"))
 ```
 
-`then-busboy` always returns a Promise, so you can use it with
-[asynchronous function](https://github.com/tc39/ecmascript-asyncawait) syntax.
+**Note:** You can use [asynchronous function](https://github.com/tc39/ecmascript-asyncawait) syntax,
+because then-busboy always returns a Promise.
 
 So, let's see on a simple middleware example for Koa.js:
 

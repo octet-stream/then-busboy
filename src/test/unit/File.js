@@ -55,7 +55,41 @@ test("Should return a correct string on inspect call", t => {
     enc: "utf-8"
   })
 
-  t.is(file.inspect(), `[File: ${filename}]`)
+  t.is(file.inspect(), `<File: ${filename}>`)
+})
+
+test("Should return a correct string on toJSON call", t => {
+  t.plan(1)
+
+  const contents = createReadStream(__filename)
+
+  const filename = basename(__filename)
+
+  const file = new File({
+    contents,
+    filename,
+    mime: "text/javascript",
+    enc: "utf-8"
+  })
+
+  t.is(file.inspect(), `<File: ${filename}>`)
+})
+
+test("Should return a correct string on JSON.stringify call", t => {
+  t.plan(1)
+
+  const contents = createReadStream(__filename)
+
+  const filename = basename(__filename)
+
+  const file = new File({
+    contents,
+    filename,
+    mime: "text/javascript",
+    enc: "utf-8"
+  })
+
+  t.is(JSON.stringify({file}), "{\"file\":\"<File: File.js>\"}")
 })
 
 test("Should have a correct default path", t => {
