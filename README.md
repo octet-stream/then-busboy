@@ -208,7 +208,7 @@ This function may help you if you're wanted to do something
 with received files automatically.
 
 ```js
-import {isFile} from "then-busboy"
+import busboy, {isFile} from "then-busboy"
 
 let body = await busboy(request)
 
