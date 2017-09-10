@@ -182,7 +182,7 @@ const multipart = () => async (ctx, next) => {
     return await next()
   }
 
-  if (!ctx.is("multipart/form-data")) {
+  if (ctx.is("multipart/form-data") === false) {
     return await next()
   }
 
