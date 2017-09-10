@@ -175,7 +175,7 @@ So, let's see on a simple middleware example for Koa.js:
 ```js
 import busboy from "then-busboy"
 
-const toLowerCase = string => String.prototype.toLowerCase.call(null, string)
+const toLowerCase = string => String.prototype.toLowerCase.call(string)
 
 const multipart = () => async (ctx, next) => {
   if (toLowerCase(ctx.method) !== "post") {
