@@ -178,7 +178,7 @@ import busboy from "then-busboy"
 const toLowerCase = string => String.prototype.toLowerCase.call(string)
 
 const multipart = () => async (ctx, next) => {
-  if (["post", "put"].includes(toLowerCase(ctx.method))) {
+  if (["post", "put"].includes(toLowerCase(ctx.method)) === false) {
     return await next()
   }
 
