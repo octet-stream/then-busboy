@@ -90,9 +90,11 @@ Write a file content to disk. Optionally you can set a custom path.
 By default, file will be saved in system temporary directory `os.tmpdir()`.
 You can take this path from [path](#path) property.
 
-### isFile(value) -> boolean
+### `isFile(value) -> boolean`
 
 Check if given value is a File instance.
+
+  - **any** value – a value to verify
 
 ## Fields format
 
@@ -179,6 +181,9 @@ So, let's see on a simple middleware example for Koa.js:
 ```js
 import busboy from "then-busboy"
 
+// Not a real module. Just for an example.
+import deep from "whatever-deep-async-map"
+
 const toLowerCase = string => String.prototype.toLowerCase.call(string)
 
 const multipart = () => async (ctx, next) => {
@@ -196,6 +201,25 @@ const multipart = () => async (ctx, next) => {
 }
 
 export default multipart
+```
+
+You can check if some value is an instance of File class using `isFile`.
+This function may help you if you're wanted to do something
+with received files automatically.
+
+```js
+import {isFile} from "then-busboy"
+
+let body = await busboy(request)
+
+// Just use this function while you're walking through each field
+body = await deepMapObject(
+  body, async val => (
+    isFile(val)
+      ? await processFile(val) // do somethig with a file
+      : val // ...or just return a field
+  )
+)
 ```
 
 ## License
