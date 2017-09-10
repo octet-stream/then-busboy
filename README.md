@@ -212,10 +212,9 @@ import {isFile} from "then-busboy"
 
 let body = await busboy(request)
 
-// Just use this function while you're walking through each field
 body = await deepMapObject(
   body, async val => (
-    isFile(val)
+    isFile(val) // check if current element is a File
       ? await processFile(val) // do somethig with a file
       : val // ...or just return a field
   )
