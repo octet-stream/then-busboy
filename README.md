@@ -90,6 +90,10 @@ Write a file content to disk. Optionally you can set a custom path.
 By default, file will be saved in system temporary directory `os.tmpdir()`.
 You can take this path from [path](#path) property.
 
+### isFile(value) -> boolean
+
+Check if given value is a File instance.
+
 ## Fields format
 
 then-busboy can restore an object structure from form-data field names
