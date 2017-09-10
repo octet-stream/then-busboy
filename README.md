@@ -148,9 +148,9 @@ import {createServer} from "http"
 
 function handler(req, res) {
   // Get result from then-busboy
-  function onFulfilled(data) {
+  function onFulfilled(body) {
     res.writeHead("Content-Type", "application/json")
-    res.end(JSON.stringify(data))
+    res.end(JSON.stringify(body))
   }
 
   // Handle errors
@@ -168,11 +168,30 @@ createServer(handler)
 ```
 
 `then-busboy` always returns a Promise, so you can use it with
-[asynchronous function](https://github.com/tc39/ecmascript-asyncawait) syntax:
+[asynchronous function](https://github.com/tc39/ecmascript-asyncawait) syntax.
+
+So, let's see on a simple middleware example for Koa.js:
 
 ```js
-// Some of your awesome code with async workflow...
-const data = await busboy(req)
+import busboy from "then-busboy"
+
+const toLowerCase = string => String.prototype.toLowerCase.call(null, string)
+
+const multipart = () => async (ctx, next) => {
+  if (toLowerCase(ctx.method) !== "post") {
+    return await next()
+  }
+
+  if (!ctx.is("multipart/form-data")) {
+    return await next()
+  }
+
+  ctx.request.body = await busboy(ctx.req)
+
+  await next()
+}
+
+export default multipart
 ```
 
 ## License
