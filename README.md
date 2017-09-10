@@ -45,27 +45,27 @@ yarn add then-busboy
 
 ##### `contents`
 
-A file contents Readable stream.
+File contents Readable stream.
 
 ##### `stream`
 
-An alias for [contents](#contents)
+Alias for [contents](#contents)
 
 ##### `filename`
 
-A full name of the file
+Full name of the file
 
 ##### `basename`
 
-A name of the file without extension
+Name of the file without extension
 
 ##### `extname`
 
-A file extension
+File extension
 
 ##### `mime`
 
-A file mime type
+File mime type
 
 ##### `enc`
 
