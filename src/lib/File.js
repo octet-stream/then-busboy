@@ -138,12 +138,11 @@ class File {
     }
 
     this.contents
-      .on("erorr", reject)
+      .on("error", reject)
       .on("end", resolve)
       .pipe(createWriteStream(path))
   })
 
-  // TODO: Add a test for this method.
   toJSON() {
     return this.inspect()
   }
