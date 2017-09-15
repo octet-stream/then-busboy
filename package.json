@@ -32,7 +32,7 @@
     "codecov": "node_modules/.bin/codecov",
     "ci": "yarn make:ci && yarn coverage && yarn report:ci && yarn codecov",
     "precommit": "yarn lint",
-    "prepush": "yarn make:ci && yarn coverage"
+    "prepush": "yarn make:ci && yarn coverage && yarn cleanup && yarn make"
   },
   "author": "Nick K. <nick.kruchinin@gmail.com>",
   "license": "MIT",
