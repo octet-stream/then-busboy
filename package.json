@@ -24,7 +24,7 @@
     "make:ci": "node_modules/.bin/babel src -s -d .",
     "m": "yarn make",
     "w": "yarn watch",
-    "cleanup": "node_modules/.bin/rimraf lib test",
+    "cleanup": "node_modules/.bin/rimraf lib test main.js main.js.map",
     "test": "node_modules/.bin/ava",
     "coverage": "node_modules/.bin/nyc npm run test",
     "report": "yarn make:ci && yarn coverage && node_modules/.bin/nyc report --reporter=html yarn test && yarn cleanup && yarn make",
