@@ -13,7 +13,7 @@ import objectFromEntries from "lib/util/objectFromEntries"
 
 const initializers = readListeners(join(__dirname, "listener"))
 
-const defaultOptions = {
+const defaults = {
   restoreTypes: true
 }
 
@@ -28,6 +28,29 @@ const defaultOptions = {
  * @return {Promise<Object>}
  *
  * @api public
+ *
+ * @example
+ *
+ * // Simplest Koa.js middleware:
+ * import busboy from "then-busboy"
+ *
+ * const toLowerCase = string => String.prototype.toLowerCase.call(string)
+ *
+ * const multipart = () => async (ctx, next) => {
+ *   if (["post", "put"].includes(toLowerCase(ctx.method)) === false) {
+ *     return await next()
+ *   }
+ *
+ *   if (ctx.is("multipart/form-data") === false) {
+ *     return await next()
+ *   }
+ *
+ *   ctx.request.body = await busboy(ctx.req)
+ *
+ *   await next()
+ * }
+ *
+ * export default multipart
  */
 const thenBusboy = (request, options = {}) => new Promise((resolve, reject) => {
   invariant(
@@ -41,7 +64,7 @@ const thenBusboy = (request, options = {}) => new Promise((resolve, reject) => {
     "Options should be an object. Received %s", getType(options)
   )
 
-  options = merge({}, defaultOptions, options)
+  options = merge({}, defaults, options)
 
   const headers = request.headers
 
