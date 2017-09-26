@@ -1,14 +1,14 @@
-import {createWriteStream} from "fs"
-import {isString} from "util"
 import {tmpdir} from "os"
+import {createWriteStream} from "fs"
 import {join, basename, extname} from "path"
 
 import Stream from "stream"
 
-import isPlainObject from "lodash/isPlainObject"
 import invariant from "@octetstream/invariant"
 import nanoid from "nanoid"
 
+import isPlainObject from "lib/util/isPlainObject"
+import isString from "lib/util/isString"
 import getType from "lib/util/getType"
 
 class File {

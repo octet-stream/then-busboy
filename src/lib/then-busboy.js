@@ -2,12 +2,12 @@ import {IncomingMessage} from "http"
 import {join} from "path"
 
 import invariant from "@octetstream/invariant"
-import isPlainObject from "lodash.isplainobject"
-import merge from "lodash.merge"
 import Busboy from "busboy"
+import merge from "lodash.merge"
 
 import map from "lib/util/mapListeners"
 import getType from "lib/util/getType"
+import isPlainObject from "lib/util/isPlainObject"
 import readListeners from "lib/util/readListeners"
 import objectFromEntries from "lib/util/objectFromEntries"
 
