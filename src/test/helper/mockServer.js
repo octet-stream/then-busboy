@@ -1,7 +1,6 @@
 import {createServer} from "http"
 
-import isPlainObject from "lodash.isplainobject"
-
+import isPlainObject from "lib/util/isPlainObject"
 import isFile from "lib/util/isFile"
 
 const isArray = Array.isArray

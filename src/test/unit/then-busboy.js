@@ -1,10 +1,10 @@
 import test from "ava"
 
-import isPlainObject from "lodash.isplainobject"
 import request from "supertest"
 
 import {readFile} from "promise-fs"
 
+import isPlainObject from "lib/util/isPlainObject"
 import busboy from "lib/then-busboy"
 
 import mockHeader from "test/helper/mockHeader"
