@@ -25,7 +25,7 @@ const defaults = {
  * @param {http.IncomingMessage} request – HTTP request object
  * @param {object} [options = {}] - then-busboy options
  *
- * @return {Promise<Object>}
+ * @return {Promise<object>}
  *
  * @api public
  *

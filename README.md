@@ -26,7 +26,7 @@ yarn add then-busboy
 
 ## API
 
-### `busboy(request[, options]) -> Promise<Object>`
+### `busboy(request[, options]) -> Promise<object>`
 
 + **http.IncomingMessage** request – HTTP request object
 + **object** options
