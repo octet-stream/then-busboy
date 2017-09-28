@@ -1,12 +1,15 @@
 import getType from "lib/util/getType"
 
+const getPrototype = Object.getPrototypeOf
+const objectCtorString = Object.toString()
+
 // Based ob lodash/isPlainObject
 function isPlainObject(val) {
   if (getType(val) !== "object") {
     return false
   }
 
-  const pp = Object.getPrototypeOf(val)
+  const pp = getPrototype(val)
 
   if (pp === null || pp === void 0) {
     return true
@@ -14,7 +17,7 @@ function isPlainObject(val) {
 
   const Ctor = pp.constructor && pp.constructor.toString()
 
-  return Ctor === Object.toString()
+  return Ctor === objectCtorString
 }
 
 export default isPlainObject
