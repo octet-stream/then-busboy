@@ -64,13 +64,11 @@ const thenBusboy = (request, options = {}) => new Promise((resolve, reject) => {
     "Options should be an object. Received %s", getType(options)
   )
 
-  options = merge({}, defaults, options)
-
   const headers = request.headers
 
-  const busboy = new Busboy(request, {
-    ...options, headers
-  })
+  options = merge({}, defaults, options, {headers})
+
+  const busboy = new Busboy(request, options)
 
   const entries = []
 
