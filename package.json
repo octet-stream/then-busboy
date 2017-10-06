@@ -1,6 +1,6 @@
 {
   "name": "then-busboy",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Promise-based wrapper around Busboy. Process multipart/form-data content and returns it as a single object.",
   "repository": "octet-stream/then-busboy",
   "main": "./main.js",
