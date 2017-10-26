@@ -1,6 +1,6 @@
 import test from "ava"
 
-import isPlainObject from "lib/util/isPlainObject"
+import isPlainObject from "../../../lib/util/isPlainObject"
 
 test("Should return a boolean value", t => {
   t.plan(3)

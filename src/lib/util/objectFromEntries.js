@@ -1,4 +1,4 @@
-import isNaN from "lib/util/isNaN"
+import isNaN from "./isNaN"
 
 /**
  * @param {array|object} target

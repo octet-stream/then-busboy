@@ -5,11 +5,11 @@ import invariant from "@octetstream/invariant"
 import Busboy from "busboy"
 import merge from "lodash.merge"
 
-import map from "lib/util/mapListeners"
-import getType from "lib/util/getType"
-import isPlainObject from "lib/util/isPlainObject"
-import readListeners from "lib/util/readListeners"
-import objectFromEntries from "lib/util/objectFromEntries"
+import map from "./util/mapListeners"
+import getType from "./util/getType"
+import isPlainObject from "./util/isPlainObject"
+import readListeners from "./util/readListeners"
+import objectFromEntries from "./util/objectFromEntries"
 
 const initializers = readListeners(join(__dirname, "listener"))
 

@@ -12,7 +12,7 @@ import nanoid from "nanoid"
 import {spy} from "sinon"
 import {readFile} from "promise-fs"
 
-import File from "lib/File"
+import File from "../../lib/File"
 
 test("Should create a File with given stream and metadata", t => {
   t.plan(8)

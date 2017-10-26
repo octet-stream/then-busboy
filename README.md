@@ -26,20 +26,20 @@ yarn add then-busboy
 
 ## API
 
-### `busboy(request[, options]) -> Promise<object>`
+### `busboy(request[, options]) -> {Promise<object>}`
 
 + **http.IncomingMessage** request – HTTP request object
-+ **object** options
-  - **boolean** restoreTypes – allow to restore type of each value (default – true)
++ **{object}** [options = {}]
+  - **{boolean}** restoreTypes – allow to restore type of each value (default – true)
   - more information about busboy options [here](https://github.com/mscdex/busboy#busboy-methods).
 
 ### `constructor File(options)`
 
-  - **object** options – an object that contains the following information about file:
-    + **stream.Readable** contents – the content of the file.
-    + **string** filename – name of the file (with an extension)
-    + **string** env – encoding of the file content
-    + **string** mime – file mime type
+  - **{object}** options – an object that contains the following information about file:
+    + **{stream.Readable}** contents – the content of the file.
+    + **{string}** filename – name of the file (with an extension)
+    + **{string}** env – encoding of the file content
+    + **{string}** mime – file mime type
 
 #### Instance properties
 
@@ -49,7 +49,7 @@ File contents Readable stream.
 
 ##### `stream`
 
-Alias for [contents](#contents)
+Alias for [File#contents](#contents)
 
 ##### `filename`
 
@@ -85,16 +85,16 @@ Read a file from contents stream.
 
 Write a file content to disk. Optionally you can set a custom path.
 
-  - **string** path – a path where File content should be saved. (default – [File#path](#path))
+  - **{string}** [path = [File#path](#path)] – a path where File content should be saved. (default – [File#path](#path))
 
 By default, file will be saved in system temporary directory `os.tmpdir()`.
 You can take this path from [path](#path) property.
 
-### `isFile(value) -> boolean`
+### `isFile(value) -> {boolean}`
 
 Check if given value is a File instance.
 
-  - **any** value – a value to verify
+  - **{any}** value – a value to verify
 
 ## Fields format
 

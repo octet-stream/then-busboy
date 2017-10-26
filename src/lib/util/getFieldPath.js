@@ -1,9 +1,9 @@
 
 import invariant from "@octetstream/invariant"
 
-import isString from "lib/util/isString"
-import getType from "lib/util/getType"
-import isNaN from "lib/util/isNaN"
+import isString from "./isString"
+import getType from "./getType"
+import isNaN from "./isNaN"
 
 const format = /^([^[\]\n]+)(\[[^[\]]+\])*$/
 

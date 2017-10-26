@@ -1,6 +1,6 @@
 import test from "ava"
 
-import restoreType from "lib/util/restoreType"
+import restoreType from "../../../lib/util/restoreType"
 
 test("Should restore null value", t => {
   t.plan(1)

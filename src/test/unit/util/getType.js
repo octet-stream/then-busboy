@@ -2,7 +2,7 @@ import {isString} from "util"
 
 import test from "ava"
 
-import getType from "lib/util/getType"
+import getType from "../../../lib/util/getType"
 
 test("Should return a string with type name", t => {
   t.plan(2)

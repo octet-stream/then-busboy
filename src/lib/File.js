@@ -7,9 +7,9 @@ import Stream from "stream"
 import invariant from "@octetstream/invariant"
 import nanoid from "nanoid"
 
-import isPlainObject from "lib/util/isPlainObject"
-import isString from "lib/util/isString"
-import getType from "lib/util/getType"
+import isPlainObject from "./util/isPlainObject"
+import isString from "./util/isString"
+import getType from "./util/getType"
 
 class File {
   /**

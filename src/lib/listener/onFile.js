@@ -1,7 +1,7 @@
 import {Readable} from "stream"
 
-import File from "lib/File"
-import getFieldPath from "lib/util/getFieldPath"
+import File from "../File"
+import getFieldPath from "../util/getFieldPath"
 
 /**
  * Get a file from part and push it to entries array

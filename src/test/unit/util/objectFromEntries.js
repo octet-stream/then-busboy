@@ -1,8 +1,8 @@
 import test from "ava"
 
-import isPlainObject from "lib/util/isPlainObject"
+import isPlainObject from "../../../lib/util/isPlainObject"
 
-import objectFromEntries from "lib/util/objectFromEntries"
+import objectFromEntries from "../../../lib/util/objectFromEntries"
 
 test("Should always return a plain object when array given", t => {
   t.plan(1)

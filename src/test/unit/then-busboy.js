@@ -4,12 +4,12 @@ import request from "supertest"
 
 import {readFile} from "promise-fs"
 
-import isPlainObject from "lib/util/isPlainObject"
-import busboy from "lib/then-busboy"
+import isPlainObject from "../../lib/util/isPlainObject"
+import busboy from "../../lib/then-busboy"
 
-import mockHeader from "test/helper/mockHeader"
-import mockRequest from "test/helper/mockRequest"
-import mockServer from "test/helper/mockServer"
+import mockHeader from "../helper/mockHeader"
+import mockRequest from "../helper/mockRequest"
+import mockServer from "../helper/mockServer"
 
 test("Should return a Promise", t => {
   t.plan(1)

@@ -1,4 +1,4 @@
-import getType from "lib/util/getType"
+import getType from "./getType"
 
 const isString = val => getType(val) === "string"
 

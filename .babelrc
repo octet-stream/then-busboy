@@ -3,10 +3,6 @@
     "transform-es2015-modules-commonjs",
     "transform-export-extensions",
     "transform-class-properties",
-    "transform-object-rest-spread",
-    ["module-resolver", {
-      "cwd": "src",
-      "root": ["."]
-    }]
+    "transform-object-rest-spread"
   ]
 }

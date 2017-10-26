@@ -1,5 +1,5 @@
-import getFieldPath from "lib/util/getFieldPath"
-import restoreType from "lib/util/restoreType"
+import getFieldPath from "../util/getFieldPath"
+import restoreType from "../util/restoreType"
 
 /**
  * @api private
