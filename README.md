@@ -77,11 +77,11 @@ Default path of the file
 
 #### Instance methods
 
-##### `read() => Promise<Buffer>`
+##### `read() => {Promise<Buffer>}`
 
 Read a file from contents stream.
 
-##### `write([path]) => Promise<void>`
+##### `write([path]) => {Promise<void>}`
 
 Write a file content to disk. Optionally you can set a custom path.
 
