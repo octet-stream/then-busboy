@@ -38,11 +38,11 @@ test("Should return lowercased string for all basic types", t => {
 test("Should return as-is name for non-basic types", t => {
   t.plan(3)
 
-  const asyncFn = getType(async () => { await Promise.resolve(0) })
   const genFn = getType(function* () { yield 0 })
+  const set = getType(new Set())
   const map = getType(new Map())
 
-  t.is(asyncFn, "AsyncFunction")
   t.is(genFn, "GeneratorFunction")
+  t.is(set, "Set")
   t.is(map, "Map")
 })
