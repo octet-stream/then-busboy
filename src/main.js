@@ -1,2 +1,2 @@
-export default from "./lib/then-busboy" // eslint-disable-line
-export isFile from "./lib/isFile" // eslint-disable-line
+module.exports = require("./lib/then-busboy").default
+module.exports.isFile = require("./lib/isFile").default

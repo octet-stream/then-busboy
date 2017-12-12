@@ -1,9 +1,7 @@
-lib/**/*.js
-test/**/*.js
+/lib/**/*.js
+/test/**/*.js
 
-main.js
-
-!src/main.js
+/main.js
 
 node_modules
 coverage
@@ -14,3 +12,4 @@ coverage.lcov
 npm-debug.log
 *.map
 *.dockerfile
+yarn-error.log
