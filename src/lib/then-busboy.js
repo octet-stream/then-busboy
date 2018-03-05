@@ -77,13 +77,13 @@ const thenBusboy = (request, options = {}) => new Promise((resolve, reject) => {
   const listeners = map(initializers, fn => fn(options, fulfill))
 
   // Set listeners before starting
-  void map(listeners, (fn, name) => busboy.on(name, fn))
+  map(listeners, (fn, name) => busboy.on(name, fn))
 
   function onFinish() {
-    // Cleanup listeners
-    void map(listeners, (fn, name) => busboy.removeListener(name, fn))
-
     try {
+      // Cleanup listeners
+      map(listeners, (fn, name) => busboy.removeListener(name, fn))
+
       return resolve(objectFromEntries(entries))
     } catch (err) {
       return reject(err)

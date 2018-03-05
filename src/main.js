@@ -1,2 +1,2 @@
-module.exports = require("./lib/then-busboy").default
-module.exports.isFile = require("./lib/isFile").default
+export {default} from "./lib/then-busboy"
+export {default as isFile} from "./lib/isFile"
