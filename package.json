@@ -20,7 +20,8 @@
     "body"
   ],
   "scripts": {
-    "lint": "node_modules/.bin/eslint src",
+    "eslint": "node_modules/.bin/eslint src",
+    "staged": "node_modules/.bin/lint-staged",
     "make": "node_modules/.bin/babel src -d .",
     "watch": "node_modules/.bin/babel src -w -d .",
     "make:ci": "node_modules/.bin/babel src -s -d .",
@@ -33,7 +34,7 @@
     "report:ci": "node_modules/.bin/nyc report --reporter=lcov yarn test",
     "codecov": "node_modules/.bin/codecov",
     "ci": "yarn make:ci && yarn coverage && yarn report:ci && yarn codecov",
-    "precommit": "yarn lint",
+    "precommit": "yarn staged",
     "prepush": "yarn make:ci && yarn coverage && yarn cleanup && yarn make"
   },
   "ava": {
