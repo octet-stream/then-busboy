@@ -12,5 +12,12 @@
         "src/test/unit/**/*.js"
       ]
     }]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".mjs"]
+      }
+    }
   }
 }
