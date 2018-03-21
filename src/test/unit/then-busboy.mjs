@@ -217,23 +217,6 @@ test(
   }
 )
 
-test(
-  "Should response with an error when assignin a property to primitive value",
-  async t => {
-    t.plan(1)
-
-    const {error} = await request(mockServer(busboy)())
-      .post("/")
-      .field("root[0]", "whatever")
-      .field("root[0][nop]", "oops")
-
-    t.is(
-      error.text,
-      "TypeError: Cannot create property 'nop' on string 'whatever'"
-    )
-  }
-)
-
 test("Should response an error on incorrect field name format", async t => {
   t.plan(1)
 

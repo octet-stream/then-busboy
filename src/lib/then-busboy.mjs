@@ -1,6 +1,7 @@
 import {IncomingMessage} from "http"
 import {join} from "path"
 
+import objectDeepFromEntries from "object-deep-from-entries"
 import invariant from "@octetstream/invariant"
 import Busboy from "busboy"
 import merge from "lodash.merge"
@@ -9,7 +10,6 @@ import map from "./util/mapListeners"
 import getType from "./util/getType"
 import isPlainObject from "./util/isPlainObject"
 import readListeners from "./util/readListeners"
-import objectFromEntries from "./util/objectFromEntries"
 
 const initializers = readListeners(join(__dirname, "listener"))
 
@@ -84,7 +84,7 @@ const thenBusboy = (request, options = {}) => new Promise((resolve, reject) => {
       // Cleanup listeners
       map(listeners, (fn, name) => busboy.removeListener(name, fn))
 
-      return resolve(objectFromEntries(entries))
+      return resolve(objectDeepFromEntries(entries))
     } catch (err) {
       return reject(err)
     }

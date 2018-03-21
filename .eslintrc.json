@@ -9,7 +9,7 @@
   "rules": {
     "ava/no-ignored-test-files": ["error", {
       "files": [
-        "src/test/unit/**/*.js"
+        "src/test/unit/**/*.mjs"
       ]
     }]
   },
