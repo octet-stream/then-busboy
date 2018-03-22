@@ -3859,9 +3859,9 @@ object-copy@^0.1.0:
     define-property "^0.2.5"
     kind-of "^3.0.3"
 
-object-deep-from-entries@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/object-deep-from-entries/-/object-deep-from-entries-0.2.0.tgz#fd753e027694cba093c083633262a1dea465c61f"
+object-deep-from-entries@0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/object-deep-from-entries/-/object-deep-from-entries-0.3.0.tgz#b15f9035daa2dfe22f91763873eba820a06c3211"
 
 object-visit@^1.0.0:
   version "1.0.1"

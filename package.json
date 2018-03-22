@@ -55,7 +55,7 @@
     "busboy": "0.2.14",
     "lodash.merge": "4.6.1",
     "nanoid": "1.0.2",
-    "object-deep-from-entries": "^0.2.0"
+    "object-deep-from-entries": "0.3.0"
   },
   "devDependencies": {
     "@babel/cli": "7.0.0-beta.42",
