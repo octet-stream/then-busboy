@@ -113,13 +113,19 @@ class File {
   read = () => new Promise((resolve, reject) => {
     const data = []
 
-    const onData = ch => void data.push(ch)
+    const onReadable = () => {
+      const ch = this.contents.read()
+
+      if (ch != null) {
+        data.push(ch)
+      }
+    }
 
     const onEnd = () => resolve(Buffer.concat(data))
 
     this.contents
       .on("error", reject)
-      .on("data", onData)
+      .on("readable", onReadable)
       .on("end", onEnd)
   })
 
