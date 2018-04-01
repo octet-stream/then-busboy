@@ -1,11 +1,9 @@
-import {tmpdir} from "os"
 import {createWriteStream} from "fs"
-import {join, basename, extname} from "path"
+import {basename, extname} from "path"
 
 import Stream from "stream"
 
 import invariant from "@octetstream/invariant"
-import nanoid from "nanoid"
 
 import isPlainObject from "./util/isPlainObject"
 import isString from "./util/isString"
