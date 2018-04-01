@@ -142,6 +142,11 @@ class File {
       path = this.path
     }
 
+    // Prevent writing file to its source
+    if (this.contents.path === path) {
+      return resolve()
+    }
+
     this.contents
       .on("error", reject)
       .on("end", resolve)
