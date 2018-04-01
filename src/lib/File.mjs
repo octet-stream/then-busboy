@@ -62,13 +62,14 @@ class File {
 
     this.__contents = contents
     this.__stream = contents
-    this.__filename = filename
+    this.__filename = basename(filename)
     this.__basename = base
     this.__extname = ext
     this.__mime = mime
     this.__enc = enc
 
-    this.__path = join(tmpdir(), `${nanoid()}_${this.filename}`)
+    // this.__path = join(tmpdir(), `${nanoid()}_${this.filename}`)
+    this.__path = filename
 
     this.toJSON = this.toJSON.bind(this)
     this.inspect = this.inspect.bind(this)

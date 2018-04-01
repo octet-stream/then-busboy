@@ -92,34 +92,6 @@ test("Should return a correct string on JSON.stringify call", t => {
   t.is(JSON.stringify({file}), "{\"file\":\"<File: File.js>\"}")
 })
 
-test("Should have a correct default path", t => {
-  const spyo = spy(nanoid)
-  const spydir = spy(tmpdir)
-
-  const MockedFile = pq("../../lib/File", {
-    nanoid: spyo,
-    os: {
-      tmpdir: spydir
-    }
-  }).default
-
-  const contents = createReadStream(__filename)
-  const filename = basename(__filename)
-
-  const file = new MockedFile({
-    contents,
-    filename,
-    mime: "text/javascript",
-    enc: "utf-8"
-  })
-
-  const expected = join(
-    spydir.lastCall.returnValue, `${spyo.lastCall.returnValue}_${filename}`
-  )
-
-  t.is(file.path, expected)
-})
-
 test("Should correctly read given file from Stream", async t => {
   t.plan(1)
 

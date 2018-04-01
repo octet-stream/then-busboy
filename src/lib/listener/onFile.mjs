@@ -1,4 +1,8 @@
-import {Readable} from "stream"
+import {createReadStream, createWriteStream} from "fs"
+import {join} from "path"
+import {tmpdir} from "os"
+
+import nanoid from "nanoid"
 
 import File from "../File"
 import getFieldPath from "../util/getFieldPath"
@@ -12,28 +16,19 @@ const onFile = (options, cb) => (fieldname, stream, filename, enc, mime) => {
   try {
     const path = getFieldPath(fieldname)
 
-    const contents = new Readable({
-      read() { /* noop */ }
-    })
-
-    const onData = ch => void contents.push(ch)
+    filename = join(tmpdir(), `${nanoid()}__${filename}`)
 
     function onEnd() {
-      contents.push(null)
+      const contents = createReadStream(filename)
 
       const file = new File({filename, contents, enc, mime})
 
-      cb(null, [
-        path, file
-      ])
+      cb(null, [path, file])
     }
 
-    // Busboy doesn't emit an "end" event while file stream have not been read.
-    // So, we just read the stream and push it to the other [Readable] one. o_O
     stream
-      .on("error", cb)
-      .on("data", onData)
       .on("end", onEnd)
+      .pipe(createWriteStream(filename))
   } catch (err) {
     return cb(err)
   }

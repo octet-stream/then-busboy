@@ -84,7 +84,7 @@ const thenBusboy = (request, options = {}) => new Promise((resolve, reject) => {
       // Cleanup listeners
       map(listeners, (fn, name) => busboy.removeListener(name, fn))
 
-      return resolve(objectDeepFromEntries(entries))
+      resolve(objectDeepFromEntries(entries))
     } catch (err) {
       return reject(err)
     }
