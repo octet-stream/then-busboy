@@ -6,6 +6,7 @@ src
 .editorconfig
 .DS_Store
 .gitignore
+.lintstagedrc
 .nyc_output
 .travis.yml
 nodemon.json
