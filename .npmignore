@@ -18,3 +18,5 @@ yarn.lock
 *.dockerfile
 
 code-of-conduct.md
+
+/test
