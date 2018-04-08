@@ -112,9 +112,9 @@ rootField[nestedField] = "I beat Twilight Sparkle and all I got was this lousy t
 
 then-busboy will return the this object for an example from above:
 
-```json
+```json5
 {
-  "rootField": {
+  rootField: {
     "nestedField": "I beat Twilight Sparkle and all I got was this lousy t-shirt"
   }
 }
@@ -131,12 +131,12 @@ message[attachments][0][description] = "Here is a description of the file"
 
 then-busboy returns the following object:
 
-```json
+```json5
 {
-  "message": {
-    "sender": "John Doe",
-    "text": "Some whatever text message.",
-    "attachments": [
+  message: {
+    sender: "John Doe",
+    text: "Some whatever text message.",
+    attachments: [
       {
         "file": File, // this field will be represended as a File instance
         "description": "Here is a description of the file"
@@ -173,7 +173,7 @@ Collections allowed too:
 
 Then you will receive:
 
-```json
+```json5
 [
   {
     firstName: "John",
