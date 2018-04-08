@@ -157,6 +157,10 @@ class File {
     return this.inspect()
   }
 
+  toString() {
+    return this.inspect()
+  }
+
   inspect() {
     return `<File: ${this.filename}>`
   }
