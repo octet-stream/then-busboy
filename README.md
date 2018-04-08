@@ -26,12 +26,22 @@ yarn add then-busboy
 
 ## API
 
+**Public**
+
 ### `busboy(request[, options]) -> {Promise<object>}`
 
 + **http.IncomingMessage** request – HTTP request object
 + **{object}** [options = {}]
   - **{boolean}** restoreTypes – allow to restore type of each value (default – true)
   - more information about busboy options [here](https://github.com/mscdex/busboy#busboy-methods).
+
+### `isFile(value) -> {boolean}`
+
+Check if given value is a File instance.
+
+  - **{any}** value – a value to verify
+
+**Private**
 
 ### `constructor File(options)`
 
@@ -90,12 +100,6 @@ Write a file content to disk. Optionally you can set a custom path.
 By default, file will be saved in system temporary directory `os.tmpdir()`.
 You can take this path from [path](#path) property.
 
-### `isFile(value) -> {boolean}`
-
-Check if given value is a File instance.
-
-  - **{any}** value – a value to verify
-
 ## Fields format
 
 then-busboy can restore an object structure from form-data field names
@@ -108,10 +112,10 @@ rootField[nestedField] = "I beat Twilight Sparkle and all I got was this lousy t
 
 then-busboy will return the this object for an example from above:
 
-```js
+```json
 {
-  rootField: {
-    nestedField: "I beat Twilight Sparkle and all I got was this lousy t-shirt"
+  "rootField": {
+    "nestedField": "I beat Twilight Sparkle and all I got was this lousy t-shirt"
   }
 }
 ```
@@ -127,22 +131,71 @@ message[attachments][0][description] = "Here is a description of the file"
 
 then-busboy returns the following object:
 
-```js
+```json
 {
-  message: {
-    sender: "John Doe",
-    text: "Some whatever text message.",
-    attachments: [
+  "message": {
+    "sender": "John Doe",
+    "text": "Some whatever text message.",
+    "attachments": [
       {
-        file: File, // this field will be represended as a File instance
-        description: "Here is a description of the file"
+        "file": File, // this field will be represended as a File instance
+        "description": "Here is a description of the file"
       }
     ]
   }
 }
 ```
 
-**Note that there is no an implementation for array as *root field* for now!**
+Collections allowed too:
+
+```
+0[firstName] = "John"
+0[lastName] = "Doe"
+0[dob][day] = "1"
+0[dob][month] = "Jan."
+0[dob][year] = "1989"
+0[skills][0] = "Node.js"
+0[skills][1] = "CoffeeScript"
+0[skills][2] = "JavaScript"
+0[skills][3] = "Babel"
+1[firstName] = "Max"
+1[lastName] = "Doe"
+1[dob][day] = "12"
+1[dob][month] = "Mar."
+1[dob][year] = "1992"
+1[skills][0] = "Python"
+1[skills][1] = "Flask"
+1[skills][2] = "JavaScript"
+1[skills][3] = "Babel"
+1[skills][4] = "React"
+1[skills][5] = "Redux"
+```
+
+Then you will receive:
+
+```json
+[
+  {
+    firstName: "John",
+    lastName: "Doe",
+    dob: {
+      day: 1,
+      month: "Jan.",
+      year: 1989
+    },
+    skills: ["Node.js", "CoffeeScript", "JavaScript", "Babel"]
+  }, {
+    firstName: "Max",
+    lastName: "Doe",
+    dob: {
+      day: 12,
+      month: "Mar.",
+      year: 1992
+    },
+    skills: ["Python", "Flask", "JavaScript", "Babel", "React", "Redux"]
+  }
+]
+```
 
 ## Usage
 
