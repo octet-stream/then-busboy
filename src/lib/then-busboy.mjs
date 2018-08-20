@@ -91,8 +91,8 @@ const thenBusboy = (request, options = {}) => new Promise((resolve, reject) => {
   }
 
   busboy
-    .on("error", reject)
-    .on("finish", onFinish)
+    .once("error", reject)
+    .once("finish", onFinish)
 
   request.pipe(busboy)
 })
