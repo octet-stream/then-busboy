@@ -5,7 +5,27 @@ import isString from "./isString"
 import getType from "./getType"
 import isNaN from "./isNaN"
 
-const format = /^([^[\]\n]+)(\[[^[\]]+\])*$/
+// Matched square braces notation paths
+const BRACKET_EXPR = /^([^0-9[\]\n\r\t]+|\[[0-9]+\])(\[[^[\]]+\])*$/
+
+// Matches dot notation paths
+const DOT_EXPR = /^([^.[\] ]+)(?:\.([^.[\] ]+))*?$/
+
+const fromDotNotation = string => string.split(".")
+
+function fromSquareBracesNotation(string) {
+  const res = []
+
+  for (const element of string.split("[")) {
+    if (element) {
+      const key = element.endsWith("]") ? element.slice(0, -1) : element
+
+      res.push(isNaN(key) ? key : Number(key))
+    }
+  }
+
+  return res
+}
 
 /**
  * Get a fild path
@@ -26,8 +46,6 @@ const format = /^([^[\]\n]+)(\[[^[\]]+\])*$/
  * getFieldPath("42") // -> [42]
  */
 function getFieldPath(fieldname) {
-  const res = []
-
   invariant(
     !isString(fieldname), TypeError,
     "Field name should be a string. Received %s", getType(fieldname)
@@ -35,18 +53,16 @@ function getFieldPath(fieldname) {
 
   invariant(!fieldname, "Field name cannot be empty.")
 
-  invariant(
-    !format.test(fieldname),
-    "Unexpected name format of the field: %s", fieldname
-  )
-
-  for (const element of fieldname.split("[")) {
-    const key = element.endsWith("]") ? element.slice(0, -1) : element
-
-    res.push(isNaN(key) ? key : Number(key))
+  switch (true) {
+    case BRACKET_EXPR.test(fieldname):
+      return fromSquareBracesNotation(fieldname)
+    case DOT_EXPR.test(fieldname):
+      return fromDotNotation(fieldname)
+    default:
+      return invariant(
+        true, "Unexpected name format of the field: %s", fieldname
+      )
   }
-
-  return res
 }
 
 export default getFieldPath
