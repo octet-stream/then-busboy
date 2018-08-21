@@ -8,9 +8,11 @@ import isNaN from "./isNaN"
 const BRACKET_EXPR = /^([^0-9[\]\n\r\t]+|\[[0-9]+\])(\[[^[\]]+\])*$/
 
 // Matches dot notation paths
-const DOT_EXPR = /^([$a-a_][a-z0-9_$]*)(?:\.([$a-z_][a-z0-9_$]*))*?$/i
+const DOT_EXPR = /^([a-z0-9_$]*)(?:\.([a-z0-9_$]*))*?$/i
 
-const fromDotNotation = string => string.split(".")
+const fromDotNotation = string => (
+  string.split(".").map(key => isNaN(key) ? key : Number(key))
+)
 
 function fromSquareBracesNotation(string) {
   const res = []
@@ -57,10 +59,10 @@ function getFieldPath(fieldname) {
   invariant(!fieldname, "Field name cannot be empty.")
 
   switch (true) {
-    case BRACKET_EXPR.test(fieldname):
-      return fromSquareBracesNotation(fieldname)
     case DOT_EXPR.test(fieldname):
       return fromDotNotation(fieldname)
+    case BRACKET_EXPR.test(fieldname):
+      return fromSquareBracesNotation(fieldname)
     default:
       return invariant(
         true, "Unexpected field name format: %s", fieldname
