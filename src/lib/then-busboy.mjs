@@ -79,9 +79,16 @@ const thenBusboy = (request, options = {}) => new Promise((resolve, reject) => {
   // Set listeners before starting
   map(listeners, (fn, name) => busboy.on(name, fn))
 
+  function onError(error) {
+    // Cleanup listeners before rejecting
+    map(listeners, (fn, name) => busboy.removeListener(name, fn))
+
+    reject(error)
+  }
+
   function onFinish() {
     try {
-      // Cleanup listeners
+      // Cleanup listeners before resolving
       map(listeners, (fn, name) => busboy.removeListener(name, fn))
 
       resolve(objectDeepFromEntries(entries))
@@ -91,7 +98,7 @@ const thenBusboy = (request, options = {}) => new Promise((resolve, reject) => {
   }
 
   busboy
-    .once("error", reject)
+    .once("error", onError)
     .once("finish", onFinish)
 
   request.pipe(busboy)

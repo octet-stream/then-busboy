@@ -16,9 +16,7 @@ function mapListeners(listeners, fn) {
   for (const [key, value] of entries(listeners)) {
     const name = key.startsWith("on") ? leadToLowerCase(key.slice(2)) : key
 
-    if (!(["error", "end"].includes(name))) {
-      res[name] = fn(value, name)
-    }
+    res[name] = fn(value, name)
   }
 
   return res
