@@ -1,4 +1,3 @@
-
 import invariant from "@octetstream/invariant"
 
 import isString from "./isString"
@@ -9,7 +8,7 @@ import isNaN from "./isNaN"
 const BRACKET_EXPR = /^([^0-9[\]\n\r\t]+|\[[0-9]+\])(\[[^[\]]+\])*$/
 
 // Matches dot notation paths
-const DOT_EXPR = /^([^.[\] ]+)(?:\.([^.[\] ]+))*?$/
+const DOT_EXPR = /^([$a-a_][a-z0-9_$]*)(?:\.([$a-z_][a-z0-9_$]*))*?$/i
 
 const fromDotNotation = string => string.split(".")
 
@@ -43,7 +42,11 @@ function fromSquareBracesNotation(string) {
  *
  * getFieldPath("foo") // -> ["foo"]
  *
- * getFieldPath("42") // -> [42]
+ * getFieldPath("[42]") // -> [42]
+ *
+ * getFieldPath("root.nested") // -> ["root", "nested"]
+ *
+ * getFieldPath("someCollection.0.name") // -> ["someCollection", 0, "name"]
  */
 function getFieldPath(fieldname) {
   invariant(
@@ -60,7 +63,7 @@ function getFieldPath(fieldname) {
       return fromDotNotation(fieldname)
     default:
       return invariant(
-        true, "Unexpected name format of the field: %s", fieldname
+        true, "Unexpected field name format: %s", fieldname
       )
   }
 }

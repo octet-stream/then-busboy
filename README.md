@@ -103,19 +103,58 @@ You can take this path from [path](#path) property.
 ## Fields format
 
 then-busboy can restore an object structure from form-data field names
-if you will follow the special naming format with bracket notation:
+if you will follow the naming formats with dots or square brackets:
+
+### Dot notation
+
+This notation looks similarly to JS object properties accessiong syntax:
 
 ```
-# Note that the following example is just a pseudo code
-rootField[nestedField] = "I beat Twilight Sparkle and all I got was this lousy t-shirt"
+# Flat objects looks the same in both notations
+# Note that the following notation examples is just a pseudo code
+name = "John Doe"
+age = 25
 ```
 
 then-busboy will return the this object for an example from above:
 
 ```json5
 {
+  name: "John Doe",
+
+  // By default, non-string values will be converted to their initial type.
+  // So, "25" -> 35, "null" -> null, "false" -> false etc.
+  age: 25
+}
+```
+
+For deep objects or collections, use dot or brackets as a separator.
+**But don't mix them.**
+
+```
+  rootField.nestedField = "Some text here"
+```
+
+```json5
+ {
   rootField: {
-    "nestedField": "I beat Twilight Sparkle and all I got was this lousy t-shirt"
+    nestedField: "Some text here"
+  }
+ }
+```
+
+### Bracket notation
+
+```
+rootField[nestedField] = "I beat Twilight Sparkle and all I got was this lousy t-shirt"
+```
+
+Becomes
+
+```json5
+{
+  rootField: {
+    nestedField: "I beat Twilight Sparkle and all I got was this lousy t-shirt"
   }
 }
 ```
