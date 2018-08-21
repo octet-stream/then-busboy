@@ -123,7 +123,7 @@ then-busboy will return the this object for an example from above:
   name: "John Doe",
 
   // By default, non-string values will be converted to their initial type.
-  // So, "25" -> 35, "null" -> null, "false" -> false etc.
+  // So, "25" -> 25, "null" -> null, "false" -> false etc.
   age: 25
 }
 ```
