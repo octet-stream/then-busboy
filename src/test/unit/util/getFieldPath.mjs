@@ -60,5 +60,5 @@ test("Should throw a TypeError on unallowed field name format", t => {
 
   const err = t.throws(trap)
 
-  t.is(err.message, `Unexpected name format of the field: ${format}`)
+  t.is(err.message, `Unexpected field name format: ${format}`)
 })

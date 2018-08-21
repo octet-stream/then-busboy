@@ -278,7 +278,7 @@ test("Should response an error on incorrect field name format", async t => {
     .post("/")
     .field(format, "You shall not pass!")
 
-  t.is(error.text, `Error: Unexpected name format of the field: ${format}`)
+  t.is(error.text, `Error: Unexpected field name format: ${format}`)
 })
 
 test(
@@ -292,6 +292,6 @@ test(
       .post("/")
       .attach(format, __filename)
 
-    t.is(error.text, `Error: Unexpected name format of the field: ${format}`)
+    t.is(error.text, `Error: Unexpected field name format: ${format}`)
   }
 )
