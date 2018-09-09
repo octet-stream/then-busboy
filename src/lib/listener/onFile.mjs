@@ -27,7 +27,8 @@ const onFile = (options, cb) => (fieldname, stream, filename, enc, mime) => {
     }
 
     stream
-      .on("end", onEnd)
+      .once("error", cb)
+      .once("end", onEnd)
       .pipe(createWriteStream(filename))
   } catch (err) {
     return cb(err)
