@@ -13,6 +13,13 @@ import readListeners from "./util/readListeners"
 import apply from "./util/selfInvokingClass"
 import proxy from "./util/proxy"
 
+const initializers = readListeners(join(__dirname, "listener"))
+
+const defaults = {
+  restoreTypes: true
+}
+
+
 /**
  * Promise-based wrapper around Busboy. Inspired by async-busboy.
  * You'll get exactly what you've sent from your client app.
@@ -48,14 +55,6 @@ import proxy from "./util/proxy"
  *
  * export default multipart
  */
-
-const initializers = readListeners(join(__dirname, "listener"))
-
-const defaults = {
-  restoreTypes: true
-}
-
-
 class ThenBusboy {
   constructor(request, options = {}) {
     invariant(
