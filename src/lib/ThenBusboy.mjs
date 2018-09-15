@@ -87,16 +87,16 @@ class ThenBusboy {
     const listeners = map(initializers, fn => fn(this.__options, fulfill))
 
     // Set listeners before starting
-    map(listeners, (fn, name) => this.__busboy.on(name, fn))
+    map(listeners, (fn, name) => busboy.on(name, fn))
 
-    function onError(error) {
+    const onError = error => {
       // Cleanup listeners before rejecting
       map(listeners, (fn, name) => busboy.removeListener(name, fn))
 
       reject(error)
     }
 
-    function onFinish() {
+    const onFinish = () => {
       try {
         resolve(objectDeepFromEntries(this.__entries))
       } catch (err) {

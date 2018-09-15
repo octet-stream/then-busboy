@@ -5,7 +5,7 @@ import request from "supertest"
 import {readFile} from "promise-fs"
 
 import isPlainObject from "../../lib/util/isPlainObject"
-import busboy from "../../lib/then-busboy"
+import busboy from "../../lib/ThenBusboy"
 
 import mockHeader from "../helper/mockHeader"
 import mockRequest from "../helper/mockRequest"
@@ -16,7 +16,7 @@ test("Should return a Promise", t => {
 
   const req = mockRequest()
 
-  const res = busboy(req)
+  const res = busboy(req).exec()
 
   t.true(res instanceof Promise)
 
@@ -228,29 +228,33 @@ test("Should receive files and fields at the same time", async t => {
   t.deepEqual(body, expected)
 })
 
-test("Should throw an error when no request object given", async t => {
+test("Should throw an error when no request object given", t => {
   t.plan(3)
 
-  const err = await t.throws(busboy())
+  const trap = () => busboy()
+
+  const err = t.throws(trap)
 
   t.true(err instanceof TypeError)
   t.is(
     err.message,
-    "Request should be an instanceof http.IncomingMessage. Received undefined"
+    "Request should be an instance of http.IncomingMessage. Received undefined"
   )
 })
 
 test(
   "Should throw an error when request object is not an http.IncomingMessage",
-  async t => {
+  t => {
     t.plan(3)
 
-    const err = await t.throws(busboy({}))
+    const trap = () => busboy({})
+
+    const err = t.throws(trap)
 
     t.true(err instanceof TypeError)
     t.is(
       err.message,
-      "Request should be an instanceof http.IncomingMessage. Received object"
+      "Request should be an instance of http.IncomingMessage. Received object"
     )
   }
 )
@@ -260,9 +264,9 @@ test(
   async t => {
     t.plan(3)
 
-    const err = await t.throws(
-      busboy(mockRequest(), "totally not a plain object")
-    )
+    const trap = () => busboy(mockRequest(), "totally not a plain object")
+
+    const err = await t.throws(trap)
 
     t.true(err instanceof TypeError)
     t.is(err.message, "Options should be an object. Received string")
