@@ -19,7 +19,6 @@ const defaults = {
   restoreTypes: true
 }
 
-
 /**
  * Promise-based wrapper around Busboy. Inspired by async-busboy.
  * You'll get exactly what you've sent from your client app.
