@@ -59,6 +59,13 @@ class ThenBusboy {
     this.__request = request
     this.__options = options
     this.__entries = []
+    this.__onField = []
+  }
+
+  onField = fn => {
+    this.__onField.push(fn)
+
+    return this
   }
 
   exec = () => new Promise((resolve, reject) => {
