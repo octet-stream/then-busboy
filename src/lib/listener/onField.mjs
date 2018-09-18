@@ -4,16 +4,18 @@ import restoreType from "../util/restoreType"
 /**
  * @api private
  */
-const onField = (options, cb) => (fieldname, value) => {
-  try {
-    const path = getFieldPath(fieldname)
+const onField = (options, cb) => (
+  (fieldname, value, fieldnameTruncated, valueTruncated, enc, mime) => {
+    try {
+      const path = getFieldPath(fieldname)
 
-    cb(null, [
-      path, options.restoreTypes ? restoreType(value) : value
-    ])
-  } catch (err) {
-    return cb(err)
+      cb(null, [
+        path, options.restoreTypes ? restoreType(value) : value
+      ])
+    } catch (err) {
+      cb(err)
+    }
   }
-}
+)
 
 export default onField

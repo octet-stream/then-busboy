@@ -228,12 +228,10 @@ test("Should receive files and fields at the same time", async t => {
   t.deepEqual(body, expected)
 })
 
-test("Should throw an error when no request object given", t => {
+test("Should throw an error when no request object given", async t => {
   t.plan(3)
 
-  const trap = () => busboy()
-
-  const err = t.throws(trap)
+  const err = await t.throws(busboy().exec())
 
   t.true(err instanceof TypeError)
   t.is(
@@ -244,12 +242,10 @@ test("Should throw an error when no request object given", t => {
 
 test(
   "Should throw an error when request object is not an http.IncomingMessage",
-  t => {
+  async t => {
     t.plan(3)
 
-    const trap = () => busboy({})
-
-    const err = t.throws(trap)
+    const err = await t.throws(busboy({}).exec())
 
     t.true(err instanceof TypeError)
     t.is(
@@ -264,9 +260,9 @@ test(
   async t => {
     t.plan(3)
 
-    const trap = () => busboy(mockRequest(), "totally not a plain object")
-
-    const err = await t.throws(trap)
+    const err = await t.throws(
+      busboy(mockRequest(), "totally not a plain object").exec()
+    )
 
     t.true(err instanceof TypeError)
     t.is(err.message, "Options should be an object. Received string")

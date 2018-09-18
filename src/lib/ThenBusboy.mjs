@@ -56,34 +56,36 @@ const defaults = {
  */
 class ThenBusboy {
   constructor(request, options = {}) {
-    invariant(
-      !(request instanceof IncomingMessage), TypeError,
-
-      "Request should be an instance of http.IncomingMessage. Received %s",
-      getType(request)
-    )
-
-    invariant(
-      !isPlainObject(options), TypeError,
-
-      "Options should be an object. Received %s", getType(options)
-    )
-
-    options = merge({}, defaults, options, {headers: request.headers})
-
     this.__request = request
     this.__options = options
     this.__entries = []
   }
 
   exec = () => new Promise((resolve, reject) => {
-    const busboy = new Busboy(this.__request, this.__options)
+    invariant(
+      !(this.__request instanceof IncomingMessage), TypeError,
+
+      "Request should be an instance of http.IncomingMessage. Received %s",
+      getType(this.__request)
+    )
+
+    invariant(
+      !isPlainObject(this.__options), TypeError,
+
+      "Options should be an object. Received %s", getType(this.__options)
+    )
+
+    const options = merge(
+      {}, defaults, this.__options, {headers: this.__request.headers}
+    )
+
+    const busboy = new Busboy(this.__request, options)
 
     const fulfill = (err, entry) => (
       err ? reject(err) : this.__entries.push(entry)
     )
 
-    const listeners = map(initializers, fn => fn(this.__options, fulfill))
+    const listeners = map(initializers, fn => fn(options, fulfill))
 
     // Set listeners before starting
     map(listeners, (fn, name) => busboy.on(name, fn))
