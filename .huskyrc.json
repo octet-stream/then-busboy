@@ -1,0 +1,6 @@
+{
+  "hooks": {
+    "pre-commit": "yarn staged",
+    "pre-push": "yarn make:ci && yarn coverage && yarn cleanup && yarn make"
+  }
+}

@@ -1,7 +1,7 @@
 import {IncomingMessage} from "http"
 import {join} from "path"
 
-import objectDeepFromEntries from "object-deep-from-entries"
+import fromEntries from "object-deep-from-entries"
 import invariant from "@octetstream/invariant"
 import Busboy from "busboy"
 import merge from "lodash.merge"
@@ -12,6 +12,7 @@ import isPlainObject from "./util/isPlainObject"
 import readListeners from "./util/readListeners"
 import apply from "./util/selfInvokingClass"
 import proxy from "./util/proxy"
+import waterfall from "./util/arrayRunWaterfall"
 
 const initializers = readListeners(join(__dirname, "listener"))
 
@@ -56,10 +57,12 @@ const defaults = {
  */
 class ThenBusboy {
   constructor(request, options = {}) {
-    this.__request = request
-    this.__options = options
+    this.__busboy = null
+    this.__listeners = []
     this.__entries = []
     this.__onField = []
+    this.__request = request
+    this.__options = options
   }
 
   onField = fn => {
@@ -105,13 +108,23 @@ class ThenBusboy {
     }
 
     const onFinish = () => {
+      // try {
+      //   resolve(objectDeepFromEntries(this.__entries))
+      // } catch (err) {
+      //   reject(err)
+      // } finally {
+      //   // Cleanup listeners before resolving
+      //   map(listeners, (fn, name) => busboy.removeListener(name, fn))
+      // }
+
       try {
-        resolve(objectDeepFromEntries(this.__entries))
-      } catch (err) {
-        reject(err)
-      } finally {
         // Cleanup listeners before resolving
         map(listeners, (fn, name) => busboy.removeListener(name, fn))
+
+        waterfall([fromEntries, resolve], this.__entries)
+          .catch(reject)
+      } catch (err) {
+        reject(err)
       }
     }
 
