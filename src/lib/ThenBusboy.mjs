@@ -1,20 +1,14 @@
 import {IncomingMessage} from "http"
-import {join} from "path"
 
-import fromEntries from "object-deep-from-entries"
-import invariant from "@octetstream/invariant"
-import Busboy from "busboy"
 import merge from "lodash.merge"
 
-import map from "./util/mapListeners"
 import getType from "./util/getType"
 import isPlainObject from "./util/isPlainObject"
-import readListeners from "./util/readListeners"
-import apply from "./util/selfInvokingClass"
-import proxy from "./util/proxy"
+import partial from "./util/partial"
 import waterfall from "./util/arrayRunWaterfall"
 
-const initializers = readListeners(join(__dirname, "listener"))
+import runBusboy from "./flow/runBusboy"
+import createBody from "./flow/createBody"
 
 const defaults = {
   restoreTypes: true
@@ -57,87 +51,64 @@ const defaults = {
  */
 class ThenBusboy {
   constructor(request, options = {}) {
-    this.__busboy = null
-    this.__listeners = []
-    this.__entries = []
-    this.__onField = []
     this.__request = request
     this.__options = options
+    this.__entries = []
+
+    /**
+     * @prop {Array<{kind: "any" | "field" | "file", fn: Function<Promise>}>}
+     */
+    this.__tasks = []
   }
 
-  onField = fn => {
-    this.__onField.push(fn)
+  map = (fn, ctx = null) => {
+    this.__tasks.push({kind: "any", fn, ctx})
 
     return this
   }
 
-  exec = () => new Promise((resolve, reject) => {
-    invariant(
-      !(this.__request instanceof IncomingMessage), TypeError,
+  mapFields = (fn, ctx) => {
+    this.__tasks.push({kind: "fields", fn, ctx})
 
-      "Request should be an instance of http.IncomingMessage. Received %s",
-      getType(this.__request)
-    )
+    return this
+  }
 
-    invariant(
-      !isPlainObject(this.__options), TypeError,
+  mapFiles = (fn, ctx) => {
+    this.__tasks.push({kind: "files", fn, ctx})
 
-      "Options should be an object. Received %s", getType(this.__options)
-    )
+    return this
+  }
 
-    const options = merge(
-      {}, defaults, this.__options, {headers: this.__request.headers}
-    )
+  __run = () => new Promise((resolve, reject) => {
+    const options = merge({}, defaults, this.__options, {
+      headers: this.__request.headers
+    })
 
-    const busboy = new Busboy(this.__request, options)
-
-    const fulfill = (err, entry) => (
-      err ? reject(err) : this.__entries.push(entry)
-    )
-
-    const listeners = map(initializers, fn => fn(options, fulfill))
-
-    // Set listeners before starting
-    map(listeners, (fn, name) => busboy.on(name, fn))
-
-    const onError = error => {
-      // Cleanup listeners before rejecting
-      map(listeners, (fn, name) => busboy.removeListener(name, fn))
-
-      reject(error)
-    }
-
-    const onFinish = () => {
-      // try {
-      //   resolve(objectDeepFromEntries(this.__entries))
-      // } catch (err) {
-      //   reject(err)
-      // } finally {
-      //   // Cleanup listeners before resolving
-      //   map(listeners, (fn, name) => busboy.removeListener(name, fn))
-      // }
-
-      try {
-        // Cleanup listeners before resolving
-        map(listeners, (fn, name) => busboy.removeListener(name, fn))
-
-        waterfall([fromEntries, resolve], this.__entries)
-          .catch(reject)
-      } catch (err) {
-        reject(err)
-      }
-    }
-
-    busboy
-      .once("error", onError)
-      .once("finish", onFinish)
-
-    this.__request.pipe(busboy)
+    waterfall([
+      partial(runBusboy, [this.__request, options]), createBody, resolve
+    ]).catch(reject)
   })
 
-  then = (onFulfilled, onRejected) => this.exec().then(onFulfilled, onRejected)
+  then = (onFulfilled, onRejected) => this.__run().then(onFulfilled, onRejected)
 
-  catch = onRejected => this.exec().catch(onRejected)
+  catch = onRejected => this.__run().catch(onRejected)
 }
 
-export default proxy({apply})(ThenBusboy)
+function thenBusboy(request, options = {}) {
+  if (!(request instanceof IncomingMessage)) {
+    return Promise.reject(new TypeError(
+      "Request must be an instance of http.IncomingMessage. " +
+      `Received ${getType(request)}`
+    ))
+  }
+
+  if (!isPlainObject(options)) {
+    return Promise.reject(new TypeError(
+      `Options must be an object. Received ${getType(options)}`
+    ))
+  }
+
+  return new ThenBusboy(request, options)
+}
+
+export default thenBusboy

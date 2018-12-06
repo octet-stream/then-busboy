@@ -1,5 +1,5 @@
 import getFieldPath from "../util/getFieldPath"
-import convert from "../util/restoreType"
+import cast from "../util/restoreType"
 
 /**
  * @api private
@@ -9,7 +9,16 @@ const onField = ({restoreTypes}, cb) => (
     try {
       const path = getFieldPath(fieldname)
 
-      cb(null, [path, restoreTypes ? convert(value) : value])
+      value = restoreTypes ? cast(value) : value
+
+      cb(null, [path, {
+        fieldname,
+        value,
+        fieldnameTruncated,
+        valueTruncated,
+        enc,
+        mime
+      }])
     } catch (err) {
       cb(err)
     }

@@ -11,14 +11,15 @@ import mockHeader from "../helper/mockHeader"
 import mockRequest from "../helper/mockRequest"
 import mockServer from "../helper/mockServer"
 
-test("Should return a Promise", t => {
-  t.plan(1)
+test("Should be thenable", t => {
+  t.plan(2)
 
   const req = mockRequest()
 
-  const res = busboy(req).exec()
+  const instance = busboy(req)
 
-  t.true(res instanceof Promise)
+  t.is(typeof instance.then, "function")
+  t.is(typeof instance.catch, "function")
 
   req.emit("end")
 })
@@ -231,12 +232,12 @@ test("Should receive files and fields at the same time", async t => {
 test("Should throw an error when no request object given", async t => {
   t.plan(3)
 
-  const err = await t.throws(busboy().exec())
+  const err = await t.throws(busboy())
 
   t.true(err instanceof TypeError)
   t.is(
     err.message,
-    "Request should be an instance of http.IncomingMessage. Received undefined"
+    "Request must be an instance of http.IncomingMessage. Received undefined"
   )
 })
 
@@ -245,12 +246,12 @@ test(
   async t => {
     t.plan(3)
 
-    const err = await t.throws(busboy({}).exec())
+    const err = await t.throws(busboy({}))
 
     t.true(err instanceof TypeError)
     t.is(
       err.message,
-      "Request should be an instance of http.IncomingMessage. Received object"
+      "Request must be an instance of http.IncomingMessage. Received object"
     )
   }
 )
@@ -261,11 +262,11 @@ test(
     t.plan(3)
 
     const err = await t.throws(
-      busboy(mockRequest(), "totally not a plain object").exec()
+      busboy(mockRequest(), "totally not a plain object")
     )
 
     t.true(err instanceof TypeError)
-    t.is(err.message, "Options should be an object. Received string")
+    t.is(err.message, "Options must be an object. Received string")
   }
 )
 
