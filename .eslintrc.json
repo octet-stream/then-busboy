@@ -11,6 +11,11 @@
       "files": [
         "src/test/unit/**/*.mjs"
       ]
+    }],
+    "operator-linebreak": ["error", "after", {
+      "overrides": {
+        "+": "ignore"
+      }
     }]
   },
   "settings": {
