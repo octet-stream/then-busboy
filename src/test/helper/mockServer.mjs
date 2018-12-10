@@ -22,6 +22,8 @@ async function mapFiles(obj, cb, ctx) {
 }
 
 const mockServer = busboy => options => createServer((req, res) => {
+  const toJSON = body => body.json()
+
   const onData = data => mapFiles(
     data, async value => isFile(value) ? String(await value.read()) : value
   )
@@ -37,7 +39,7 @@ const mockServer = busboy => options => createServer((req, res) => {
     res.end(String(err))
   }
 
-  busboy(req, options).then(onData).then(onFulfilled, onRejected)
+  busboy(req, options).then(toJSON).then(onData).then(onFulfilled, onRejected)
 })
 
 export default mockServer

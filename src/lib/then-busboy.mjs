@@ -2,13 +2,11 @@ import {IncomingMessage} from "http"
 
 import merge from "lodash.merge"
 
+import Body from "./Body"
+import exec from "./execBusboy"
 import getType from "./util/getType"
 import isPlainObject from "./util/isPlainObject"
-import partial from "./util/partial"
 import waterfall from "./util/arrayRunWaterfall"
-
-import runBusboy from "./flow/runBusboy"
-import createBody from "./flow/createBody"
 
 const defaults = {
   restoreTypes: true
@@ -22,7 +20,7 @@ const defaults = {
  * @param {http.IncomingMessage} request – HTTP request object
  * @param {object} [options = {}] - then-busboy options
  *
- * @return {Promise<object>}
+ * @return {Promise<Body>}
  *
  * @api public
  *
@@ -49,51 +47,6 @@ const defaults = {
  *
  * export default multipart
  */
-class ThenBusboy {
-  constructor(request, options = {}) {
-    this.__request = request
-    this.__options = options
-    this.__entries = []
-
-    /**
-     * @prop {Array<{kind: "any" | "field" | "file", fn: Function<Promise>}>}
-     */
-    this.__tasks = []
-  }
-
-  map = (fn, ctx = null) => {
-    this.__tasks.push({kind: "any", fn, ctx})
-
-    return this
-  }
-
-  mapFields = (fn, ctx) => {
-    this.__tasks.push({kind: "fields", fn, ctx})
-
-    return this
-  }
-
-  mapFiles = (fn, ctx) => {
-    this.__tasks.push({kind: "files", fn, ctx})
-
-    return this
-  }
-
-  __run = () => new Promise((resolve, reject) => {
-    const options = merge({}, defaults, this.__options, {
-      headers: this.__request.headers
-    })
-
-    waterfall([
-      partial(runBusboy, [this.__request, options]), createBody, resolve
-    ]).catch(reject)
-  })
-
-  then = (onFulfilled, onRejected) => this.__run().then(onFulfilled, onRejected)
-
-  catch = onRejected => this.__run().catch(onRejected)
-}
-
 function thenBusboy(request, options = {}) {
   if (!(request instanceof IncomingMessage)) {
     return Promise.reject(new TypeError(
@@ -108,7 +61,11 @@ function thenBusboy(request, options = {}) {
     ))
   }
 
-  return new ThenBusboy(request, options)
+  options = merge({}, defaults, options, {headers: request.headers})
+
+  const params = {request, options}
+
+  return waterfall([exec, Body.from], params)
 }
 
 export default thenBusboy
