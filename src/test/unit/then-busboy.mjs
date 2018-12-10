@@ -5,21 +5,18 @@ import request from "supertest"
 import {readFile} from "promise-fs"
 
 import isPlainObject from "../../lib/util/isPlainObject"
-import busboy from "../../lib/ThenBusboy"
+import busboy from "../../lib/then-busboy"
 
 import mockHeader from "../helper/mockHeader"
 import mockRequest from "../helper/mockRequest"
 import mockServer from "../helper/mockServer"
 
-test("Should be thenable", t => {
-  t.plan(2)
+test("Should return a promise", t => {
+  t.plan(1)
 
   const req = mockRequest()
 
-  const instance = busboy(req)
-
-  t.is(typeof instance.then, "function")
-  t.is(typeof instance.catch, "function")
+  t.true(busboy(req) instanceof Promise)
 
   req.emit("end")
 })

@@ -14,7 +14,9 @@
     }],
     "operator-linebreak": ["error", "after", {
       "overrides": {
-        "+": "ignore"
+        "+": "ignore",
+        "?": "before",
+        ":": "before"
       }
     }]
   },

@@ -2,15 +2,15 @@ import {join} from "path"
 
 import Busboy from "busboy"
 
-import map from "../util/mapListeners"
-import readListeners from "../util/readListeners"
+import map from "./util/mapListeners"
+import readListeners from "./util/readListeners"
 
-const initializers = readListeners(join(__dirname, "..", "listener"))
+const initializers = readListeners(join(__dirname, "listener"))
 
 /**
  * @api private
  */
-const runBusboy = (request, options) => new Promise((resolve, reject) => {
+const execBusboy = ({request, options}) => new Promise((resolve, reject) => {
   const entries = []
   const busboy = new Busboy(request, options)
 
@@ -41,4 +41,4 @@ const runBusboy = (request, options) => new Promise((resolve, reject) => {
   request.pipe(busboy)
 })
 
-export default runBusboy
+export default execBusboy
