@@ -33,11 +33,11 @@ const defaults = {
  *
  * const multipart = () => async (ctx, next) => {
  *   if (["post", "put"].includes(toLowerCase(ctx.method)) === false) {
- *     return await next()
+ *     return next()
  *   }
  *
  *   if (ctx.is("multipart/form-data") === false) {
- *     return await next()
+ *     return next()
  *   }
  *
  *   ctx.request.body = await busboy(ctx.req).then(Body.json)
