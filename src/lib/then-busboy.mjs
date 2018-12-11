@@ -27,7 +27,7 @@ const defaults = {
  * @example
  *
  * // Simplest Koa.js middleware:
- * import busboy from "then-busboy"
+ * import busboy, {Body} from "then-busboy"
  *
  * const toLowerCase = string => String.prototype.toLowerCase.call(string)
  *
@@ -40,7 +40,7 @@ const defaults = {
  *     return await next()
  *   }
  *
- *   ctx.request.body = await busboy(ctx.req)
+ *   ctx.request.body = await busboy(ctx.req).then(Body.json)
  *
  *   await next()
  * }
