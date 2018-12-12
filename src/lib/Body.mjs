@@ -45,11 +45,13 @@ class Body {
     return fromEntries(normalize(this.entries))
   }
 
+  // TODO: Add tests for this case.
+  // Also, make sure is that any required argument have passed properly
   formData() {
     const fd = new FormData()
 
     for (const [path, field] of normalize(this.entries)) {
-      fd.append(toFieldname(path), isFile(field) ? field.stream : field)
+      fd.append(toFieldname(path), isFile(field) ? field.stream : field.value)
     }
 
     return fd
