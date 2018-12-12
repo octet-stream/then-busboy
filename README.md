@@ -248,7 +248,7 @@ function handler(req, res) {
     res.writeHead("Content-Type", "application/json")
 
     // You can also do something with each file and a field.
-    res.end(JSON.stringify(body))
+    res.end(JSON.stringify(body.json()))
   }
 
   // Handle errors
@@ -268,7 +268,7 @@ createServer(handler)
 **Note:** You can use [asynchronous function](https://github.com/tc39/ecmascript-asyncawait) syntax,
 because then-busboy always returns a Promise.
 
-So, let's see on a simple middleware example for Koa.js:
+So, let's see on a simple middleware example for [Koa.js](https://koajs.com):
 
 ```js
 import busboy from "then-busboy"
@@ -284,7 +284,7 @@ const multipart = () => async (ctx, next) => {
     return next()
   }
 
-  ctx.request.body = await busboy(ctx.req)
+  ctx.request.body = await busboy(ctx.req).then(body => body.json())
 
   await next()
 }
@@ -297,9 +297,9 @@ This function may help you if you're wanted to do something
 with received files automatically.
 
 ```js
-import busboy, {isFile} from "then-busboy"
+import busboy, {isFile, Body} from "then-busboy"
 
-let body = await busboy(request)
+let body = await busboy(request).then(Body.json)
 
 body = await deepMapObject(
   body, async val => (
