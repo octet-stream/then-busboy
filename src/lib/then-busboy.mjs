@@ -1,12 +1,13 @@
 import {IncomingMessage} from "http"
 
 import merge from "lodash.merge"
+import invariant from "@octetstream/invariant"
 
-import Body from "./Body"
-import exec from "./execBusboy"
-import getType from "./util/getType"
-import isPlainObject from "./util/isPlainObject"
 import waterfall from "./util/arrayRunWaterfall"
+import isPlainObject from "./util/isPlainObject"
+import getType from "./util/getType"
+import exec from "./execBusboy"
+import Body from "./Body"
 
 const defaults = {
   restoreTypes: true
@@ -47,19 +48,19 @@ const defaults = {
  *
  * export default multipart
  */
-function thenBusboy(request, options = {}) {
-  if (!(request instanceof IncomingMessage)) {
-    return Promise.reject(new TypeError(
-      "Request must be an instance of http.IncomingMessage. " +
-      `Received ${getType(request)}`
-    ))
-  }
+async function thenBusboy(request, options = {}) {
+  invariant(
+    !(request instanceof IncomingMessage), TypeError,
 
-  if (!isPlainObject(options)) {
-    return Promise.reject(new TypeError(
-      `Options must be an object. Received ${getType(options)}`
-    ))
-  }
+    "Request must be an instance of http.IncomingMessage. Received %s",
+    getType(request)
+  )
+
+  invariant(
+    !isPlainObject(options), TypeError,
+
+    "Options must be an object. Received %s", getType(options)
+  )
 
   options = merge({}, defaults, options, {headers: request.headers})
 
