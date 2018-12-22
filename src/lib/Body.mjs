@@ -1,9 +1,9 @@
 import fromEntries from "object-deep-from-entries"
 import FormData from "formdata-node"
 
-import toFieldname from "./util/pathToFieldname"
-import normalize from "./util/normalizeFields"
 import isFile from "./isFile"
+import normalize from "./util/normalizeFields"
+import toFieldname from "./util/pathToFieldname"
 
 /**
  * @api public
@@ -34,11 +34,11 @@ class Body {
   }
 
   get fields() {
-    return Body.from(this.filter(field => isFile(field) === false))
+    return this.filter(field => isFile(field) === false)
   }
 
   get files() {
-    return Body.from(this.filter(field => isFile(field) === false))
+    return this.filter(field => isFile(field) === false)
   }
 
   map(fn, ctx = null) {

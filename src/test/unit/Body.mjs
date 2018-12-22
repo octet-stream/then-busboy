@@ -4,6 +4,8 @@ import FormData from "formdata-node"
 import Body from "../../lib/Body"
 import isPlainObject from "../../lib/util/isPlainObject"
 
+// const dict = "/usr/share/dict/words"
+
 test("Body.json() should return a plain object for given entries", t => {
   t.plan(1)
 
