@@ -41,17 +41,43 @@ class Body {
     return Body.from(this.entries.filter(([, entry]) => isFile(entry)))
   }
 
-  json() {
-    return fromEntries(normalize(this.entries))
+  map(fn, ctx = null) {
+    const entries = []
+
+    for (const [path, value] of this.entries) {
+      const name = toFieldname(path)
+
+      entries.push([path, fn.call(ctx, value, name, path, this.entries)])
+    }
+
+    return Body.from(entries)
   }
+
+  forEach = (fn, ctx = null) => void this.map(fn, ctx)
+
+  filter(fn, ctx = null) {
+    const entries = []
+
+    for (const [path, value] of this.entries) {
+      const name = toFieldname(path)
+
+      if (fn.call(ctx, value, name, path, this.entries)) {
+        entries.push([path, value])
+      }
+    }
+
+    return Body.from(entries)
+  }
+
+  json = () => fromEntries(normalize(this.entries))
 
   // TODO: Add tests for this case.
   // Also, make sure is that any required argument have passed properly
-  formData() {
+  formData = () => {
     const fd = new FormData()
 
-    for (const [path, field] of normalize(this.entries)) {
-      fd.append(toFieldname(path), isFile(field) ? field.stream : field.value)
+    for (const [path, field] of this.entries) {
+      fd.set(toFieldname(path), isFile(field) ? field.stream : field.value)
     }
 
     return fd
