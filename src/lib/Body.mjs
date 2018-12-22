@@ -13,8 +13,8 @@ class Body {
     return value instanceof Body
   }
 
-  static from(entries) {
-    return new Body(entries)
+  static from(value) {
+    return new Body(Body.isBody(value) ? value.entries : value)
   }
 
   static json(value) {
@@ -26,7 +26,7 @@ class Body {
   }
 
   constructor(entries) {
-    this.__entries = entries
+    this.__entries = entries.slice()
   }
 
   get entries() {
@@ -34,11 +34,11 @@ class Body {
   }
 
   get fields() {
-    return Body.from(this.entries.filter(([, entry]) => !isFile(entry)))
+    return Body.from(this.filter(field => isFile(field) === false))
   }
 
   get files() {
-    return Body.from(this.entries.filter(([, entry]) => isFile(entry)))
+    return Body.from(this.filter(field => isFile(field) === false))
   }
 
   map(fn, ctx = null) {
