@@ -77,7 +77,7 @@ class Body {
     for (const [path, field] of this.entries) {
       const name = toFieldname(path)
 
-      if (isFile) {
+      if (isFile(field)) {
         fd.set(name, field.stream, field.filename)
       } else {
         fd.set(name, field.value)
