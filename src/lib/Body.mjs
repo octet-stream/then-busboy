@@ -71,13 +71,17 @@ class Body {
 
   json = () => fromEntries(normalize(this.entries))
 
-  // TODO: Add tests for this case.
-  // Also, make sure is that any required argument have passed properly
   formData = () => {
     const fd = new FormData()
 
     for (const [path, field] of this.entries) {
-      fd.set(toFieldname(path), isFile(field) ? field.stream : field.value)
+      const name = toFieldname(path)
+
+      if (isFile) {
+        fd.set(name, field.stream, field.filename)
+      } else {
+        fd.set(name, field.value)
+      }
     }
 
     return fd
