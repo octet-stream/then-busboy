@@ -38,7 +38,7 @@ class Body {
   }
 
   get files() {
-    return this.filter(field => isFile(field) === false)
+    return this.filter(field => isFile(field))
   }
 
   map(fn, ctx = null) {
