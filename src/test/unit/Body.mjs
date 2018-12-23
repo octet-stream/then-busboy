@@ -7,6 +7,7 @@ import FormData from "formdata-node"
 
 import File from "../../lib/File"
 import Body from "../../lib/Body"
+import Field from "../../lib/Field"
 import isPlainObject from "../../lib/util/isPlainObject"
 
 const dict = "/usr/share/dict/words"
@@ -243,6 +244,43 @@ test("Body#filter should return a new Body with filtered entries", t => {
   t.not(actual, body)
   t.deepEqual(actual.entries(), [[["file"], file]])
 })
+
+test(
+  "Body#map should correctly assign a non-Field value returned from callback",
+  t => {
+    t.plan(4)
+
+    const field = new Field({
+      enc: undefined,
+      mime: undefined,
+      value: "some text",
+      fieldname: "field",
+      valueTruncated: undefined,
+      fieldnameTruncated: undefined
+    })
+
+    const entries = [[["field"], field]]
+
+    const fulfill = spy(({value}) => `${value} concatenated with another one`)
+
+    const body = Body.from(entries).map(fulfill)
+
+    t.true(body.entries()[0][1] instanceof Field)
+    t.not(body.entries()[0][1], field)
+    t.deepEqual(body.entries(), [
+      [
+        ["field"],
+
+        new Field({...field, value: "some text concatenated with another one"})
+      ]
+    ])
+
+    t.is(
+      fulfill.firstCall.returnValue,
+      "some text concatenated with another one"
+    )
+  }
+)
 
 test(
   "Body[Symbol.iterator] is a method and should allow to go through values",
