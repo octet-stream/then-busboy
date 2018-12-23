@@ -52,7 +52,7 @@ test("Should return a correct string on inspect call", t => {
     enc: "utf-8"
   })
 
-  t.is(file.inspect(), `<File: ${filename}>`)
+  t.is(file.inspect(), `[File: ${filename}]`)
 })
 
 test("Should return a correct string on toJSON call", t => {
@@ -69,7 +69,41 @@ test("Should return a correct string on toJSON call", t => {
     enc: "utf-8"
   })
 
-  t.is(file.inspect(), `<File: ${filename}>`)
+  t.is(file.toJSON(), `[File: ${filename}]`)
+})
+
+test("Should return a correct string on toString call", t => {
+  t.plan(1)
+
+  const contents = createReadStream(__filename)
+
+  const filename = basename(__filename)
+
+  const file = new File({
+    contents,
+    filename,
+    mime: "text/javascript",
+    enc: "utf-8"
+  })
+
+  t.is(file.toString(), `[File: ${filename}]`)
+})
+
+test("Should return a correct string on String call", t => {
+  t.plan(1)
+
+  const contents = createReadStream(__filename)
+
+  const filename = basename(__filename)
+
+  const file = new File({
+    contents,
+    filename,
+    mime: "text/javascript",
+    enc: "utf-8"
+  })
+
+  t.is(String(file), `[File: ${filename}]`)
 })
 
 test("Should return a correct string on JSON.stringify call", t => {
@@ -86,7 +120,7 @@ test("Should return a correct string on JSON.stringify call", t => {
     enc: "utf-8"
   })
 
-  t.is(JSON.stringify({file}), "{\"file\":\"<File: File.js>\"}")
+  t.is(JSON.stringify({file}), "{\"file\":\"[File: File.js]\"}")
 })
 
 test("Should correctly read given file from Stream", async t => {
@@ -288,3 +322,26 @@ test("Should throw an error when mime is not a string", t => {
 
   t.throws(trap, "File mime type should be a string. Received RegExp")
 })
+
+test(
+  "File#write should throw a TypeError when given path is not a string",
+  async t => {
+    t.plan(3)
+
+    const contents = createReadStream(__filename)
+
+    const filename = basename(__filename)
+
+    const file = new File({
+      contents,
+      filename,
+      mime: "text/javascript",
+      enc: "utf-8"
+    })
+
+    const err = await t.throws(file.write(42))
+
+    t.true(err instanceof TypeError)
+    t.is(err.message, "Path must be a string.")
+  }
+)

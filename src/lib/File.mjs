@@ -135,7 +135,7 @@ class File {
    * @param {string} path – path to where contents will be stored
    *  (default – this.path)
    *
-   * @return {Promise}
+   * @return {Promise<void>}
    */
   write = path => new Promise((resolve, reject) => {
     if (path && !isString(path)) {
@@ -153,16 +153,20 @@ class File {
       .pipe(createWriteStream(path))
   })
 
+  get [Symbol.toStringTag]() {
+    return `File: ${this.filename}`
+  }
+
   toJSON() {
-    return this.inspect()
+    return `[File: ${this.filename}]`
   }
 
   toString() {
-    return this.inspect()
+    return `[File: ${this.filename}]`
   }
 
   inspect() {
-    return `<File: ${this.filename}>`
+    return `[File: ${this.filename}]`
   }
 }
 
