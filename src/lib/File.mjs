@@ -138,8 +138,8 @@ class File {
    * @return {Promise}
    */
   write = path => new Promise((resolve, reject) => {
-    if (!path || !isString(path)) {
-      path = this.path
+    if (path && !isString(path)) {
+      return reject(new TypeError("Path must be a string."))
     }
 
     // Prevent writing file to its source
