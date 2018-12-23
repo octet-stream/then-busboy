@@ -33,7 +33,6 @@ class Body {
     return this.__entries.length
   }
 
-
   get fields() {
     return this.filter(field => isFile(field) === false)
   }
