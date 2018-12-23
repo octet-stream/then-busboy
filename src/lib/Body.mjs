@@ -73,7 +73,7 @@ class Body {
       const name = toFieldname(path)
 
       let newField = fn.call(ctx, field, name, path, this.entries())
-      if (newField != null && !(newField instanceof Field) && !isFile(field)) {
+      if (!(newField instanceof Field) && !isFile(field)) {
         newField = new Field({...field, value: newField})
       }
 
