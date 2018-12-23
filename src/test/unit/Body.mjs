@@ -216,6 +216,8 @@ test("Body iterators should execute callback with correct arguments", t => {
   t.deepEqual(mapFulfill.firstCall.args, expected)
 })
 
+// test("Body#filter should return a body with filtered entries", t => {})
+
 test(
   "Body[Symbol.iterator] is a method and should allow to go through values",
   t => {

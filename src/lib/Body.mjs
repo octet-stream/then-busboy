@@ -1,6 +1,7 @@
 import fromEntries from "object-deep-from-entries"
 import FormData from "formdata-node"
 
+import Field from "./Field"
 import isFile from "./isFile"
 import normalize from "./util/normalizeFields"
 import toFieldname from "./util/pathToFieldname"
@@ -68,10 +69,15 @@ class Body {
   map = (fn, ctx = null) => {
     const entries = []
 
-    for (const [path, value] of this.entries()) {
+    for (const [path, field] of this.entries()) {
       const name = toFieldname(path)
 
-      entries.push([path, fn.call(ctx, value, name, path, this.entries())])
+      let newField = fn.call(ctx, field, name, path, this.entries())
+      if (newField != null && !(newField instanceof Field) && !isFile(field)) {
+        newField = new Field({...field, value: newField})
+      }
+
+      entries.push([path, newField])
     }
 
     return Body.from(entries)
@@ -82,11 +88,11 @@ class Body {
   filter = (fn, ctx = null) => {
     const entries = []
 
-    for (const [path, value] of this.entries()) {
+    for (const [path, field] of this.entries()) {
       const name = toFieldname(path)
 
-      if (fn.call(ctx, value, name, path, this.entries())) {
-        entries.push([path, value])
+      if (fn.call(ctx, field, name, path, this.entries())) {
+        entries.push([path, field])
       }
     }
 
