@@ -215,3 +215,43 @@ test("Body iterators should execute callback with correct arguments", t => {
   t.deepEqual(filterFulfill.firstCall.args, expected)
   t.deepEqual(mapFulfill.firstCall.args, expected)
 })
+
+test(
+  "Body[Symbol.iterator] is a method and should allow to go through values",
+  t => {
+    t.plan(2)
+
+    const entries = [[["field"], {value: "some text"}]]
+    const body = Body.from(entries)
+
+    t.is(typeof body[Symbol.iterator], "function")
+    t.deepEqual(body[Symbol.iterator]().next().value, {value: "some text"})
+  }
+)
+
+test("Body#values allows to go through values", t => {
+  t.plan(1)
+
+  const entries = [[["field"], {value: "some text"}]]
+  const body = Body.from(entries)
+
+  t.deepEqual(body.values().next().value, {value: "some text"})
+})
+
+test("Body#names allows to go through names", t => {
+  t.plan(1)
+
+  const entries = [[["field"], {value: "some text"}]]
+  const body = Body.from(entries)
+
+  t.deepEqual(body.names().next().value, "field")
+})
+
+test("Body#paths allows to go through paths", t => {
+  t.plan(1)
+
+  const entries = [[["field"], {value: "some text"}]]
+  const body = Body.from(entries)
+
+  t.deepEqual(body.paths().next().value, ["field"])
+})
