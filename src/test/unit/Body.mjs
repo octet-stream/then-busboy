@@ -86,7 +86,7 @@ test("Body.from() should create an instance", t => {
   t.true(Body.from([]) instanceof Body)
 })
 
-test("Body.entries should contain entries passed to Body.from()", t => {
+test("Body.entries() should contain entries passed to Body.from()", t => {
   t.plan(1)
 
   const file = new File({
@@ -101,7 +101,7 @@ test("Body.entries should contain entries passed to Body.from()", t => {
     [["file"], file]
   ]
 
-  t.deepEqual(Body.from(expected).entries, expected)
+  t.deepEqual(Body.from(expected).entries(), expected)
 })
 
 test("Body#files getter should return a Body with files only", t => {
@@ -120,7 +120,7 @@ test("Body#files getter should return a Body with files only", t => {
   const body = Body.from(entries).files
 
   t.true(body instanceof Body)
-  t.deepEqual(body.entries, files)
+  t.deepEqual(body.entries(), files)
 })
 
 test("Body#fields getter should return a Body with fields only", t => {
@@ -139,7 +139,7 @@ test("Body#fields getter should return a Body with fields only", t => {
   const body = Body.from(entries).fields
 
   t.true(body instanceof Body)
-  t.deepEqual(body.entries, fields)
+  t.deepEqual(body.entries(), fields)
 })
 
 test("Body#length should return current amount of entries in Body", t => {

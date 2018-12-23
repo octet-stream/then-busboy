@@ -14,7 +14,7 @@ class Body {
   }
 
   static from(value) {
-    return new Body(Body.isBody(value) ? value.entries : value)
+    return new Body(Body.isBody(value) ? value.entries() : value)
   }
 
   static json(value) {
@@ -30,12 +30,9 @@ class Body {
   }
 
   get length() {
-    return this.entries.length
+    return this.__entries.length
   }
 
-  get entries() {
-    return this.__entries
-  }
 
   get fields() {
     return this.filter(field => isFile(field) === false)
@@ -50,30 +47,32 @@ class Body {
   }
 
   * paths() {
-    for (const [path] of this.entries) {
+    for (const [path] of this.entries()) {
       yield path
     }
   }
 
   * names() {
-    for (const [path] of this.entries) {
+    for (const [path] of this.entries()) {
       yield toFieldname(path)
     }
   }
 
   * values() {
-    for (const [, value] of this.entries) {
+    for (const [, value] of this.entries()) {
       yield value
     }
   }
 
+  entries = () => this.__entries
+
   map = (fn, ctx = null) => {
     const entries = []
 
-    for (const [path, value] of this.entries) {
+    for (const [path, value] of this.entries()) {
       const name = toFieldname(path)
 
-      entries.push([path, fn.call(ctx, value, name, path, this.entries)])
+      entries.push([path, fn.call(ctx, value, name, path, this.entries())])
     }
 
     return Body.from(entries)
@@ -84,10 +83,10 @@ class Body {
   filter = (fn, ctx = null) => {
     const entries = []
 
-    for (const [path, value] of this.entries) {
+    for (const [path, value] of this.entries()) {
       const name = toFieldname(path)
 
-      if (fn.call(ctx, value, name, path, this.entries)) {
+      if (fn.call(ctx, value, name, path, this.entries())) {
         entries.push([path, value])
       }
     }
@@ -95,12 +94,12 @@ class Body {
     return Body.from(entries)
   }
 
-  json = () => fromEntries(normalize(this.entries))
+  json = () => fromEntries(normalize(this.entries()))
 
   formData = () => {
     const fd = new FormData()
 
-    for (const [path, field] of this.entries) {
+    for (const [path, field] of this.entries()) {
       const name = toFieldname(path)
 
       if (isFile(field)) {
