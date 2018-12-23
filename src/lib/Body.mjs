@@ -30,7 +30,7 @@ class Body {
   }
 
   get length() {
-    return this.__entries.length
+    return this.entries.length
   }
 
   get entries() {
@@ -46,7 +46,7 @@ class Body {
   }
 
   [Symbol.iterator]() {
-    return this.value()
+    return this.values()
   }
 
   * paths() {

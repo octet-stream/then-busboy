@@ -54,7 +54,7 @@ test(
   }
 )
 
-test("Created FormData must contain all entries", t => {
+test("Created FormData should contain all entries", t => {
   t.plan(4)
 
   const file = new File({
@@ -100,4 +100,61 @@ test("Body.entries should contain entries passed to Body.from()", t => {
   ]
 
   t.deepEqual(Body.from(expected).entries, expected)
+})
+
+test("Body#files getter should return a Body with files only", t => {
+  t.plan(2)
+
+  const file = new File({
+    contents: createReadStream(dict),
+    filename: "dictionary",
+    mime: "text/plain",
+    enc: "utf8"
+  })
+
+  const files = [[["file"], file]]
+  const entries = [[["field"], {value: "some text"}], ...files]
+
+  const body = Body.from(entries).files
+
+  t.true(body instanceof Body)
+  t.deepEqual(body.entries, files)
+})
+
+test("Body#fields getter should return a Body with fields only", t => {
+  t.plan(2)
+
+  const file = new File({
+    contents: createReadStream(dict),
+    filename: "dictionary",
+    mime: "text/plain",
+    enc: "utf8"
+  })
+
+  const fields = [[["field"], {value: "some text"}]]
+  const entries = [[["file"], file], ...fields]
+
+  const body = Body.from(entries).fields
+
+  t.true(body instanceof Body)
+  t.deepEqual(body.entries, fields)
+})
+
+test("Body#length should return current amount of entries in Body", t => {
+  t.plan(2)
+
+  const file = new File({
+    contents: createReadStream(dict),
+    filename: "dictionary",
+    mime: "text/plain",
+    enc: "utf8"
+  })
+
+  const entries = [
+    [["field"], {value: "some text"}],
+    [["file"], file]
+  ]
+
+  t.is(Body.from([]).length, 0)
+  t.is(Body.from(entries).length, 2)
 })
