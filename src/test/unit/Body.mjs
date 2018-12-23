@@ -216,7 +216,33 @@ test("Body iterators should execute callback with correct arguments", t => {
   t.deepEqual(mapFulfill.firstCall.args, expected)
 })
 
-// test("Body#filter should return a body with filtered entries", t => {})
+test("Body#filter should return a new Body with filtered entries", t => {
+  t.plan(5)
+
+  const file = new File({
+    contents: createReadStream(dict),
+    filename: "dictionary",
+    mime: "text/plain",
+    enc: "utf8"
+  })
+
+  const entries = [
+    [["field"], {value: "some text"}],
+    [["file"], file]
+  ]
+
+  const fulfill = spy(field => field instanceof File)
+
+  const body = Body.from(entries)
+  const actual = body.filter(fulfill)
+
+  t.false(fulfill.firstCall.returnValue)
+  t.true(fulfill.lastCall.returnValue)
+
+  t.true(actual instanceof Body)
+  t.not(actual, body)
+  t.deepEqual(actual.entries(), [[["file"], file]])
+})
 
 test(
   "Body[Symbol.iterator] is a method and should allow to go through values",
