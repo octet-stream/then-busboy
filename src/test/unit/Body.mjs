@@ -1,5 +1,7 @@
 import {createReadStream} from "fs"
 
+import {spy} from "sinon"
+
 import test from "ava"
 import FormData from "formdata-node"
 
@@ -157,4 +159,59 @@ test("Body#length should return current amount of entries in Body", t => {
 
   t.is(Body.from([]).length, 0)
   t.is(Body.from(entries).length, 2)
+})
+
+test("Body iterators should not execute callback on empty body", t => {
+  t.plan(3)
+
+  const forEachFulfill = spy()
+  const filterFulfill = spy()
+  const mapFulfill = spy()
+
+  Body.from([]).forEach(forEachFulfill)
+  Body.from([]).filter(filterFulfill)
+  Body.from([]).map(mapFulfill)
+
+  t.false(forEachFulfill.called)
+  t.false(filterFulfill.called)
+  t.false(mapFulfill.called)
+})
+
+test("Body iterators assign null as callback ctx by default", t => {
+  t.plan(3)
+
+  const entries = [
+    [["field"], {value: "some text"}]
+  ]
+
+  const forEachFulfill = spy()
+  const filterFulfill = spy()
+  const mapFulfill = spy()
+
+  Body.from(entries).forEach(forEachFulfill)
+  Body.from(entries).filter(filterFulfill)
+  Body.from(entries).map(mapFulfill)
+
+  t.is(forEachFulfill.firstCall.thisValue, null)
+  t.is(filterFulfill.firstCall.thisValue, null)
+  t.is(mapFulfill.firstCall.thisValue, null)
+})
+
+test("Body iterators should execute callback with correct arguments", t => {
+  t.plan(3)
+
+  const entries = [[["field"], {value: "some text"}]]
+  const expected = [{value: "some text"}, "field", ["field"], entries]
+
+  const forEachFulfill = spy()
+  const filterFulfill = spy()
+  const mapFulfill = spy()
+
+  Body.from(entries).forEach(forEachFulfill)
+  Body.from(entries).filter(filterFulfill)
+  Body.from(entries).map(mapFulfill)
+
+  t.deepEqual(forEachFulfill.firstCall.args, expected)
+  t.deepEqual(filterFulfill.firstCall.args, expected)
+  t.deepEqual(mapFulfill.firstCall.args, expected)
 })
