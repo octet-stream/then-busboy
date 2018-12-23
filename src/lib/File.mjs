@@ -143,14 +143,14 @@ class File {
     }
 
     // Prevent writing file to its source
-    if (this.contents.path === path) {
+    if (this.path === path) {
       return resolve()
     }
 
     this.contents
       .on("error", reject)
       .on("end", resolve)
-      .pipe(createWriteStream(path))
+      .pipe(createWriteStream(path || this.path))
   })
 
   get [Symbol.toStringTag]() {
