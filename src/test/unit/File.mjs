@@ -1,13 +1,10 @@
 import Stream, {Writable} from "stream"
-
+import {basename, extname} from "path"
 import {createReadStream} from "fs"
-import {basename, extname, join} from "path"
-import {tmpdir} from "os"
 
 import test from "ava"
 
 import pq from "proxyquire"
-import nanoid from "nanoid"
 
 import {spy} from "sinon"
 import {readFile} from "promise-fs"
@@ -228,9 +225,7 @@ test("Should throw an error when contents is not a Stream", t => {
 test("Should throw an error when no filename given", t => {
   t.plan(1)
 
-  const contents = createReadStream(__filename)
-
-  const trap = () => new File({contents})
+  const trap = () => new File({contents: createReadStream(__filename)})
 
   t.throws(trap, "Filename required.")
 })
@@ -238,9 +233,10 @@ test("Should throw an error when no filename given", t => {
 test("Should throw an error when filename is not a string", t => {
   t.plan(1)
 
-  const contents = createReadStream(__filename)
-
-  const trap = () => new File({contents, filename: 42})
+  const trap = () => new File({
+    contents: createReadStream(__filename),
+    filename: 42
+  })
 
   t.throws(trap, "Filename should be a string. Received number")
 })
@@ -248,9 +244,10 @@ test("Should throw an error when filename is not a string", t => {
 test("Should throw an error when no enc given", t => {
   t.plan(1)
 
-  const contents = createReadStream(__filename)
-
-  const trap = () => new File({contents, filename: basename(__filename)})
+  const trap = () => new File({
+    contents: createReadStream(__filename),
+    filename: basename(__filename)
+  })
 
   t.throws(trap, "File encoding required.")
 })
@@ -258,10 +255,8 @@ test("Should throw an error when no enc given", t => {
 test("Should throw an error when enc is not a string", t => {
   t.plan(1)
 
-  const contents = createReadStream(__filename)
-
   const trap = () => new File({
-    contents,
+    contents: createReadStream(__filename),
     filename: basename(__filename),
     enc: []
   })
@@ -272,10 +267,8 @@ test("Should throw an error when enc is not a string", t => {
 test("Should throw an error when no mime given", t => {
   t.plan(1)
 
-  const contents = createReadStream(__filename)
-
   const trap = () => new File({
-    contents,
+    contents: createReadStream(__filename),
     filename: basename(__filename),
     enc: "utf-8"
   })
@@ -286,10 +279,8 @@ test("Should throw an error when no mime given", t => {
 test("Should throw an error when mime is not a string", t => {
   t.plan(1)
 
-  const contents = createReadStream(__filename)
-
   const trap = () => new File({
-    contents,
+    contents: createReadStream(__filename),
     filename: basename(__filename),
     enc: "utf-8",
     mime: /.*/

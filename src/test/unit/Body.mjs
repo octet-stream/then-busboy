@@ -1,10 +1,13 @@
+import {createReadStream} from "fs"
+
 import test from "ava"
 import FormData from "formdata-node"
 
+import File from "../../lib/File"
 import Body from "../../lib/Body"
 import isPlainObject from "../../lib/util/isPlainObject"
 
-// const dict = "/usr/share/dict/words"
+const dict = "/usr/share/dict/words"
 
 test("Body.json() should return a plain object for given entries", t => {
   t.plan(1)
@@ -51,16 +54,29 @@ test(
   }
 )
 
-test(
-  "Body.formData() should return a FormData for given body instance",
-  t => {
-    t.plan(1)
+test("Created FormData must contain all entries", t => {
+  t.plan(4)
 
-    const body = new Body([])
+  const file = new File({
+    contents: createReadStream(dict),
+    filename: "dictionary",
+    mime: "text/plain",
+    enc: "utf8"
+  })
 
-    t.true(isPlainObject(Body.json(body)))
-  }
-)
+  const expected = [
+    [["field"], {value: "some text"}],
+    [["file"], file]
+  ]
+
+  const fd = Body.formData(expected)
+
+  t.true(fd.has("field"))
+  t.is(fd.get("field"), "some text")
+
+  t.true(fd.has("file"))
+  t.is(fd.get("file"), file.stream)
+})
 
 test("Body.from() should create an instance", t => {
   t.plan(1)
@@ -71,7 +87,17 @@ test("Body.from() should create an instance", t => {
 test("Body.entries should contain entries passed to Body.from()", t => {
   t.plan(1)
 
-  const expected = [[["key"], {value: "value"}]]
+  const file = new File({
+    contents: createReadStream(dict),
+    filename: "dictionary",
+    mime: "text/plain",
+    enc: "utf8"
+  })
+
+  const expected = [
+    [["field"], {value: "some text"}],
+    [["file"], file]
+  ]
 
   t.deepEqual(Body.from(expected).entries, expected)
 })

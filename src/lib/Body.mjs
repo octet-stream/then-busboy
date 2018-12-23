@@ -29,6 +29,10 @@ class Body {
     this.__entries = entries.slice()
   }
 
+  get length() {
+    return this.__entries.length
+  }
+
   get entries() {
     return this.__entries
   }
@@ -41,7 +45,29 @@ class Body {
     return this.filter(field => isFile(field))
   }
 
-  map(fn, ctx = null) {
+  [Symbol.iterator]() {
+    return this.value()
+  }
+
+  * paths() {
+    for (const [path] of this.entries) {
+      yield path
+    }
+  }
+
+  * names() {
+    for (const [path] of this.entries) {
+      yield toFieldname(path)
+    }
+  }
+
+  * values() {
+    for (const [, value] of this.entries) {
+      yield value
+    }
+  }
+
+  map = (fn, ctx = null) => {
     const entries = []
 
     for (const [path, value] of this.entries) {
@@ -55,7 +81,7 @@ class Body {
 
   forEach = (fn, ctx = null) => void this.map(fn, ctx)
 
-  filter(fn, ctx = null) {
+  filter = (fn, ctx = null) => {
     const entries = []
 
     for (const [path, value] of this.entries) {
