@@ -25,7 +25,7 @@ yarn add then-busboy
 
 **Public**
 
-### `busboy(request[, options]) -> {Promise<object>}`
+### `busboy(request[, options]) -> {Promise<Body>}`
 
 + **http.IncomingMessage** request – HTTP request object
 + **{object}** [options = {}]
@@ -37,6 +37,107 @@ yarn add then-busboy
 Check if given value is a File instance.
 
   - **{any}** value – a value to verify
+
+### `constructor Body(entries)`
+
+Create an object that allows to manipulate FormData fields taken `then-busboy`
+
+#### Static methods
+
+##### `isBody(value) -> {boolean}`
+
+Check if given value is instance of Body
+
+##### `from(entries) -> {Body}`
+
+Create a new Body from given entries. An alias of `new Body(entries)`
+
+  - **{Array<[string[], any]>}** entries – an array of Body initial path-value pairs taken from `then-busboy`
+
+##### `json(value) -> {object}`
+
+Return an object with data taken from given entries or Body
+
+  - **{Body | Array<[string[], any]>}** – return an object from given Body or entries
+
+##### `formData(value) -> {FormData}`
+
+Return a FormData instance with data taken from given entries or Body
+
+  - **{Body | Array<[string[], any]>}** – return an FormData from given Body or entries
+
+#### Instance properties
+
+##### `get length() -> {number}`
+
+Return an amount of entries and files in current Body instance
+
+##### `get fields() -> {Body}`
+
+Return a new Body that contains **fields** only
+
+##### `get files() -> {Body}`
+
+Return a new Body that contains **files** only
+
+#### Instance methods
+
+##### `json() -> {object}`
+
+Return an object with data taken the current Body instance
+
+##### `formData() -> {FormData}`
+
+Return a FormData with data taken the current Body instance
+
+##### `map(callback[, ctx]) -> {Body}`
+
+Create a new Body with the results of calling a provided function on every entry in the calling Body
+
+  - **{function}** callback – Function to execute for each entry. It accepts four arguments:
+    + **{any}** value – A value(s) of the current entry.
+    + **{string}** name – Name of the current entry.
+    + **{string[]}** path – Path of the current entry.
+    + **{Array<[string[], any]>}** entries – An array of entries of the current Body instance
+  - **{any}** [ctx = null] – Value to use as **this** context when executing the given **callback**
+
+##### `filter(predicate[, ctx]) -> {Body}`
+
+Create a new Body with all entries that pass the test implemented in given function
+
+  - **{function}** predicate – Function is a predicate, to test each entry of the Body. Return `true` to keep the entry, `false` otherwise. It accepts four arguments:
+    + **{any}** value – A value(s) of the current entry.
+    + **{string}** name – Name of the current entry.
+    + **{string[]}** path – Path of the current entry.
+    + **{Array<[string[], any]>}** entries – An array of entries of the current Body instance
+  - **{any}** [ctx = null] – Value to use as **this** context when executing the given **callback**
+
+##### `forEach(callback[, ctx]) -> {Body}`
+
+Execute a given callback for each entry of the Body instance
+
+  - **{function}** callback – Function to execute for each entry, taking four arguments:
+    + **{any}** value – A value(s) of the current entry.
+    + **{string}** name – Name of the current entry.
+    + **{string[]}** path – Path of the current entry.
+    + **{Array<[string[], any]>}** entries – An array of entries of the current Body instance
+  - **{any}** [ctx = null] – Value to use as **this** context when executing the given **callback**
+
+##### `entries() -> {Array<[string[], any]>}`
+
+Return an array of entries in current Body instance
+
+##### `values() -> {Iterator}`
+
+Return an iterator allows to go through the Body values
+
+##### `names() -> {Iterator}`
+
+Return an iterator allows to go through the Body fields name
+
+##### `paths() -> {Iterator}`
+
+Return an iterator allows to go through the Body fields path
 
 **Private**
 
