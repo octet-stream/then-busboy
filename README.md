@@ -48,6 +48,8 @@ Create an object that allows to manipulate FormData fields taken `then-busboy`
 
 Check if given value is instance of Body
 
+  - **{any}** value – a value to verify
+
 ##### `from(entries) -> {Body}`
 
 Create a new Body from given entries. An alias of `new Body(entries)`
