@@ -23,6 +23,10 @@ yarn add then-busboy
 
 ## API
 
+**Breaking change**: Since 4.x version then-busboy returns a Body object instead of raw data.
+For more information check out the [Usage](https://github.com/octet-stream/then-busboy#usage) section of documentation
+and take a look at [Body](https://github.com/octet-stream/then-busboy#constructor-bodyentries) class in API section.
+
 **Public**
 
 ### `busboy(request[, options]) -> {Promise<Body>}`
