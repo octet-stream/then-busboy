@@ -411,6 +411,11 @@ body = await deepMapObject(
 )
 ```
 
+## Related links
+
+* [formdata-node](https://github.com/octet-stream/form-data) is an async-iterator and steam based [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) implementation for Node.js
+* [@octetstream/object-to-form-data](https://github.com/octet-stream/object-to-form-data) converts JavaScript object to FormData.
+
 ## License
 
 [MIT](https://github.com/octet-stream/then-busboy/blob/master/LICENSE)
