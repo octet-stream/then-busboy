@@ -1,14 +1,15 @@
-node_modules
-coverage
-src
+/node_modules
+/coverage
+/src
+/.nyc_output
 .babelrc
 .eslintrc.json
 .editorconfig
 .DS_Store
 .gitignore
 .lintstagedrc
-.nyc_output
 .travis.yml
+.huskyrc.json
 nodemon.json
 coverage.lcov
 npm-debug.log
@@ -17,7 +18,5 @@ yarn.lock
 *.map
 *..map
 *.dockerfile
-
-code-of-conduct.md
 
 /test
