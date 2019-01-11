@@ -293,3 +293,24 @@ test(
     t.is(error.text, `Error: Unexpected field name format: ${format}`)
   }
 )
+
+// Related:
+// 1. https://github.com/mscdex/busboy/issues/169
+// 2. https://github.com/octet-stream/then-busboy/issues/19
+test.failing("Should response with error when parts limit reached", async t => {
+  t.plan(2)
+
+  const options = {
+    limits: {
+      parts: 1
+    }
+  }
+
+  const {error} = await request(mockServer(busboy)(options))
+    .post("/")
+    .field("field", 42)
+    .field("extra", 451)
+
+  t.is(error.status, 413)
+  t.is(error.message, "PartsLimitError: Parts limit reached.")
+})
