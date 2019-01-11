@@ -1,7 +1,6 @@
-import {createWriteStream} from "fs"
 import {basename, extname} from "path"
-
-import Stream from "stream"
+import {createWriteStream} from "fs"
+import {Readable} from "stream"
 
 import invariant from "@octetstream/invariant"
 
@@ -30,8 +29,8 @@ class File {
     invariant(!contents, "File contents required.")
 
     invariant(
-      !(contents instanceof Stream), TypeError,
-      "Contents should be a Stream. Received %s", getType(contents)
+      !(contents instanceof Readable), TypeError,
+      "Contents should be a Readable stream. Received %s", getType(contents)
     )
 
     invariant(!filename, "Filename required.")
