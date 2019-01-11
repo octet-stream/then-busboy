@@ -294,7 +294,7 @@ test(
   }
 )
 
-test("Should response with error when parts limit reached", async t => {
+test("Should response with error when PARTS limit reached", async t => {
   t.plan(2)
 
   const options = {
@@ -306,12 +306,56 @@ test("Should response with error when parts limit reached", async t => {
   const {error} = await request(mockServer(busboy)(options))
     .post("/")
     .field("field", 42)
-    .field("extra", 451)
+    .attach("file", __filename)
 
   t.is(error.status, 413)
   t.is(
     error.text,
     "PartsLimitError: Limit reached: " +
     `Available up to ${options.limits.parts} parts.`
+  )
+})
+
+test("Should response with error when FIELDS limit reached", async t => {
+  t.plan(2)
+
+  const options = {
+    limits: {
+      fields: 1
+    }
+  }
+
+  const {error} = await request(mockServer(busboy)(options))
+    .post("/")
+    .field("field", 42)
+    .field("extra", 451)
+
+  t.is(error.status, 413)
+  t.is(
+    error.text,
+    "FieldsLimitError: Limit reached: " +
+    `Available up to ${options.limits.fields} fields.`
+  )
+})
+
+test("Should response with error when FILES limit reached", async t => {
+  t.plan(2)
+
+  const options = {
+    limits: {
+      files: 1
+    }
+  }
+
+  const {error} = await request(mockServer(busboy)(options))
+    .post("/")
+    .attach("file1", __filename)
+    .attach("file2", "/usr/share/dict/words")
+
+  t.is(error.status, 413)
+  t.is(
+    error.text,
+    "FilesLimitError: Limit reached: " +
+    `Available up to ${options.limits.files} files.`
   )
 })
