@@ -12,7 +12,7 @@ const initializers = readListeners(join(__dirname, "listener"))
  */
 const execBusboy = ({request, options}) => new Promise((resolve, reject) => {
   const entries = []
-  const busboy = new Busboy(request, options)
+  const busboy = new Busboy(options)
 
   const fulfill = (err, entry) => err ? reject(err) : entries.push(entry)
 

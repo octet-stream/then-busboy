@@ -4,6 +4,7 @@ class RequestEntityTooLargeError extends Error {
 
     this.status = 413
     this.code = code
+    this.name = this.constructor.name
 
     Error.captureStackTrace(this, Error)
   }

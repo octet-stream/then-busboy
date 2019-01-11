@@ -1,7 +1,9 @@
 import PartsLimitError from "../error/PartsLimitError"
 
-const onPartsLimit = (_, cb) => () => (
-  cb(new PartsLimitError("Parts limit reached"))
+const onPartsLimit = ({limits}, cb) => () => (
+  cb(
+    new PartsLimitError(`Limit reached: Available up to ${limits.parts} parts.`)
+  )
 )
 
 export default onPartsLimit

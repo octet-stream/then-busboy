@@ -294,10 +294,7 @@ test(
   }
 )
 
-// Related:
-// 1. https://github.com/mscdex/busboy/issues/169
-// 2. https://github.com/octet-stream/then-busboy/issues/19
-test.failing("Should response with error when parts limit reached", async t => {
+test("Should response with error when parts limit reached", async t => {
   t.plan(2)
 
   const options = {
@@ -312,5 +309,9 @@ test.failing("Should response with error when parts limit reached", async t => {
     .field("extra", 451)
 
   t.is(error.status, 413)
-  t.is(error.message, "PartsLimitError: Parts limit reached.")
+  t.is(
+    error.text,
+    "PartsLimitError: Limit reached: " +
+    `Available up to ${options.limits.parts} parts.`
+  )
 })
