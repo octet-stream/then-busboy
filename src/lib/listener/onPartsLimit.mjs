@@ -1,4 +1,4 @@
-import PartsLimitError from "../error/PartsLimitError"
+import PartsLimitError from "lib/error/PartsLimitError"
 
 const onPartsLimit = ({limits}, cb) => () => (
   cb(

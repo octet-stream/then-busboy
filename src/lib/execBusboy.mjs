@@ -2,8 +2,8 @@ import {join} from "path"
 
 import Busboy from "busboy"
 
-import map from "./util/mapListeners"
-import readListeners from "./util/readListeners"
+import map from "lib/util/mapListeners"
+import readListeners from "lib/util/readListeners"
 
 const initializers = readListeners(join(__dirname, "listener"))
 

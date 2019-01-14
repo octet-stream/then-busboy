@@ -1,29 +1,35 @@
-{
-  "plugins": [
+module.exports = {
+  plugins: [
     "ava"
   ],
-  "extends": [
+  extends: [
     "@octetstream",
     "plugin:ava/recommended"
   ],
-  "rules": {
+  rules: {
     "ava/no-ignored-test-files": ["error", {
-      "files": [
+      files: [
         "src/test/unit/**/*.mjs"
       ]
     }],
     "operator-linebreak": ["error", "after", {
-      "overrides": {
+      overrides: {
         "+": "ignore",
         "?": "before",
         ":": "before"
       }
     }]
   },
-  "settings": {
+  settings: {
     "import/resolver": {
-      "node": {
-        "extensions": [".js", ".mjs"]
+      node: {
+        extensions: [".js", ".mjs"]
+      },
+      "babel-module": {
+        cwd: __dirname,
+        root: [
+          "src"
+        ]
       }
     }
   }

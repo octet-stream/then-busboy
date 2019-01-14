@@ -1,4 +1,4 @@
-import FieldsLimitError from "../error/FieldsLimitError"
+import FieldsLimitError from "lib/error/FieldsLimitError"
 
 const onFieldsLimit = ({limits}, cb) => () => (
   cb(

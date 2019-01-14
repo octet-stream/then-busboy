@@ -3,11 +3,11 @@ import {IncomingMessage} from "http"
 import merge from "lodash.merge"
 import invariant from "@octetstream/invariant"
 
-import waterfall from "./util/arrayRunWaterfall"
-import isPlainObject from "./util/isPlainObject"
-import getType from "./util/getType"
-import exec from "./execBusboy"
-import Body from "./Body"
+import waterfall from "lib/util/arrayRunWaterfall"
+import isPlainObject from "lib/util/isPlainObject"
+import getType from "lib/util/getType"
+import exec from "lib/execBusboy"
+import Body from "lib/Body"
 
 const defaults = {
   restoreTypes: true

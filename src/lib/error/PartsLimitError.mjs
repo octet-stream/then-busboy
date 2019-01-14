@@ -1,10 +1,8 @@
-import RequestEntityTooLargeError from "./RequestEntityTooLargeError"
+import RequestEntityTooLargeError from "lib/error/RequestEntityTooLargeError"
 
 class PartsLimitError extends RequestEntityTooLargeError {
   constructor(message) {
-    super(message)
-
-    this.code = "EBUSBOY_PARTS_LIMIT"
+    super(message, "EBUSBOY_PARTS_LIMIT")
   }
 }
 

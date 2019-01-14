@@ -1,4 +1,4 @@
-import isFile from "../isFile"
+import isFile from "lib/isFile"
 
 const normalizeFields = entries => entries.map(([path, field]) => [
   path, isFile(field) ? field : field.value

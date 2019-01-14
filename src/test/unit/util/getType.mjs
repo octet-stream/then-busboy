@@ -2,7 +2,7 @@ import {isString} from "util"
 
 import test from "ava"
 
-import getType from "../../../lib/util/getType"
+import getType from "lib/util/getType"
 
 test("Should return a string with type name", t => {
   t.plan(2)
@@ -38,7 +38,7 @@ test("Should return lowercased string for all basic types", t => {
 test("Should return as-is name for non-basic types", t => {
   t.plan(3)
 
-  const genFn = getType(function* () { yield 0 })
+  const genFn = getType(function* noop() { yield 0 })
   const set = getType(new Set())
   const map = getType(new Map())
 

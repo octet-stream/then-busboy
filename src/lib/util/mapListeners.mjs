@@ -1,4 +1,4 @@
-import leadToLowerCase from "./leadToLowerCase"
+import leadToLowerCase from "lib/util/leadToLowerCase"
 
 const entries = Object.entries
 

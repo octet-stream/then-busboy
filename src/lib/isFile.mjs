@@ -1,4 +1,4 @@
-import File from "./File"
+import File from "lib/File"
 
 /**
  * Check if given values is a File

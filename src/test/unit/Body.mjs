@@ -5,10 +5,10 @@ import {spy} from "sinon"
 import test from "ava"
 import FormData from "formdata-node"
 
-import File from "../../lib/File"
-import Body from "../../lib/Body"
-import Field from "../../lib/Field"
-import isPlainObject from "../../lib/util/isPlainObject"
+import File from "lib/File"
+import Body from "lib/Body"
+import Field from "lib/Field"
+import isPlainObject from "lib/util/isPlainObject"
 
 const dict = "/usr/share/dict/words"
 

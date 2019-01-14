@@ -1,4 +1,4 @@
-import FilesLimitError from "../error/FilesLimitError"
+import FilesLimitError from "lib/error/FilesLimitError"
 
 const onFilesLimit = ({limits}, cb) => () => (
   cb(

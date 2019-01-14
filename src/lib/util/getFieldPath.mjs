@@ -1,8 +1,8 @@
 import invariant from "@octetstream/invariant"
 
-import isString from "./isString"
-import getType from "./getType"
-import isNaN from "./isNaN"
+import isString from "lib/util/isString"
+import getType from "lib/util/getType"
+import isNaN from "lib/util/isNaN"
 
 // Matched square braces notation paths
 const BRACKET_EXPR = /^([^0-9[\]\n\r\t]+|\[[0-9]+\])(\[[^[\]]+\])*$/

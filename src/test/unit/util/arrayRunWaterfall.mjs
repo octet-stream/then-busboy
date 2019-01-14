@@ -2,7 +2,7 @@ import test from "ava"
 
 import {spy} from "sinon"
 
-import waterfall from "../../../lib/util/arrayRunWaterfall"
+import waterfall from "lib/util/arrayRunWaterfall"
 
 test("Should always return a Promise", async t => {
   t.plan(1)

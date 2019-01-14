@@ -1,6 +1,6 @@
 import test from "ava"
 
-import toFieldname from "../../../lib/util/pathToFieldname"
+import toFieldname from "lib/util/pathToFieldname"
 
 test("Should return path with one element as-is", t => {
   t.plan(1)

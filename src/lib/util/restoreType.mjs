@@ -1,4 +1,4 @@
-import isNaN from "./isNaN"
+import isNaN from "lib/util/isNaN"
 
 /**
  * Try restore value type

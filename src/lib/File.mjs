@@ -4,9 +4,9 @@ import {Readable} from "stream"
 
 import invariant from "@octetstream/invariant"
 
-import isPlainObject from "./util/isPlainObject"
-import isString from "./util/isString"
-import getType from "./util/getType"
+import isPlainObject from "lib/util/isPlainObject"
+import isString from "lib/util/isString"
+import getType from "lib/util/getType"
 
 class File {
   /**

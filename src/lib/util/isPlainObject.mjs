@@ -1,4 +1,4 @@
-import getType from "./getType"
+import getType from "lib/util/getType"
 
 const getPrototype = Object.getPrototypeOf
 const objectCtorString = Object.toString()

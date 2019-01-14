@@ -1,6 +1,6 @@
 import test from "ava"
 
-import getFieldPath from "../../../lib/util/getFieldPath"
+import getFieldPath from "lib/util/getFieldPath"
 
 test("Should return an array with one element", t => {
   t.plan(2)
