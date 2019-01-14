@@ -4,19 +4,19 @@ import request from "supertest"
 
 import {readFile} from "promise-fs"
 
-import isPlainObject from "lib/util/isPlainObject"
-import busboy from "lib/then-busboy"
-
 import mockHeader from "test/helper/mockHeader"
 import mockRequest from "test/helper/mockRequest"
 import mockServer from "test/helper/mockServer"
+
+import isPlainObject from "lib/util/isPlainObject"
+import parse from "lib/parse"
 
 test("Should return a promise", t => {
   t.plan(1)
 
   const req = mockRequest()
 
-  t.true(busboy(req) instanceof Promise)
+  t.true(parse(req) instanceof Promise)
 
   req.emit("end")
 })
@@ -24,7 +24,7 @@ test("Should return a promise", t => {
 test("Should just resolve a plain object", async t => {
   t.plan(1)
 
-  const {body} = await request(mockServer(busboy)())
+  const {body} = await request(mockServer(parse)())
     .post("/")
     .set("content-type", mockHeader)
 
@@ -34,7 +34,7 @@ test("Should just resolve a plain object", async t => {
 test("Should return an expected object", async t => {
   t.plan(1)
 
-  const {body} = await request(mockServer(busboy)())
+  const {body} = await request(mockServer(parse)())
     .post("/")
     .set("content-type", mockHeader)
     .field("subjects[0][firstName]", "John")
@@ -88,7 +88,7 @@ test("Should return an expected object", async t => {
 test("Should support collections", async t => {
   t.plan(1)
 
-  const {body} = await request(mockServer(busboy)())
+  const {body} = await request(mockServer(parse)())
     .post("/")
     .set("content-type", mockHeader)
     .field("[0][firstName]", "John")
@@ -140,7 +140,7 @@ test("Should support collections", async t => {
 test("Should restore field type by default", async t => {
   t.plan(1)
 
-  const {body} = await request(mockServer(busboy)())
+  const {body} = await request(mockServer(parse)())
     .post("/")
     .field("nullValue", "null")
     .field("falseValue", "false")
@@ -164,7 +164,7 @@ test(
   async t => {
     t.plan(1)
 
-    const {body} = await request(mockServer(busboy)({restoreTypes: false}))
+    const {body} = await request(mockServer(parse)({restoreTypes: false}))
       .post("/")
       .field("nullValue", "null")
       .field("falseValue", "false")
@@ -189,7 +189,7 @@ test("Should just receive file", async t => {
 
   const dict = "/usr/share/dict/words"
 
-  const {body} = await request(mockServer(busboy)())
+  const {body} = await request(mockServer(parse)())
     .post("/")
     .attach("file", dict)
 
@@ -201,7 +201,7 @@ test("Should just receive file", async t => {
 test("Should receive files and fields at the same time", async t => {
   t.plan(1)
 
-  const {body} = await request(mockServer(busboy)())
+  const {body} = await request(mockServer(parse)())
     .post("/")
     .field("message[sender]", "John Doe")
     .field("message[text]", "Whatever test message text")
@@ -229,7 +229,7 @@ test("Should receive files and fields at the same time", async t => {
 test("Should throw an error when no request object given", async t => {
   t.plan(3)
 
-  const err = await t.throws(busboy())
+  const err = await t.throws(parse())
 
   t.true(err instanceof TypeError)
   t.is(
@@ -243,7 +243,7 @@ test(
   async t => {
     t.plan(3)
 
-    const err = await t.throws(busboy({}))
+    const err = await t.throws(parse({}))
 
     t.true(err instanceof TypeError)
     t.is(
@@ -259,7 +259,7 @@ test(
     t.plan(3)
 
     const err = await t.throws(
-      busboy(mockRequest(), "totally not a plain object")
+      parse(mockRequest(), "totally not a plain object")
     )
 
     t.true(err instanceof TypeError)
@@ -272,7 +272,7 @@ test("Should response an error on incorrect field name format", async t => {
 
   const format = "some[totally[]][wrong]format[foo]"
 
-  const {error} = await request(mockServer(busboy)())
+  const {error} = await request(mockServer(parse)())
     .post("/")
     .field(format, "You shall not pass!")
 
@@ -286,7 +286,7 @@ test(
 
     const format = "some[totally[]][wrong]format[foo]"
 
-    const {error} = await request(mockServer(busboy)())
+    const {error} = await request(mockServer(parse)())
       .post("/")
       .attach(format, __filename)
 
@@ -303,7 +303,7 @@ test("Should response with error when PARTS limit reached", async t => {
     }
   }
 
-  const {error} = await request(mockServer(busboy)(options))
+  const {error} = await request(mockServer(parse)(options))
     .post("/")
     .field("field", 42)
     .attach("file", __filename)
@@ -325,7 +325,7 @@ test("Should response with error when FIELDS limit reached", async t => {
     }
   }
 
-  const {error} = await request(mockServer(busboy)(options))
+  const {error} = await request(mockServer(parse)(options))
     .post("/")
     .field("field", 42)
     .field("extra", 451)
@@ -347,7 +347,7 @@ test("Should response with error when FILES limit reached", async t => {
     }
   }
 
-  const {error} = await request(mockServer(busboy)(options))
+  const {error} = await request(mockServer(parse)(options))
     .post("/")
     .attach("file1", __filename)
     .attach("file2", "/usr/share/dict/words")
