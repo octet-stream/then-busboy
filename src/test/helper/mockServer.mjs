@@ -1,7 +1,8 @@
 import {createServer} from "http"
 
+import {isFile} from "lib/File"
+
 import isPlainObject from "lib/util/isPlainObject"
-import isFile from "lib/isFile"
 
 const isArray = Array.isArray
 

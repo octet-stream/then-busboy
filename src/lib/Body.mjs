@@ -2,9 +2,10 @@ import fromEntries from "object-deep-from-entries"
 import FormData from "formdata-node"
 
 import Field from "lib/Field"
-import isFile from "lib/isFile"
 import normalize from "lib/util/normalizeFields"
 import toFieldname from "lib/util/pathToFieldname"
+
+import {isFile} from "lib/File"
 
 /**
  * @api public

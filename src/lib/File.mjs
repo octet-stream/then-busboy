@@ -10,6 +10,19 @@ import getType from "lib/util/getType"
 
 class File {
   /**
+   * Check if given values is a File
+   *
+   * @param {any} val
+   *
+   * @return {boolean}
+   *
+   * @api public
+   */
+  static isFile(value) {
+    return value instanceof File
+  }
+
+  /**
    * File class.
    *
    * @param {object} options
@@ -170,3 +183,4 @@ class File {
 }
 
 export default File
+export const isFile = File.isFile
