@@ -6,13 +6,14 @@ import nanoid from "nanoid"
 
 import File from "lib/File"
 import getFieldPath from "lib/util/getFieldPath"
+import FileSizeLimitError from "lib/error/FileSizeLimitError"
 
 /**
  * Get a file from part and push it to entries array
  *
  * @api private
  */
-const onFile = (options, cb) => (fieldname, stream, filename, enc, mime) => {
+const onFile = ({limits}, cb) => (fieldname, stream, filename, enc, mime) => {
   try {
     const path = getFieldPath(fieldname)
 
@@ -26,9 +27,18 @@ const onFile = (options, cb) => (fieldname, stream, filename, enc, mime) => {
       cb(null, [path, file])
     }
 
+    const onLimit = () => (
+      cb(
+        new FileSizeLimitError(
+          `Limit reached: Available up to ${limits.fileSize} bytes per file.`
+        )
+      )
+    )
+
     stream
       .once("error", cb)
       .once("end", onEnd)
+      .once("limit", onLimit)
       .pipe(createWriteStream(filename))
   } catch (err) {
     return cb(err)

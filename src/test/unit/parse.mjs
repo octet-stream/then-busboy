@@ -359,3 +359,22 @@ test("Should response with error when FILES limit reached", async t => {
     `Available up to ${options.limits.files} files.`
   )
 })
+
+test("Should response with error when file size limit reached", async t => {
+  const options = {
+    limits: {
+      fileSize: 1000
+    }
+  }
+
+  const {error} = await request(mockServer(parse)(options))
+    .post("/")
+    .attach("file", __filename)
+
+  t.is(error.status, 413)
+  t.is(
+    error.text,
+    "FileSizeLimitError: Limit reached: " +
+    `Available up to ${options.limits.fileSize} bytes per file.`
+  )
+})
