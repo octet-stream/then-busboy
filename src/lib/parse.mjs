@@ -103,9 +103,7 @@ async function parse(request, options = {}) {
 
   options = merge({}, defaults, options, {headers: request.headers})
 
-  const params = {request, options}
-
-  return waterfall([exec, Body.from], params)
+  return waterfall([exec, Body.from], {request, options})
 }
 
 export default parse

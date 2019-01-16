@@ -29,7 +29,7 @@ class File {
    *
    * @constructor
    *
-   * @api private
+   * @api public
    */
   constructor(options) {
     invariant(
