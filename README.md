@@ -1,6 +1,6 @@
 # then-busboy
 
-Promise-based wrapper around Busboy. Process multipart/form-data content and returns it as a single object.
+Promise-based wrapper around Busboy. Processes multipart/form-data content and returns it as a single object.
 
 [![dependencies Status](https://david-dm.org/octet-stream/then-busboy/status.svg)](https://david-dm.org/octet-stream/then-busboy)
 [![devDependencies Status](https://david-dm.org/octet-stream/then-busboy/dev-status.svg)](https://david-dm.org/octet-stream/then-busboy?type=dev)

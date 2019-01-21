@@ -360,7 +360,7 @@ test("Should response with error when FILES limit reached", async t => {
   )
 })
 
-test("Should response with error when file size limit reached", async t => {
+test("Should response with error when FILE SIZE limit reached", async t => {
   const options = {
     limits: {
       fileSize: 1000
