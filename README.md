@@ -27,7 +27,7 @@ yarn add then-busboy
 For more information check out the [Usage](https://github.com/octet-stream/then-busboy#usage) section of documentation
 and take a look at [Body](https://github.com/octet-stream/then-busboy#constructor-bodyentries) class in API section.
 
-### `busboy(request[, options]) -> {Promise<Body>}`
+### `parse(request[, options]) -> {Promise<Body>}`
 
 + **http.IncomingMessage** request – HTTP request object
 + **{object}** [options = {}]
@@ -344,7 +344,8 @@ then-busboy works fine even with a pure Node.js HTTP server.
 Let's take a look to the tiny example:
 
 ```js
-import busboy from "then-busboy"
+import parse from "then-busboy"
+
 import {createServer} from "http"
 
 function handler(req, res) {
@@ -363,7 +364,7 @@ function handler(req, res) {
   }
 
   // Call `then-busboy` with `req`
-  busboy(req).then(onFulfilled, onRejected)
+  parse(req).then(onFulfilled, onRejected)
 }
 
 createServer(handler)
@@ -376,7 +377,7 @@ because then-busboy always returns a Promise.
 So, let's see on a simple middleware example for [Koa.js](https://koajs.com):
 
 ```js
-import busboy from "then-busboy"
+import parse from "then-busboy"
 
 const toLowerCase = string => String.prototype.toLowerCase.call(string)
 
@@ -389,7 +390,7 @@ const multipart = () => async (ctx, next) => {
     return next()
   }
 
-  ctx.request.body = await busboy(ctx.req).then(body => body.json())
+  ctx.request.body = await parse(ctx.req).then(body => body.json())
 
   await next()
 }
@@ -402,9 +403,9 @@ This function may help you if you're wanted to do something
 with received files automatically.
 
 ```js
-import busboy, {isFile, Body} from "then-busboy"
+import {parse, isFile, Body} from "then-busboy"
 
-let body = await busboy(request).then(Body.json)
+let body = await parse(request).then(Body.json)
 
 body = await deepMapObject(
   body, async val => (
