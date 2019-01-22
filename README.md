@@ -27,20 +27,12 @@ yarn add then-busboy
 For more information check out the [Usage](https://github.com/octet-stream/then-busboy#usage) section of documentation
 and take a look at [Body](https://github.com/octet-stream/then-busboy#constructor-bodyentries) class in API section.
 
-**Public**
-
 ### `busboy(request[, options]) -> {Promise<Body>}`
 
 + **http.IncomingMessage** request – HTTP request object
 + **{object}** [options = {}]
   - **{boolean}** restoreTypes – allow to restore type of each value (default – true)
   - more information about busboy options [here](https://github.com/mscdex/busboy#busboy-methods).
-
-### `isFile(value) -> {boolean}`
-
-Check if given value is a File instance.
-
-  - **{any}** value – a value to verify
 
 ### `constructor Body(entries)`
 
@@ -145,8 +137,6 @@ Return an iterator allows to go through the Body fields name
 
 Return an iterator allows to go through the Body fields path
 
-**Private**
-
 ### `constructor File(options)`
 
   - **{object}** options – an object that contains the following information about file:
@@ -154,6 +144,14 @@ Return an iterator allows to go through the Body fields path
     + **{string}** filename – name of the file (with an extension)
     + **{string}** env – encoding of the file content
     + **{string}** mime – file mime type
+
+#### Static methods
+
+##### `isFile(value) -> {boolean}`
+
+Check if given value is a File instance.
+
+  - **{any}** value – a value to verify
 
 #### Instance properties
 
