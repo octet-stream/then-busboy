@@ -378,3 +378,24 @@ test("Should response with error when FILE SIZE limit reached", async t => {
     `Available up to ${options.limits.fileSize} bytes per file.`
   )
 })
+
+test("Should response with error when FIELD SIZE limit reached", async t => {
+  const options = {
+    limits: {
+      fieldSize: 2
+    }
+  }
+
+  const {error} = await request(mockServer(parse)(options))
+    .post("/")
+    .field(
+      "field", "I beat Twilight Sparkle and all I got was this lousy t-shirt."
+    )
+
+  t.is(error.status, 413)
+  t.is(
+    error.text,
+    "FieldSizeLimitError: Limit reached: " +
+    `Available up to ${options.limits.fieldSize} bytes per field.`
+  )
+})
