@@ -1,7 +1,7 @@
 {
   "name": "then-busboy",
   "description": "Promise-based wrapper around Busboy. Processes multipart/form-data content and returns it as a single object.",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "author": "Nick K. <nick.kruchinin@gmail.com>",
   "license": "MIT",
   "repository": "octet-stream/then-busboy",
