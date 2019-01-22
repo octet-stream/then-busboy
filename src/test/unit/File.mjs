@@ -1,6 +1,6 @@
-import {Readable, Writable} from "stream"
+import {Writable} from "stream"
 import {basename, extname} from "path"
-import {createReadStream} from "fs"
+import {createReadStream, ReadStream} from "fs"
 
 import test from "ava"
 
@@ -29,8 +29,8 @@ test("Should create a File with given stream and metadata", t => {
   })
 
   t.true(file instanceof File)
-  t.true(file.contents instanceof Readable)
-  t.true(file.stream instanceof Readable)
+  t.true(file.contents instanceof ReadStream)
+  t.true(file.stream instanceof ReadStream)
   t.is(file.mime, "text/javascript")
   t.is(file.enc, "utf-8")
   t.is(file.filename, filename)
@@ -253,7 +253,7 @@ test("Should throw an error when contents is not a Stream", t => {
   const err = t.throws(trap)
 
   t.true(err instanceof TypeError)
-  t.is(err.message, "Contents should be a Readable stream. Received string")
+  t.is(err.message, "Contents should be a ReadStream stream. Received string")
 })
 
 test("Should throw an error when no filename given", t => {
