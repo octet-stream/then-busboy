@@ -3,8 +3,6 @@ import test from "ava"
 import isPlainObject from "lib/util/isPlainObject"
 
 test("Should return a boolean value", t => {
-  t.plan(3)
-
   t.is(typeof isPlainObject(), "boolean")
 
   t.true(isPlainObject({}))
@@ -15,8 +13,6 @@ test(
   "Should return false when passed non-object value, " +
   "like some primitives of their constructors",
   t => {
-    t.plan(8)
-
     t.false(isPlainObject(null))
     t.false(isPlainObject(undefined))
     t.false(isPlainObject(void 0))
@@ -33,8 +29,6 @@ test(
 )
 
 test("Should return false when passed Array or RegExp", t => {
-  t.plan(4)
-
   t.false(isPlainObject([]))
   t.false(isPlainObject(new Array())) // eslint-disable-line
 
@@ -45,8 +39,6 @@ test("Should return false when passed Array or RegExp", t => {
 test(
   "Should return true when passed an object literal or Object.create(null)",
   t => {
-    t.plan(3)
-
     t.true(isPlainObject({}))
     t.true(isPlainObject(Object.create(null)))
     t.true(isPlainObject(new Object({key: "value"}))) // eslint-disable-line

@@ -5,8 +5,6 @@ import test from "ava"
 import getType from "lib/util/getType"
 
 test("Should return a string with type name", t => {
-  t.plan(2)
-
   const res = getType({})
 
   t.true(isString(res))
@@ -14,8 +12,6 @@ test("Should return a string with type name", t => {
 })
 
 test("Should return lowercased string for all basic types", t => {
-  t.plan(8)
-
   const boolean = getType(false)
   const nullType = getType(null)
   const undefType = getType(undefined)
@@ -36,8 +32,6 @@ test("Should return lowercased string for all basic types", t => {
 })
 
 test("Should return as-is name for non-basic types", t => {
-  t.plan(3)
-
   const genFn = getType(function* noop() { yield 0 })
   const set = getType(new Set())
   const map = getType(new Map())

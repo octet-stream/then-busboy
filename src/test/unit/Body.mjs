@@ -13,36 +13,26 @@ import isPlainObject from "lib/util/isPlainObject"
 const dict = "/usr/share/dict/words"
 
 test("Body.json() should return a plain object for given entries", t => {
-  t.plan(1)
-
   t.true(isPlainObject(Body.json([])))
 })
 
 test("Body.json() should return a plain object for given body instance", t => {
-  t.plan(1)
-
   const body = new Body([])
 
   t.true(isPlainObject(Body.json(body)))
 })
 
 test("Body.json() should take an entries array and then return object", t => {
-  t.plan(1)
-
   t.true(isPlainObject(Body.json([])))
 })
 
 test("Body.json() should return an expected object", t => {
-  t.plan(1)
-
   const expected = {key: "value"}
 
   t.deepEqual(Body.json([[["key"], {value: "value"}]]), expected)
 })
 
 test("Body.formData() should return a FormData for given entries", t => {
-  t.plan(1)
-
   const body = new Body([])
 
   t.true(Body.formData(body) instanceof FormData)
@@ -51,15 +41,11 @@ test("Body.formData() should return a FormData for given entries", t => {
 test(
   "Body.formData() should take an entries array and then return FormData",
   t => {
-    t.plan(1)
-
     t.true(Body.formData([]) instanceof FormData)
   }
 )
 
 test("Created FormData should contain all entries", t => {
-  t.plan(4)
-
   const file = new File({
     contents: createReadStream(dict),
     filename: "dictionary",
@@ -82,14 +68,10 @@ test("Created FormData should contain all entries", t => {
 })
 
 test("Body.from() should create an instance", t => {
-  t.plan(1)
-
   t.true(Body.from([]) instanceof Body)
 })
 
 test("Body.entries() should contain entries passed to Body.from()", t => {
-  t.plan(1)
-
   const file = new File({
     contents: createReadStream(dict),
     filename: "dictionary",
@@ -106,8 +88,6 @@ test("Body.entries() should contain entries passed to Body.from()", t => {
 })
 
 test("Body#files getter should return a Body with files only", t => {
-  t.plan(2)
-
   const file = new File({
     contents: createReadStream(dict),
     filename: "dictionary",
@@ -125,8 +105,6 @@ test("Body#files getter should return a Body with files only", t => {
 })
 
 test("Body#fields getter should return a Body with fields only", t => {
-  t.plan(2)
-
   const file = new File({
     contents: createReadStream(dict),
     filename: "dictionary",
@@ -144,8 +122,6 @@ test("Body#fields getter should return a Body with fields only", t => {
 })
 
 test("Body#length should return current amount of entries in Body", t => {
-  t.plan(2)
-
   const file = new File({
     contents: createReadStream(dict),
     filename: "dictionary",
@@ -163,8 +139,6 @@ test("Body#length should return current amount of entries in Body", t => {
 })
 
 test("Body iterators should not execute callback on empty body", t => {
-  t.plan(3)
-
   const forEachFulfill = spy()
   const filterFulfill = spy()
   const mapFulfill = spy()
@@ -179,8 +153,6 @@ test("Body iterators should not execute callback on empty body", t => {
 })
 
 test("Body iterators assign null as callback ctx by default", t => {
-  t.plan(3)
-
   const entries = [
     [["field"], {value: "some text"}]
   ]
@@ -199,8 +171,6 @@ test("Body iterators assign null as callback ctx by default", t => {
 })
 
 test("Body iterators should execute callback with correct arguments", t => {
-  t.plan(3)
-
   const entries = [[["field"], {value: "some text"}]]
   const expected = [{value: "some text"}, "field", ["field"], entries]
 
@@ -218,8 +188,6 @@ test("Body iterators should execute callback with correct arguments", t => {
 })
 
 test("Body#filter should return a new Body with filtered entries", t => {
-  t.plan(5)
-
   const file = new File({
     contents: createReadStream(dict),
     filename: "dictionary",
@@ -248,8 +216,6 @@ test("Body#filter should return a new Body with filtered entries", t => {
 test(
   "Body#map should correctly assign a non-Field value returned from callback",
   t => {
-    t.plan(4)
-
     const field = new Field({
       enc: undefined,
       mime: undefined,
@@ -285,8 +251,6 @@ test(
 test(
   "Body[Symbol.iterator] is a method and should allow to go through values",
   t => {
-    t.plan(2)
-
     const entries = [[["field"], {value: "some text"}]]
     const body = Body.from(entries)
 
@@ -305,8 +269,6 @@ test("Body#values allows to go through values", t => {
 })
 
 test("Body#names allows to go through names", t => {
-  t.plan(1)
-
   const entries = [[["field"], {value: "some text"}]]
   const body = Body.from(entries)
 
@@ -314,8 +276,6 @@ test("Body#names allows to go through names", t => {
 })
 
 test("Body#paths allows to go through paths", t => {
-  t.plan(1)
-
   const entries = [[["field"], {value: "some text"}]]
   const body = Body.from(entries)
 

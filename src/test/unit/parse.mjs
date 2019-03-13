@@ -12,8 +12,6 @@ import isPlainObject from "lib/util/isPlainObject"
 import parse from "lib/parse"
 
 test("Should return a promise", t => {
-  t.plan(1)
-
   const req = mockRequest()
 
   t.true(parse(req) instanceof Promise)
@@ -22,8 +20,6 @@ test("Should return a promise", t => {
 })
 
 test("Should just resolve a plain object", async t => {
-  t.plan(1)
-
   const {body} = await request(mockServer(parse)())
     .post("/")
     .set("content-type", mockHeader)
@@ -32,8 +28,6 @@ test("Should just resolve a plain object", async t => {
 })
 
 test("Should return an expected object", async t => {
-  t.plan(1)
-
   const {body} = await request(mockServer(parse)())
     .post("/")
     .set("content-type", mockHeader)
@@ -86,8 +80,6 @@ test("Should return an expected object", async t => {
 })
 
 test("Should support collections", async t => {
-  t.plan(1)
-
   const {body} = await request(mockServer(parse)())
     .post("/")
     .set("content-type", mockHeader)
@@ -138,8 +130,6 @@ test("Should support collections", async t => {
 })
 
 test("Should restore field type by default", async t => {
-  t.plan(1)
-
   const {body} = await request(mockServer(parse)())
     .post("/")
     .field("nullValue", "null")
@@ -162,8 +152,6 @@ test("Should restore field type by default", async t => {
 test(
   "Should not restore field type when options.restoreTypes turned to false",
   async t => {
-    t.plan(1)
-
     const {body} = await request(mockServer(parse)({restoreTypes: false}))
       .post("/")
       .field("nullValue", "null")
@@ -185,8 +173,6 @@ test(
 )
 
 test("Should just receive file", async t => {
-  t.plan(1)
-
   const dict = "/usr/share/dict/words"
 
   const {body} = await request(mockServer(parse)())
@@ -199,8 +185,6 @@ test("Should just receive file", async t => {
 })
 
 test("Should receive files and fields at the same time", async t => {
-  t.plan(1)
-
   const {body} = await request(mockServer(parse)())
     .post("/")
     .field("message[sender]", "John Doe")
@@ -227,8 +211,6 @@ test("Should receive files and fields at the same time", async t => {
 })
 
 test("Should throw an error when no request object given", async t => {
-  t.plan(3)
-
   const err = await t.throws(parse())
 
   t.true(err instanceof TypeError)
@@ -241,8 +223,6 @@ test("Should throw an error when no request object given", async t => {
 test(
   "Should throw an error when request object is not an http.IncomingMessage",
   async t => {
-    t.plan(3)
-
     const err = await t.throws(parse({}))
 
     t.true(err instanceof TypeError)
@@ -256,8 +236,6 @@ test(
 test(
   "Should throw an error when given options is not a plain object",
   async t => {
-    t.plan(3)
-
     const err = await t.throws(
       parse(mockRequest(), "totally not a plain object")
     )
@@ -268,93 +246,93 @@ test(
 )
 
 test("Should response an error on incorrect field name format", async t => {
-  t.plan(1)
-
   const format = "some[totally[]][wrong]format[foo]"
 
-  const {error} = await request(mockServer(parse)())
+  const req = request(mockServer(parse)())
     .post("/")
     .field(format, "You shall not pass!")
 
-  t.is(error.text, `Error: Unexpected field name format: ${format}`)
+  const err = await t.throws(req)
+
+  t.is(err.response.text, `Error: Unexpected field name format: ${format}`)
 })
 
 test(
   "Should response an error on incorrect field name format of given file",
   async t => {
-    t.plan(1)
-
     const format = "some[totally[]][wrong]format[foo]"
 
-    const {error} = await request(mockServer(parse)())
+    const req = request(mockServer(parse)())
       .post("/")
       .attach(format, __filename)
 
-    t.is(error.text, `Error: Unexpected field name format: ${format}`)
+    const err = await t.throws(req)
+
+    t.is(err.response.text, `Error: Unexpected field name format: ${format}`)
   }
 )
 
 test("Should response with error when PARTS limit reached", async t => {
-  t.plan(2)
-
   const options = {
     limits: {
       parts: 1
     }
   }
 
-  const {error} = await request(mockServer(parse)(options))
+  const req = request(mockServer(parse)(options))
     .post("/")
     .field("field", 42)
     .attach("file", __filename)
 
-  t.is(error.status, 413)
+  const {status, response} = await t.throws(req)
+
+  t.is(status, 413)
   t.is(
-    error.text,
+    response.text,
     "PartsLimitError: Limit reached: " +
     `Available up to ${options.limits.parts} parts.`
   )
 })
 
 test("Should response with error when FIELDS limit reached", async t => {
-  t.plan(2)
-
   const options = {
     limits: {
       fields: 1
     }
   }
 
-  const {error} = await request(mockServer(parse)(options))
+  const req = request(mockServer(parse)(options))
     .post("/")
     .field("field", 42)
     .field("extra", 451)
 
-  t.is(error.status, 413)
+  const {status, response} = await t.throws(req)
+
+  t.is(status, 413)
   t.is(
-    error.text,
+    response.text,
     "FieldsLimitError: Limit reached: " +
     `Available up to ${options.limits.fields} fields.`
   )
 })
 
 test("Should response with error when FILES limit reached", async t => {
-  t.plan(2)
-
   const options = {
     limits: {
       files: 1
     }
   }
 
-  const {error} = await request(mockServer(parse)(options))
+  const req = request(mockServer(parse)(options))
     .post("/")
     .attach("file1", __filename)
     .attach("file2", "/usr/share/dict/words")
 
-  t.is(error.status, 413)
+  const {status, response} = await t.throws(req)
+
+  t.is(status, 413)
   t.is(
-    error.text,
+    response.text,
     "FilesLimitError: Limit reached: " +
     `Available up to ${options.limits.files} files.`
   )
@@ -367,13 +345,15 @@ test("Should response with error when FILE SIZE limit reached", async t => {
     }
   }
 
-  const {error} = await request(mockServer(parse)(options))
+  const req = request(mockServer(parse)(options))
     .post("/")
     .attach("file", __filename)
 
-  t.is(error.status, 413)
+  const {status, response} = await t.throws(req)
+
+  t.is(status, 413)
   t.is(
-    error.text,
+    response.text,
     "FileSizeLimitError: Limit reached: " +
     `Available up to ${options.limits.fileSize} bytes per file.`
   )
@@ -386,15 +366,17 @@ test("Should response with error when FIELD SIZE limit reached", async t => {
     }
   }
 
-  const {error} = await request(mockServer(parse)(options))
+  const req = request(mockServer(parse)(options))
     .post("/")
     .field(
       "field", "I beat Twilight Sparkle and all I got was this lousy t-shirt."
     )
 
-  t.is(error.status, 413)
+  const {status, response} = await t.throws(req)
+
+  t.is(status, 413)
   t.is(
-    error.text,
+    response.text,
     "FieldSizeLimitError: Limit reached: " +
     `Available up to ${options.limits.fieldSize} bytes per field.`
   )
