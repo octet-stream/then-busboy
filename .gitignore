@@ -5,6 +5,7 @@
 
 /main.js
 /main.mjs
+/test.mjs
 
 node_modules
 coverage

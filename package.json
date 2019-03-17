@@ -5,7 +5,7 @@
   "author": "Nick K. <nick.kruchinin@gmail.com>",
   "license": "MIT",
   "repository": "octet-stream/then-busboy",
-  "main": "./main.js",
+  "main": "main",
   "engines": {
     "node": ">= 8.9.4 < 9 || >= 10"
   },
@@ -23,8 +23,7 @@
     "eslint": "eslint src",
     "staged": "lint-staged",
     "make": "babel src -d .",
-    "make:esm": "BABEL_ESM=1 babel src -d . --keep-file-extension",
-    "prepare": "npm run cleanup && npm run make && npm run make:esm",
+    "prepare": "npm run cleanup && npm run make",
     "watch": "babel src -w -d .",
     "make:test": "babel src -s -d .",
     "cleanup": "rimraf lib test main.js main.js.map",
