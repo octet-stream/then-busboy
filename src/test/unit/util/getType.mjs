@@ -1,4 +1,4 @@
-import {isString} from "util"
+import util from "util"
 
 import test from "ava"
 
@@ -7,7 +7,7 @@ import getType from "lib/util/getType"
 test("Should return a string with type name", t => {
   const res = getType({})
 
-  t.true(isString(res))
+  t.true(util.isString(res))
   t.is(res, "object")
 })
 

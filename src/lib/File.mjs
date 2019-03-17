@@ -1,5 +1,5 @@
-import {basename, extname} from "path"
-import {createWriteStream, ReadStream} from "fs"
+import p from "path"
+import fs from "fs"
 
 import invariant from "@octetstream/invariant"
 
@@ -41,7 +41,7 @@ class File {
     invariant(!contents, "File contents required.")
 
     invariant(
-      !(contents instanceof ReadStream),
+      !(contents instanceof fs.ReadStream),
 
       TypeError, "Contents should be a ReadStream stream. Received %s",
 
@@ -69,12 +69,12 @@ class File {
       "File mime type should be a string. Received %s", getType(mime)
     )
 
-    const ext = extname(filename)
-    const base = basename(filename, ext)
+    const ext = p.extname(filename)
+    const base = p.basename(filename, ext)
 
     this.__contents = contents
     this.__stream = contents
-    this.__filename = basename(filename)
+    this.__filename = p.basename(filename)
     this.__basename = base
     this.__extname = ext
     this.__mime = mime
@@ -164,7 +164,7 @@ class File {
     this.contents
       .on("error", reject)
       .on("end", resolve)
-      .pipe(createWriteStream(path || this.path))
+      .pipe(fs.createWriteStream(path || this.path))
   })
 
   get [Symbol.toStringTag]() {

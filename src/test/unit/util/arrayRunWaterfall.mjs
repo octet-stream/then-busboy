@@ -1,6 +1,5 @@
 import test from "ava"
-
-import {spy} from "sinon"
+import sinon from "sinon"
 
 import waterfall from "lib/util/arrayRunWaterfall"
 
@@ -23,9 +22,9 @@ test(
 )
 
 test("Should pass a result of previous task to the next", async t => {
-  const taskOne = spy(() => "Hello")
+  const taskOne = sinon.spy(() => "Hello")
 
-  const taskTwo = spy(res => `${res}, world!`)
+  const taskTwo = sinon.spy(res => `${res}, world!`)
 
   await waterfall([taskOne, taskTwo])
 

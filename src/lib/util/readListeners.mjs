@@ -1,5 +1,5 @@
-import {readdirSync} from "fs"
-import {basename, extname, join} from "path"
+import fs from "fs"
+import p from "path"
 
 /**
  * Read listeners from the disk
@@ -11,14 +11,14 @@ import {basename, extname, join} from "path"
 function readListeners(path) {
   const res = {}
 
-  const dir = readdirSync(path)
+  const dir = fs.readdirSync(path)
 
   for (const filename of dir) {
-    const ext = extname(filename)
+    const ext = p.extname(filename)
     if (["js", "mjs"].includes(ext.slice(1))) {
-      const base = basename(filename, ext)
+      const base = p.basename(filename, ext)
 
-      res[base] = require(join(path, base)).default
+      res[base] = require(p.join(path, base)).default
     }
   }
 

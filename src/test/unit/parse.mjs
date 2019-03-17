@@ -1,8 +1,6 @@
-import test from "ava"
-
 import request from "supertest"
-
-import {readFile} from "promise-fs"
+import fs from "promise-fs"
+import test from "ava"
 
 import mockHeader from "test/helper/mockHeader"
 import mockRequest from "test/helper/mockRequest"
@@ -179,7 +177,7 @@ test("Should just receive file", async t => {
     .post("/")
     .attach("file", dict)
 
-  const expected = String(await readFile(dict))
+  const expected = String(await fs.readFile(dict))
 
   t.is(body.file, expected)
 })
@@ -192,7 +190,7 @@ test("Should receive files and fields at the same time", async t => {
     .field("message[attachments][0][description]", "Some test file")
     .attach("message[attachments][0][file]", __filename)
 
-  const file = String(await readFile(__filename))
+  const file = String(await fs.readFile(__filename))
 
   const expected = {
     message: {

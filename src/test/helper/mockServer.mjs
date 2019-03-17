@@ -1,4 +1,4 @@
-import {createServer} from "http"
+import http from "http"
 
 import {isFile} from "lib/File"
 
@@ -22,7 +22,7 @@ async function mapFiles(obj, cb, ctx) {
   return res
 }
 
-const mockServer = busboy => options => createServer((req, res) => {
+const mockServer = busboy => options => http.createServer((req, res) => {
   const toJSON = body => body.json()
 
   const onData = data => mapFiles(

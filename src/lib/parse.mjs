@@ -1,5 +1,5 @@
-import {IncomingMessage} from "http"
-import {join} from "path"
+import http from "http"
+import path from "path"
 
 import Busboy from "busboy"
 import merge from "lodash.merge"
@@ -12,7 +12,7 @@ import map from "lib/util/mapListeners"
 import getType from "lib/util/getType"
 import Body from "lib/Body"
 
-const initializers = readListeners(join(__dirname, "listener"))
+const initializers = readListeners(path.join(__dirname, "listener"))
 
 const defaults = {
   restoreTypes: true
@@ -89,7 +89,7 @@ const exec = ({request, options}) => new Promise((resolve, reject) => {
  */
 async function parse(request, options = {}) {
   invariant(
-    !(request instanceof IncomingMessage), TypeError,
+    !(request instanceof http.IncomingMessage), TypeError,
 
     "Request must be an instance of http.IncomingMessage. Received %s",
     getType(request)

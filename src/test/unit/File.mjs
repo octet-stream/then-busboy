@@ -1,23 +1,20 @@
-import {Writable} from "stream"
-import {basename, extname} from "path"
-import {createReadStream, ReadStream} from "fs"
+import stream from "stream"
+import path from "path"
 
 import test from "ava"
-
+import sinon from "sinon"
 import pq from "proxyquire"
-
-import {spy} from "sinon"
-import {readFile} from "promise-fs"
+import fs from "promise-fs"
 
 import File from "lib/File"
 
 test("Should create a File with given stream and metadata", t => {
-  const contents = createReadStream(__filename)
+  const contents = fs.createReadStream(__filename)
 
-  const filename = basename(__filename)
+  const filename = path.basename(__filename)
 
-  const ext = extname(__filename)
-  const base = basename(__filename, ext)
+  const ext = path.extname(__filename)
+  const base = path.basename(__filename, ext)
 
   const file = new File({
     contents,
@@ -27,8 +24,8 @@ test("Should create a File with given stream and metadata", t => {
   })
 
   t.true(file instanceof File)
-  t.true(file.contents instanceof ReadStream)
-  t.true(file.stream instanceof ReadStream)
+  t.true(file.contents instanceof fs.ReadStream)
+  t.true(file.stream instanceof fs.ReadStream)
   t.is(file.mime, "text/javascript")
   t.is(file.enc, "utf-8")
   t.is(file.filename, filename)
@@ -37,9 +34,9 @@ test("Should create a File with given stream and metadata", t => {
 })
 
 test("Should return a correct string on inspect call", t => {
-  const contents = createReadStream(__filename)
+  const contents = fs.createReadStream(__filename)
 
-  const filename = basename(__filename)
+  const filename = path.basename(__filename)
 
   const file = new File({
     contents,
@@ -52,9 +49,9 @@ test("Should return a correct string on inspect call", t => {
 })
 
 test("Should return a correct string on toJSON call", t => {
-  const contents = createReadStream(__filename)
+  const contents = fs.createReadStream(__filename)
 
-  const filename = basename(__filename)
+  const filename = path.basename(__filename)
 
   const file = new File({
     contents,
@@ -67,9 +64,9 @@ test("Should return a correct string on toJSON call", t => {
 })
 
 test("Should return a correct string on toString call", t => {
-  const contents = createReadStream(__filename)
+  const contents = fs.createReadStream(__filename)
 
-  const filename = basename(__filename)
+  const filename = path.basename(__filename)
 
   const file = new File({
     contents,
@@ -82,9 +79,9 @@ test("Should return a correct string on toString call", t => {
 })
 
 test("Should return a correct string on String call", t => {
-  const contents = createReadStream(__filename)
+  const contents = fs.createReadStream(__filename)
 
-  const filename = basename(__filename)
+  const filename = path.basename(__filename)
 
   const file = new File({
     contents,
@@ -97,9 +94,9 @@ test("Should return a correct string on String call", t => {
 })
 
 test("Should return a correct string on JSON.stringify call", t => {
-  const contents = createReadStream(__filename)
+  const contents = fs.createReadStream(__filename)
 
-  const filename = basename(__filename)
+  const filename = path.basename(__filename)
 
   const file = new File({
     contents,
@@ -112,9 +109,9 @@ test("Should return a correct string on JSON.stringify call", t => {
 })
 
 test("Should correctly read given file from Stream", async t => {
-  const contents = createReadStream(__filename)
+  const contents = fs.createReadStream(__filename)
 
-  const filename = basename(__filename)
+  const filename = path.basename(__filename)
 
   const file = new File({
     contents,
@@ -123,7 +120,7 @@ test("Should correctly read given file from Stream", async t => {
     enc: "utf-8"
   })
 
-  const expected = await readFile(__filename)
+  const expected = await fs.readFile(__filename)
 
   const actual = await file.read()
 
@@ -131,9 +128,9 @@ test("Should correctly read given file from Stream", async t => {
 })
 
 test("Should write file to disk", async t => {
-  const noop = spy()
+  const noop = sinon.spy()
 
-  function createWriteStream(path, options) {
+  function createWriteStream(filename, options) {
     const bufs = []
     let len = 0
 
@@ -141,14 +138,14 @@ test("Should write file to disk", async t => {
       bufs.push(ch)
       len += ch.length
 
-      noop(path, Buffer.concat(bufs, len), cb)
+      noop(filename, Buffer.concat(bufs, len), cb)
     }
 
-    const stream = new Writable({
+    const writable = new stream.Writable({
       ...options, write
     })
 
-    return stream
+    return writable
   }
 
   const MockedFile = pq("../../lib/File", {
@@ -157,11 +154,11 @@ test("Should write file to disk", async t => {
     }
   }).default
 
-  const expected = await readFile(__filename)
+  const expected = await fs.readFile(__filename)
 
-  const contents = createReadStream(__filename)
+  const contents = fs.createReadStream(__filename)
 
-  const filename = basename(__filename)
+  const filename = path.basename(__filename)
 
   const file = new MockedFile({
     contents,
@@ -178,16 +175,16 @@ test("Should write file to disk", async t => {
 })
 
 test("Should write file to given path", async t => {
-  const noop = spy()
+  const noop = sinon.spy()
 
-  function createWriteStream(path, options) {
-    const write = () => void noop(path)
+  function createWriteStream(filename, options) {
+    const write = () => void noop(filename)
 
-    const stream = new Writable({
+    const writable = new stream.Writable({
       ...options, write
     })
 
-    return stream
+    return writable
   }
 
   const MockedFile = pq("../../lib/File", {
@@ -198,9 +195,9 @@ test("Should write file to given path", async t => {
 
   const expected = "some/whatever/path"
 
-  const contents = createReadStream(__filename)
+  const contents = fs.createReadStream(__filename)
 
-  const filename = basename(__filename)
+  const filename = path.basename(__filename)
 
   const file = new MockedFile({
     contents,
@@ -235,14 +232,14 @@ test("Should throw an error when contents is not a Stream", t => {
 })
 
 test("Should throw an error when no filename given", t => {
-  const trap = () => new File({contents: createReadStream(__filename)})
+  const trap = () => new File({contents: fs.createReadStream(__filename)})
 
   t.throws(trap, "Filename required.")
 })
 
 test("Should throw an error when filename is not a string", t => {
   const trap = () => new File({
-    contents: createReadStream(__filename),
+    contents: fs.createReadStream(__filename),
     filename: 42
   })
 
@@ -251,8 +248,8 @@ test("Should throw an error when filename is not a string", t => {
 
 test("Should throw an error when no enc given", t => {
   const trap = () => new File({
-    contents: createReadStream(__filename),
-    filename: basename(__filename)
+    contents: fs.createReadStream(__filename),
+    filename: path.basename(__filename)
   })
 
   t.throws(trap, "File encoding required.")
@@ -260,8 +257,8 @@ test("Should throw an error when no enc given", t => {
 
 test("Should throw an error when enc is not a string", t => {
   const trap = () => new File({
-    contents: createReadStream(__filename),
-    filename: basename(__filename),
+    contents: fs.createReadStream(__filename),
+    filename: path.basename(__filename),
     enc: []
   })
 
@@ -270,8 +267,8 @@ test("Should throw an error when enc is not a string", t => {
 
 test("Should throw an error when no mime given", t => {
   const trap = () => new File({
-    contents: createReadStream(__filename),
-    filename: basename(__filename),
+    contents: fs.createReadStream(__filename),
+    filename: path.basename(__filename),
     enc: "utf-8"
   })
 
@@ -280,8 +277,8 @@ test("Should throw an error when no mime given", t => {
 
 test("Should throw an error when mime is not a string", t => {
   const trap = () => new File({
-    contents: createReadStream(__filename),
-    filename: basename(__filename),
+    contents: fs.createReadStream(__filename),
+    filename: path.basename(__filename),
     enc: "utf-8",
     mime: /.*/
   })
@@ -292,9 +289,9 @@ test("Should throw an error when mime is not a string", t => {
 test(
   "File#write should throw a TypeError when given path is not a string",
   async t => {
-    const contents = createReadStream(__filename)
+    const contents = fs.createReadStream(__filename)
 
-    const filename = basename(__filename)
+    const filename = path.basename(__filename)
 
     const file = new File({
       contents,

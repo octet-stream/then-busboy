@@ -1,9 +1,8 @@
-import {createReadStream} from "fs"
+import fs from "fs"
 
-import {spy} from "sinon"
-
-import test from "ava"
 import FormData from "formdata-node"
+import sinon from "sinon"
+import test from "ava"
 
 import File from "lib/File"
 import Body from "lib/Body"
@@ -47,7 +46,7 @@ test(
 
 test("Created FormData should contain all entries", t => {
   const file = new File({
-    contents: createReadStream(dict),
+    contents: fs.createReadStream(dict),
     filename: "dictionary",
     mime: "text/plain",
     enc: "utf8"
@@ -73,7 +72,7 @@ test("Body.from() should create an instance", t => {
 
 test("Body.entries() should contain entries passed to Body.from()", t => {
   const file = new File({
-    contents: createReadStream(dict),
+    contents: fs.createReadStream(dict),
     filename: "dictionary",
     mime: "text/plain",
     enc: "utf8"
@@ -89,7 +88,7 @@ test("Body.entries() should contain entries passed to Body.from()", t => {
 
 test("Body#files getter should return a Body with files only", t => {
   const file = new File({
-    contents: createReadStream(dict),
+    contents: fs.createReadStream(dict),
     filename: "dictionary",
     mime: "text/plain",
     enc: "utf8"
@@ -106,7 +105,7 @@ test("Body#files getter should return a Body with files only", t => {
 
 test("Body#fields getter should return a Body with fields only", t => {
   const file = new File({
-    contents: createReadStream(dict),
+    contents: fs.createReadStream(dict),
     filename: "dictionary",
     mime: "text/plain",
     enc: "utf8"
@@ -123,7 +122,7 @@ test("Body#fields getter should return a Body with fields only", t => {
 
 test("Body#length should return current amount of entries in Body", t => {
   const file = new File({
-    contents: createReadStream(dict),
+    contents: fs.createReadStream(dict),
     filename: "dictionary",
     mime: "text/plain",
     enc: "utf8"
@@ -139,9 +138,9 @@ test("Body#length should return current amount of entries in Body", t => {
 })
 
 test("Body iterators should not execute callback on empty body", t => {
-  const forEachFulfill = spy()
-  const filterFulfill = spy()
-  const mapFulfill = spy()
+  const forEachFulfill = sinon.spy()
+  const filterFulfill = sinon.spy()
+  const mapFulfill = sinon.spy()
 
   Body.from([]).forEach(forEachFulfill)
   Body.from([]).filter(filterFulfill)
@@ -157,9 +156,9 @@ test("Body iterators assign null as callback ctx by default", t => {
     [["field"], {value: "some text"}]
   ]
 
-  const forEachFulfill = spy()
-  const filterFulfill = spy()
-  const mapFulfill = spy()
+  const forEachFulfill = sinon.spy()
+  const filterFulfill = sinon.spy()
+  const mapFulfill = sinon.spy()
 
   Body.from(entries).forEach(forEachFulfill)
   Body.from(entries).filter(filterFulfill)
@@ -174,9 +173,9 @@ test("Body iterators should execute callback with correct arguments", t => {
   const entries = [[["field"], {value: "some text"}]]
   const expected = [{value: "some text"}, "field", ["field"], entries]
 
-  const forEachFulfill = spy()
-  const filterFulfill = spy()
-  const mapFulfill = spy()
+  const forEachFulfill = sinon.spy()
+  const filterFulfill = sinon.spy()
+  const mapFulfill = sinon.spy()
 
   Body.from(entries).forEach(forEachFulfill)
   Body.from(entries).filter(filterFulfill)
@@ -189,7 +188,7 @@ test("Body iterators should execute callback with correct arguments", t => {
 
 test("Body#filter should return a new Body with filtered entries", t => {
   const file = new File({
-    contents: createReadStream(dict),
+    contents: fs.createReadStream(dict),
     filename: "dictionary",
     mime: "text/plain",
     enc: "utf8"
@@ -200,7 +199,7 @@ test("Body#filter should return a new Body with filtered entries", t => {
     [["file"], file]
   ]
 
-  const fulfill = spy(field => field instanceof File)
+  const fulfill = sinon.spy(field => field instanceof File)
 
   const body = Body.from(entries)
   const actual = body.filter(fulfill)
@@ -227,7 +226,9 @@ test(
 
     const entries = [[["field"], field]]
 
-    const fulfill = spy(({value}) => `${value} concatenated with another one`)
+    const fulfill = sinon.spy(
+      ({value}) => `${value} concatenated with another one`
+    )
 
     const body = Body.from(entries).map(fulfill)
 
