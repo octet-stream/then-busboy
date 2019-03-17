@@ -211,7 +211,7 @@ test("Should receive files and fields at the same time", async t => {
 })
 
 test("Should throw an error when no request object given", async t => {
-  const err = await t.throws(parse())
+  const err = await t.throwsAsync(parse())
 
   t.true(err instanceof TypeError)
   t.is(
@@ -223,7 +223,7 @@ test("Should throw an error when no request object given", async t => {
 test(
   "Should throw an error when request object is not an http.IncomingMessage",
   async t => {
-    const err = await t.throws(parse({}))
+    const err = await t.throwsAsync(parse({}))
 
     t.true(err instanceof TypeError)
     t.is(
@@ -236,7 +236,7 @@ test(
 test(
   "Should throw an error when given options is not a plain object",
   async t => {
-    const err = await t.throws(
+    const err = await t.throwsAsync(
       parse(mockRequest(), "totally not a plain object")
     )
 
@@ -248,13 +248,11 @@ test(
 test("Should response an error on incorrect field name format", async t => {
   const format = "some[totally[]][wrong]format[foo]"
 
-  const req = request(mockServer(parse)())
+  const response = await request(mockServer(parse)())
     .post("/")
     .field(format, "You shall not pass!")
 
-  const err = await t.throws(req)
-
-  t.is(err.response.text, `Error: Unexpected field name format: ${format}`)
+  t.is(response.text, `Error: Unexpected field name format: ${format}`)
 })
 
 test(
@@ -262,13 +260,11 @@ test(
   async t => {
     const format = "some[totally[]][wrong]format[foo]"
 
-    const req = request(mockServer(parse)())
+    const response = await request(mockServer(parse)())
       .post("/")
       .attach(format, __filename)
 
-    const err = await t.throws(req)
-
-    t.is(err.response.text, `Error: Unexpected field name format: ${format}`)
+    t.is(response.text, `Error: Unexpected field name format: ${format}`)
   }
 )
 
@@ -279,14 +275,12 @@ test("Should response with error when PARTS limit reached", async t => {
     }
   }
 
-  const req = request(mockServer(parse)(options))
+  const response = await request(mockServer(parse)(options))
     .post("/")
     .field("field", 42)
     .attach("file", __filename)
 
-  const {status, response} = await t.throws(req)
-
-  t.is(status, 413)
+  t.is(response.status, 413)
   t.is(
     response.text,
     "PartsLimitError: Limit reached: " +
@@ -301,14 +295,12 @@ test("Should response with error when FIELDS limit reached", async t => {
     }
   }
 
-  const req = request(mockServer(parse)(options))
+  const response = await request(mockServer(parse)(options))
     .post("/")
     .field("field", 42)
     .field("extra", 451)
 
-  const {status, response} = await t.throws(req)
-
-  t.is(status, 413)
+  t.is(response.status, 413)
   t.is(
     response.text,
     "FieldsLimitError: Limit reached: " +
@@ -323,14 +315,12 @@ test("Should response with error when FILES limit reached", async t => {
     }
   }
 
-  const req = request(mockServer(parse)(options))
+  const response = await request(mockServer(parse)(options))
     .post("/")
     .attach("file1", __filename)
     .attach("file2", "/usr/share/dict/words")
 
-  const {status, response} = await t.throws(req)
-
-  t.is(status, 413)
+  t.is(response.status, 413)
   t.is(
     response.text,
     "FilesLimitError: Limit reached: " +
@@ -345,13 +335,11 @@ test("Should response with error when FILE SIZE limit reached", async t => {
     }
   }
 
-  const req = request(mockServer(parse)(options))
+  const response = await request(mockServer(parse)(options))
     .post("/")
     .attach("file", __filename)
 
-  const {status, response} = await t.throws(req)
-
-  t.is(status, 413)
+  t.is(response.status, 413)
   t.is(
     response.text,
     "FileSizeLimitError: Limit reached: " +
@@ -366,15 +354,13 @@ test("Should response with error when FIELD SIZE limit reached", async t => {
     }
   }
 
-  const req = request(mockServer(parse)(options))
+  const response = await request(mockServer(parse)(options))
     .post("/")
     .field(
       "field", "I beat Twilight Sparkle and all I got was this lousy t-shirt."
     )
 
-  const {status, response} = await t.throws(req)
-
-  t.is(status, 413)
+  t.is(response.status, 413)
   t.is(
     response.text,
     "FieldSizeLimitError: Limit reached: " +

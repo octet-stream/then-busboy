@@ -303,7 +303,7 @@ test(
       enc: "utf-8"
     })
 
-    const err = await t.throws(file.write(42))
+    const err = await t.throwsAsync(file.write(42))
 
     t.true(err instanceof TypeError)
     t.is(err.message, "Path must be a string.")

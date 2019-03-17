@@ -17,7 +17,7 @@ test("Should always return a Promise", async t => {
 test(
   "Should correctly resolve values even if tasks aren't return Promise",
   async t => {
-    t.notThrows(waterfall([() => 0]))
+    t.notThrowsAsync(waterfall([() => 0]))
     t.is(await waterfall([() => 0]), 0)
   }
 )
@@ -46,14 +46,14 @@ test("Should resolve a correct value", async t => {
 })
 
 test("Should throw a TypeError when tasks list is not an array", async t => {
-  const err = await t.throws(waterfall({}))
+  const err = await t.throwsAsync(waterfall({}))
 
   t.true(err instanceof TypeError)
   t.is(err.message, "Tasks must be passed as an array.")
 })
 
 test("Should throw an error given task is not a function", t => Promise.all([
-  t.throws(waterfall([451])),
+  t.throwsAsync(waterfall([451])),
 
-  t.throws(waterfall([() => 0, 451]))
+  t.throwsAsync(waterfall([() => 0, 451]))
 ]))
