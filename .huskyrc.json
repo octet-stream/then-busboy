@@ -1,6 +1,6 @@
 {
   "hooks": {
-    "pre-commit": "yarn staged",
-    "pre-push": "yarn make:ci && yarn coverage && yarn cleanup && yarn make"
+    "pre-commit": "npm run staged",
+    "pre-push": "npm run make:test && npm run coverage && npm run cleanup && npm run make"
   }
 }

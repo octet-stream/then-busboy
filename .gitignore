@@ -1,7 +1,10 @@
 /lib/**/*.js
 /test/**/*.js
+/lib/**/*.mjs
+/test/**/*.mjs
 
 /main.js
+/main.mjs
 
 node_modules
 coverage

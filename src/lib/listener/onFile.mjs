@@ -1,6 +1,6 @@
-import {createReadStream, createWriteStream} from "fs"
-import {join} from "path"
-import {tmpdir} from "os"
+import os from "os"
+import fs from "fs"
+import path from "path"
 
 import nanoid from "nanoid"
 
@@ -15,16 +15,15 @@ import FileSizeLimitError from "lib/error/FileSizeLimitError"
  */
 const onFile = ({limits}, cb) => (fieldname, stream, filename, enc, mime) => {
   try {
-    const path = getFieldPath(fieldname)
+    const fieldPath = getFieldPath(fieldname)
 
-    filename = join(tmpdir(), `${nanoid()}__${filename}`)
+    filename = path.join(os.tmpdir(), `${nanoid()}__${filename}`)
 
     function onEnd() {
-      const contents = createReadStream(filename)
-
+      const contents = fs.createReadStream(filename)
       const file = new File({filename, contents, enc, mime})
 
-      cb(null, [path, file])
+      cb(null, [fieldPath, file])
     }
 
     const onLimit = () => (
@@ -39,7 +38,7 @@ const onFile = ({limits}, cb) => (fieldname, stream, filename, enc, mime) => {
       .once("error", cb)
       .once("end", onEnd)
       .once("limit", onLimit)
-      .pipe(createWriteStream(filename))
+      .pipe(fs.createWriteStream(filename))
   } catch (err) {
     return cb(err)
   }
