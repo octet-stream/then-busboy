@@ -67,7 +67,7 @@ const exec = ({request, options}) => new Promise((resolve, reject) => {
  * @example
  *
  * // Simplest Koa.js middleware:
- * import busboy, {Body} from "then-busboy"
+ * import {parse, Body} from "then-busboy"
  *
  * const toLowerCase = string => String.prototype.toLowerCase.call(string)
  *
