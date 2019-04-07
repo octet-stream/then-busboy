@@ -1,18 +1,28 @@
 import http from "http"
-import path from "path"
 
 import Busboy from "busboy"
 import merge from "lodash.merge"
 import invariant from "@octetstream/invariant"
 
-import readListeners from "lib/util/readListeners"
 import waterfall from "lib/util/arrayRunWaterfall"
 import isPlainObject from "lib/util/isPlainObject"
 import map from "lib/util/mapListeners"
 import getType from "lib/util/getType"
 import Body from "lib/Body"
 
-const initializers = readListeners(path.join(__dirname, "listener"))
+import onFile from "lib/listener/onFile"
+import onField from "lib/listener/onField"
+import onFilesLimit from "lib/listener/onFilesLimit"
+import onPartsLimit from "lib/listener/onPartsLimit"
+import onFieldsLimit from "lib/listener/onFieldsLimit"
+
+const initializers = {
+  onFile,
+  onField,
+  onFilesLimit,
+  onPartsLimit,
+  onFieldsLimit
+}
 
 const defaults = {
   restoreTypes: true

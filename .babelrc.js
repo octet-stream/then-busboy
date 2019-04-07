@@ -2,7 +2,6 @@ const config = {
   plugins: [
     "@babel/proposal-class-properties",
     "@babel/proposal-export-default-from",
-    "@babel/transform-modules-commonjs",
     ["@babel/proposal-object-rest-spread", {
       useBuiltIns: true
     }],
@@ -15,8 +14,8 @@ const config = {
   ]
 }
 
-// if (!("BABEL_ESM" in process.env)) {
-//   config.plugins.push("@babel/transform-modules-commonjs")
-// }
+if (!("BABEL_ESM" in process.env)) {
+  config.plugins.push("@babel/transform-modules-commonjs")
+}
 
 module.exports = config
