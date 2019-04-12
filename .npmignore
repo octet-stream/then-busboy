@@ -2,8 +2,8 @@
 /coverage
 /src
 /.nyc_output
-.babelrc
-.eslintrc.json
+.babelrc.js
+.eslintrc.js
 .editorconfig
 .DS_Store
 .gitignore
