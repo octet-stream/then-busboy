@@ -27,7 +27,6 @@
     "make:test": "babel src -s -d .",
     "prepare": "npm run cleanup && npm run make && npm run make:esm",
     "watch": "babel src -w -d .",
-    "make:test": "babel src -s -d .",
     "cleanup": "rimraf lib test main.js main.js.map",
     "test:cleanup": "npm run cleanup && npm run make:spec && ava && npm run cleanup && npm run prepare",
     "test": "ava",
@@ -35,7 +34,6 @@
     "p": "npm run prepare",
     "w": "npm run watch",
     "t": "npm run test",
-    "coverage": "nyc npm test",
     "coverage": "npm run cleanup && npm run make:test && nyc npm run test",
     "report": "npm run cleanup && npm run make:test && nyc npm run test && nyc report -r=html",
     "ci": "npm run make:test && nyc npm run test && nyc report -r=lcov && codecov"
@@ -49,13 +47,18 @@
     ]
   },
   "nyc": {
-    "extension": [".mjs"],
-    "exclude": ["test/**", ".babelrc.js"]
+    "extension": [
+      ".mjs"
+    ],
+    "exclude": [
+      "test/**",
+      ".babelrc.js"
+    ]
   },
   "dependencies": {
     "@octetstream/invariant": "1.2.0",
     "busboy": "0.3.1",
-    "formdata-node": "1.6.0",
+    "formdata-node": "1.7.0",
     "lodash.merge": "4.6.1",
     "nanoid": "2.0.3",
     "object-deep-from-entries": "0.3.0"
@@ -69,14 +72,14 @@
     "@babel/plugin-proposal-object-rest-spread": "7.4.4",
     "@babel/plugin-transform-modules-commonjs": "7.4.4",
     "@octetstream/eslint-config": "3.0.0",
-    "ava": "2.0.0",
+    "ava": "2.1.0",
     "babel-plugin-module-resolver": "3.2.0",
     "codecov": "3.5.0",
     "eslint": "5.16.0",
     "eslint-import-resolver-babel-module": "5.1.0",
-    "eslint-plugin-ava": "7.0.0",
-    "husky": "2.4.0",
-    "lint-staged": "8.2.0",
+    "eslint-plugin-ava": "7.1.0",
+    "husky": "2.4.1",
+    "lint-staged": "8.2.1",
     "nyc": "14.1.1",
     "promise-fs": "2.1.0",
     "proxyquire": "2.1.0",
