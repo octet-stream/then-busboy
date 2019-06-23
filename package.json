@@ -24,6 +24,7 @@
     "staged": "lint-staged",
     "make": "babel src -d .",
     "make:esm": "BABEL_ESM=1 babel src -d . --keep-file-extension",
+    "make:test": "babel src -s -d .",
     "prepare": "npm run cleanup && npm run make && npm run make:esm",
     "watch": "babel src -w -d .",
     "make:test": "babel src -s -d .",
@@ -35,9 +36,9 @@
     "w": "npm run watch",
     "t": "npm run test",
     "coverage": "nyc npm test",
-    "report": "npm run make:test && npm run coverage && nyc report --reporter=html && npm run cleanup && npm run prepare",
-    "report:codecov": "nyc report --reporter=lcov",
-    "ci": "npm run make:test && npm run coverage && npm run report:codecov && codecov"
+    "coverage": "npm run cleanup && npm run make:test && nyc npm run test",
+    "report": "npm run cleanup && npm run make:test && nyc npm run test && nyc report -r=html",
+    "ci": "npm run make:test && nyc npm run test && nyc report -r=lcov && codecov"
   },
   "ava": {
     "files": [
@@ -48,9 +49,8 @@
     ]
   },
   "nyc": {
-    "exclude": [
-      "test"
-    ]
+    "extension": [".mjs"],
+    "exclude": ["test/**", ".babelrc.js"]
   },
   "dependencies": {
     "@octetstream/invariant": "1.2.0",
