@@ -21,6 +21,76 @@ Or with yarn:
 yarn add then-busboy
 ```
 
+## Usage
+
+then-busboy works fine even with a pure Node.js HTTP server.
+Let's take a look to the tiny example:
+
+```js
+import parse from "then-busboy"
+
+import {createServer} from "http"
+
+function handler(req, res) {
+  // Get result from then-busboy
+  function onFulfilled(body) {
+    res.writeHead("Content-Type", "application/json")
+
+    // You can also do something with each file and a field.
+    res.end(JSON.stringify(body.json()))
+  }
+
+  // Handle errors
+  function onRejected(err) {
+    res.statusCode = err.status || 500
+    res.end(String(err))
+  }
+
+  // Call `then-busboy` with `req`
+  parse(req).then(onFulfilled, onRejected)
+}
+
+createServer(handler)
+  .listen(2319, () => console.log("Server started on http://localhost:2319"))
+```
+
+**Note:** You can use [asynchronous function](https://github.com/tc39/ecmascript-asyncawait) syntax,
+because then-busboy always returns a Promise.
+
+So, let's see on a simple middleware example for [Koa.js](https://koajs.com):
+
+```js
+import {promises as fs} from "fs"
+
+import {parse} from "then-busboy"
+
+const toLowerCase = string => String.prototype.toLowerCase.call(string)
+
+const unlinkFile = ({path}) => fs.unlink(path)
+
+async function multipart(ctx, next) {
+  if (["post", "put"].includes(toLowerCase(ctx.method)) === false) {
+    return next()
+  }
+
+  if (ctx.is("multipart/form-data") === false) {
+    return next()
+  }
+
+  const body = await parse(ctx.req)
+
+  ctx.request.body = body.json()
+
+  await next()
+
+  // Cleanup files
+  return Promise.all(Array.from(body.files().values()).map(unlinkFile))
+    .catch(err => err.code !== "ENOENT" && Promise.reject(err))
+}
+
+export default multipart
+```
+
 ## API
 
 **Breaking change**: Since 4.x version then-busboy returns a Body object instead of raw data.
@@ -348,84 +418,6 @@ there are exposed classes that you can use to handle each kind of limit errors:
 - FileSizeLimitError - on file size limit reached
 - FilesLimitError - on files limit reached
 - PartsLimitError - on parts (both files and fields) limit reached
-
-## Usage
-
-then-busboy works fine even with a pure Node.js HTTP server.
-Let's take a look to the tiny example:
-
-```js
-import parse from "then-busboy"
-
-import {createServer} from "http"
-
-function handler(req, res) {
-  // Get result from then-busboy
-  function onFulfilled(body) {
-    res.writeHead("Content-Type", "application/json")
-
-    // You can also do something with each file and a field.
-    res.end(JSON.stringify(body.json()))
-  }
-
-  // Handle errors
-  function onRejected(err) {
-    res.statusCode = err.status || 500
-    res.end(String(err))
-  }
-
-  // Call `then-busboy` with `req`
-  parse(req).then(onFulfilled, onRejected)
-}
-
-createServer(handler)
-  .listen(2319, () => console.log("Server started on http://localhost:2319"))
-```
-
-**Note:** You can use [asynchronous function](https://github.com/tc39/ecmascript-asyncawait) syntax,
-because then-busboy always returns a Promise.
-
-So, let's see on a simple middleware example for [Koa.js](https://koajs.com):
-
-```js
-import parse from "then-busboy"
-
-const toLowerCase = string => String.prototype.toLowerCase.call(string)
-
-const multipart = () => async (ctx, next) => {
-  if (["post", "put"].includes(toLowerCase(ctx.method)) === false) {
-    return next()
-  }
-
-  if (ctx.is("multipart/form-data") === false) {
-    return next()
-  }
-
-  ctx.request.body = await parse(ctx.req).then(body => body.json())
-
-  await next()
-}
-
-export default multipart
-```
-
-You can check if some value is an instance of File class using `isFile`.
-This function may help you if you're wanted to do something
-with received files automatically.
-
-```js
-import {parse, isFile, Body} from "then-busboy"
-
-let body = await parse(request).then(Body.json)
-
-body = await deepMapObject(
-  body, async val => (
-    isFile(val) // check if current element is a File
-      ? await processFile(val) // do somethig with a file
-      : val // ...or just return a field
-  )
-)
-```
 
 ## Related links
 
