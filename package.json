@@ -58,7 +58,7 @@
   "dependencies": {
     "@octetstream/invariant": "1.2.0",
     "busboy": "0.3.1",
-    "formdata-node": "1.7.0",
+    "formdata-node": "1.8.0",
     "lodash.merge": "4.6.1",
     "nanoid": "2.0.3",
     "object-deep-from-entries": "0.3.0"
