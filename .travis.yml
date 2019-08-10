@@ -8,4 +8,4 @@ node_js:
 install:
   - yarn
 script:
-  - yarn ci
+  - yarn run ci
