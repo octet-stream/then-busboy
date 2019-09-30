@@ -17,18 +17,19 @@ const onField = ({restoreTypes, limits}, cb) => (
     }
 
     try {
-      const path = getFieldPath(fieldname)
-
       value = restoreTypes ? cast(value) : value
 
-      cb(null, [path, new Field({
+      const path = getFieldPath(fieldname)
+      const field = new Field({
         fieldname,
         value,
         fieldnameTruncated,
         valueTruncated,
         enc,
         mime
-      })])
+      })
+
+      cb(null, [path, field])
     } catch (err) {
       cb(err)
     }

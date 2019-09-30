@@ -62,6 +62,7 @@ class Body {
    * @param {Array<[string[], any]>}
    */
   constructor(entries) {
+    // TODO: Allow to apply fields as scalars
     this.__entries = entries.slice()
   }
 
