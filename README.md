@@ -84,7 +84,7 @@ async function multipart(ctx, next) {
   await next()
 
   // Cleanup files
-  return Promise.all(Array.from(body.files().values()).map(unlinkFile))
+  return Promise.all(Array.from(body.files.values()).map(unlinkFile))
     .catch(err => err.code !== "ENOENT" && Promise.reject(err))
 }
 
