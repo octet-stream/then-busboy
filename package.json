@@ -74,7 +74,7 @@
     "@octetstream/eslint-config": "4.0.0",
     "ava": "2.4.0",
     "babel-plugin-module-resolver": "3.2.0",
-    "codecov": "3.6.1",
+    "codecov": "3.6.5",
     "eslint": "6.5.1",
     "eslint-import-resolver-babel-module": "5.1.0",
     "eslint-plugin-ava": "9.0.0",
