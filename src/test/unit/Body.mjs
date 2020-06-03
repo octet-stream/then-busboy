@@ -273,7 +273,7 @@ test("Body#names allows to go through names", t => {
   const entries = [[["field"], {value: "some text"}]]
   const body = Body.from(entries)
 
-  t.deepEqual(body.names().next().value, "field")
+  t.is(body.names().next().value, "field")
 })
 
 test("Body#paths allows to go through paths", t => {

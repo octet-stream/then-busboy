@@ -5,7 +5,7 @@ import Field from "lib/Field"
 import normalize from "lib/util/normalizeFields"
 import toFieldname from "lib/util/pathToFieldname"
 
-import {isFile} from "lib/File"
+import isFile from "lib/util/isFile"
 
 /**
  * @api public
@@ -226,7 +226,7 @@ class Body {
       const name = toFieldname(path)
 
       if (isFile(field)) {
-        fd.set(name, field.stream, field.filename)
+        fd.set(name, field.stream(), field.filename)
       } else {
         fd.set(name, field.value)
       }

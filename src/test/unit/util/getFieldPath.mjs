@@ -70,7 +70,7 @@ test("Should throw a TypeError on invocation without any arguments", t => {
 test("Should throw an error when given field name is empty string", t => {
   const trap = () => getFieldPath("")
 
-  t.throws(trap, "Field name cannot be empty.")
+  t.throws(trap, {message: "Field name cannot be empty."})
 })
 
 test("Should throw a TypeError on unallowed field name format", t => {

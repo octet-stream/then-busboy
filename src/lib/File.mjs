@@ -9,19 +9,6 @@ import getType from "lib/util/getType"
 
 class File {
   /**
-   * Check if given values is a File
-   *
-   * @param {any} val
-   *
-   * @return {boolean}
-   *
-   * @api public
-   */
-  static isFile(value) {
-    return value instanceof File
-  }
-
-  /**
    * File class.
    *
    * @param {object} options
@@ -36,16 +23,16 @@ class File {
       "File options should be a plain object. Received", getType(options)
     )
 
-    const {contents, filename, enc, mime} = options
+    const {stream, filename, enc, mime} = options
 
-    invariant(!contents, "File contents required.")
+    invariant(!stream, "File contents required.")
 
     invariant(
-      !(contents instanceof fs.ReadStream),
+      !(stream instanceof fs.ReadStream),
 
       TypeError, "Contents should be a ReadStream stream. Received %s",
 
-      getType(contents)
+      getType(stream)
     )
 
     invariant(!filename, "Filename required.")
@@ -72,100 +59,22 @@ class File {
     const ext = p.extname(filename)
     const base = p.basename(filename, ext)
 
-    this.__contents = contents
-    this.__stream = contents
-    this.__filename = p.basename(filename)
-    this.__basename = base
-    this.__extname = ext
-    this.__mime = mime
-    this.__enc = enc
+    this.__stream = stream
 
-    // this.__path = join(tmpdir(), `${nanoid()}_${this.filename}`)
-    this.__path = filename
+    this.filename = p.basename(filename)
+    this.basename = base
+    this.extname = ext
+    this.mime = mime
+    this.enc = enc
+    this.path = filename
 
     this.toJSON = this.toJSON.bind(this)
     this.inspect = this.inspect.bind(this)
   }
 
-  get contents() {
-    return this.__contents
-  }
-
-  get stream() {
+  stream() {
     return this.__stream
   }
-
-  get filename() {
-    return this.__filename
-  }
-
-  get basename() {
-    return this.__basename
-  }
-
-  get extname() {
-    return this.__extname
-  }
-
-  get enc() {
-    return this.__enc
-  }
-
-  get mime() {
-    return this.__mime
-  }
-
-  get path() {
-    return this.__path
-  }
-
-  /**
-   * Read file contents from a stream
-   *
-   * @return {Promise<Buffer>}
-   */
-  read = () => new Promise((resolve, reject) => {
-    const data = []
-
-    const onReadable = () => {
-      const ch = this.contents.read()
-
-      if (ch != null) {
-        data.push(ch)
-      }
-    }
-
-    const onEnd = () => resolve(Buffer.concat(data))
-
-    this.contents
-      .on("error", reject)
-      .on("readable", onReadable)
-      .on("end", onEnd)
-  })
-
-  /**
-   * Write file contents to a disk.
-   *
-   * @param {string} path – path to where contents will be stored
-   *  (default – this.path)
-   *
-   * @return {Promise<void>}
-   */
-  write = path => new Promise((resolve, reject) => {
-    if (path && !isString(path)) {
-      return reject(new TypeError("Path must be a string."))
-    }
-
-    // Prevent writing file to its source
-    if (this.path === path) {
-      return resolve()
-    }
-
-    this.contents
-      .on("error", reject)
-      .on("end", resolve)
-      .pipe(fs.createWriteStream(path || this.path))
-  })
 
   get [Symbol.toStringTag]() {
     return `File: ${this.filename}`

@@ -171,13 +171,11 @@ test(
 )
 
 test("Should just receive file", async t => {
-  const dict = "/usr/share/dict/words"
-
   const {body} = await request(mockServer(parse)())
     .post("/")
-    .attach("file", dict)
+    .attach("file", __filename)
 
-  const expected = String(await fs.readFile(dict))
+  const expected = String(await fs.readFile(__filename))
 
   t.is(body.file, expected)
 })
