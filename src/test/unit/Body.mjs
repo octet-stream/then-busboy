@@ -46,7 +46,7 @@ test(
 
 test("Created FormData should contain all entries", t => {
   const file = new File({
-    contents: fs.createReadStream(dict),
+    stream: fs.createReadStream(dict),
     filename: "dictionary",
     mime: "text/plain",
     enc: "utf8"
@@ -63,7 +63,7 @@ test("Created FormData should contain all entries", t => {
   t.is(fd.get("field"), "some text")
 
   t.true(fd.has("file"))
-  t.is(fd.get("file"), file.stream)
+  t.is(fd.get("file"), file.stream())
 })
 
 test("Body.from() should create an instance", t => {
@@ -72,7 +72,7 @@ test("Body.from() should create an instance", t => {
 
 test("Body.entries() should contain entries passed to Body.from()", t => {
   const file = new File({
-    contents: fs.createReadStream(dict),
+    stream: fs.createReadStream(dict),
     filename: "dictionary",
     mime: "text/plain",
     enc: "utf8"
@@ -88,7 +88,7 @@ test("Body.entries() should contain entries passed to Body.from()", t => {
 
 test("Body#files getter should return a Body with files only", t => {
   const file = new File({
-    contents: fs.createReadStream(dict),
+    stream: fs.createReadStream(dict),
     filename: "dictionary",
     mime: "text/plain",
     enc: "utf8"
@@ -105,7 +105,7 @@ test("Body#files getter should return a Body with files only", t => {
 
 test("Body#fields getter should return a Body with fields only", t => {
   const file = new File({
-    contents: fs.createReadStream(dict),
+    stream: fs.createReadStream(dict),
     filename: "dictionary",
     mime: "text/plain",
     enc: "utf8"
@@ -122,7 +122,7 @@ test("Body#fields getter should return a Body with fields only", t => {
 
 test("Body#length should return current amount of entries in Body", t => {
   const file = new File({
-    contents: fs.createReadStream(dict),
+    stream: fs.createReadStream(dict),
     filename: "dictionary",
     mime: "text/plain",
     enc: "utf8"
@@ -188,7 +188,7 @@ test("Body iterators should execute callback with correct arguments", t => {
 
 test("Body#filter should return a new Body with filtered entries", t => {
   const file = new File({
-    contents: fs.createReadStream(dict),
+    stream: fs.createReadStream(dict),
     filename: "dictionary",
     mime: "text/plain",
     enc: "utf8"
