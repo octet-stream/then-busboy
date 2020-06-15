@@ -1,5 +1,5 @@
-import p from "path"
-import fs from "fs"
+import {basename, extname} from "path"
+import {createReadStream} from "fs"
 
 import invariant from "@octetstream/invariant"
 
@@ -23,13 +23,13 @@ class File {
       "File options should be a plain object. Received", getType(options)
     )
 
-    const {filename, enc, mime} = options
+    const {path, enc, mime} = options
 
-    invariant(!filename, "Filename required.")
+    invariant(!path, "Filename required.")
 
     invariant(
-      !isString(filename), TypeError,
-      "Filename should be a string. Received %s", getType(filename)
+      !isString(path), TypeError,
+      "Filename should be a string. Received %s", getType(path)
     )
 
     invariant(!enc, "File encoding required.")
@@ -46,17 +46,17 @@ class File {
       "File mime type should be a string. Received %s", getType(mime)
     )
 
-    const ext = p.extname(filename)
-    const base = p.basename(filename, ext)
+    const ext = extname(path)
+    const base = basename(path, ext)
 
-    this.__stream = fs.createReadStream(filename)
+    this.__stream = createReadStream(path)
 
-    this.filename = p.basename(filename)
+    this.filename = basename(path)
     this.basename = base
     this.extname = ext
     this.mime = mime
     this.enc = enc
-    this.path = filename
+    this.path = path
 
     this.toJSON = this.toJSON.bind(this)
     this.inspect = this.inspect.bind(this)

@@ -22,7 +22,7 @@ const onFile = ({limits}, cb) => (fieldname, stream, filename, enc, mime) => {
     filename = join(tmpdir(), `${nanoid()}__${filename}`)
 
     function onEnd() {
-      const file = new File({originalFilename, filename, mime, enc})
+      const file = new File({originalFilename, path: filename, mime, enc})
 
       cb(null, [fieldPath, file])
     }
