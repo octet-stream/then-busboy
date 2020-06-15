@@ -42,6 +42,7 @@ test(
 
 test("Created FormData should contain all entries", t => {
   const file = new File({
+    originalFilename: __filename,
     path: __filename,
     mime: "text/plain",
     enc: "utf8"
@@ -67,6 +68,7 @@ test("Body.from() should create an instance", t => {
 
 test("Body.entries() should contain entries passed to Body.from()", t => {
   const file = new File({
+    originalFilename: __filename,
     path: __filename,
     mime: "text/plain",
     enc: "utf8"
@@ -82,6 +84,7 @@ test("Body.entries() should contain entries passed to Body.from()", t => {
 
 test("Body#files getter should return a Body with files only", t => {
   const file = new File({
+    originalFilename: __filename,
     path: __filename,
     mime: "text/plain",
     enc: "utf8"
@@ -98,6 +101,7 @@ test("Body#files getter should return a Body with files only", t => {
 
 test("Body#fields getter should return a Body with fields only", t => {
   const file = new File({
+    originalFilename: __filename,
     path: __filename,
     mime: "text/plain",
     enc: "utf8"
@@ -114,6 +118,7 @@ test("Body#fields getter should return a Body with fields only", t => {
 
 test("Body#length should return current amount of entries in Body", t => {
   const file = new File({
+    originalFilename: __filename,
     path: __filename,
     mime: "text/plain",
     enc: "utf8"
@@ -179,6 +184,7 @@ test("Body iterators should execute callback with correct arguments", t => {
 
 test("Body#filter should return a new Body with filtered entries", t => {
   const file = new File({
+    originalFilename: __filename,
     path: __filename,
     mime: "text/plain",
     enc: "utf8"

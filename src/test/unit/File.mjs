@@ -10,6 +10,7 @@ test("Should create a File with given stream and metadata", t => {
   const base = path.basename(__filename, ext)
 
   const file = new File({
+    originalFilename: __filename,
     path: __filename,
     mime: "text/javascript",
     enc: "utf-8"
@@ -28,6 +29,7 @@ test("Should return a correct string on inspect call", t => {
   const filename = path.basename(__filename)
 
   const file = new File({
+    originalFilename: __filename,
     path: __filename,
     mime: "text/javascript",
     enc: "utf-8"
@@ -38,6 +40,7 @@ test("Should return a correct string on inspect call", t => {
 
 test("Should return a correct string on toJSON call", t => {
   const file = new File({
+    originalFilename: __filename,
     path: __filename,
     mime: "text/javascript",
     enc: "utf-8"
@@ -48,6 +51,7 @@ test("Should return a correct string on toJSON call", t => {
 
 test("Should return a correct string on toString call", t => {
   const file = new File({
+    originalFilename: __filename,
     path: __filename,
     mime: "text/javascript",
     enc: "utf-8"
@@ -58,6 +62,7 @@ test("Should return a correct string on toString call", t => {
 
 test("Should return a correct string on String call", t => {
   const file = new File({
+    originalFilename: __filename,
     path: __filename,
     mime: "text/javascript",
     enc: "utf-8"
@@ -68,6 +73,7 @@ test("Should return a correct string on String call", t => {
 
 test("Should return a correct string on JSON.stringify call", t => {
   const file = new File({
+    originalFilename: __filename,
     path: __filename,
     mime: "text/javascript",
     enc: "utf-8"
@@ -96,6 +102,7 @@ test("Should throw an error when no enc given", t => {
 
 test("Should throw an error when enc is not a string", t => {
   const trap = () => new File({
+    originalFilename: __filename,
     path: __filename,
     enc: []
   })
@@ -105,6 +112,7 @@ test("Should throw an error when enc is not a string", t => {
 
 test("Should throw an error when no mime given", t => {
   const trap = () => new File({
+    originalFilename: __filename,
     path: __filename,
     enc: "utf-8"
   })
@@ -114,6 +122,7 @@ test("Should throw an error when no mime given", t => {
 
 test("Should throw an error when mime is not a string", t => {
   const trap = () => new File({
+    originalFilename: __filename,
     path: __filename,
     enc: "utf-8",
     mime: /.*/
