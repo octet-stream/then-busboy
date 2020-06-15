@@ -1,5 +1,5 @@
 import {createWriteStream} from "fs"
-import {join, basename} from "path"
+import {join} from "path"
 import {tmpdir} from "os"
 
 import {nanoid} from "nanoid"
@@ -17,7 +17,7 @@ const onFile = ({limits}, cb) => (fieldname, stream, filename, enc, mime) => {
   try {
     const fieldPath = getFieldPath(fieldname)
 
-    const originalFilename = basename(filename)
+    const originalFilename = filename
 
     filename = join(tmpdir(), `${nanoid()}__${filename}`)
 

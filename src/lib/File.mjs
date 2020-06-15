@@ -23,7 +23,7 @@ class File {
       "File options should be a plain object. Received", getType(options)
     )
 
-    const {path, enc, mime} = options
+    const {path, enc, mime, originalFilename} = options
 
     invariant(!path, "Filename required.")
 
@@ -51,6 +51,7 @@ class File {
 
     this.__stream = createReadStream(path)
 
+    this.originalFilename = basename(originalFilename)
     this.filename = basename(path)
     this.basename = base
     this.extname = ext
