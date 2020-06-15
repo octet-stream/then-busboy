@@ -1,5 +1,3 @@
-import fs from "fs"
-
 import FormData from "formdata-node"
 import sinon from "sinon"
 import test from "ava"
@@ -8,8 +6,6 @@ import File from "lib/File"
 import Body from "lib/Body"
 import Field from "lib/Field"
 import isPlainObject from "lib/util/isPlainObject"
-
-const dict = "/usr/share/dict/words"
 
 test("Body.json() should return a plain object for given entries", t => {
   t.true(isPlainObject(Body.json([])))
