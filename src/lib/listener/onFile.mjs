@@ -1,6 +1,6 @@
-import os from "os"
-import fs from "fs"
-import path from "path"
+import {createWriteStream} from "fs"
+import {join, basename} from "path"
+import {tmpdir} from "os"
 
 import {nanoid} from "nanoid"
 
@@ -17,17 +17,12 @@ const onFile = ({limits}, cb) => (fieldname, stream, filename, enc, mime) => {
   try {
     const fieldPath = getFieldPath(fieldname)
 
-    const originalFilename = filename
-    filename = path.join(os.tmpdir(), `${nanoid()}__${filename}`)
+    const originalFilename = basename(filename)
+
+    filename = join(tmpdir(), `${nanoid()}__${filename}`)
 
     function onEnd() {
-      const file = new File({
-        stream: fs.createReadStream(filename),
-        originalFilename,
-        filename,
-        mime,
-        enc
-      })
+      const file = new File({originalFilename, filename, mime, enc})
 
       cb(null, [fieldPath, file])
     }
@@ -44,7 +39,7 @@ const onFile = ({limits}, cb) => (fieldname, stream, filename, enc, mime) => {
       .once("error", cb)
       .once("end", onEnd)
       .once("limit", onLimit)
-      .pipe(fs.createWriteStream(filename))
+      .pipe(createWriteStream(filename))
   } catch (err) {
     return cb(err)
   }

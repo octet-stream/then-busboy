@@ -23,17 +23,7 @@ class File {
       "File options should be a plain object. Received", getType(options)
     )
 
-    const {stream, filename, enc, mime} = options
-
-    invariant(!stream, "File contents required.")
-
-    invariant(
-      !(stream instanceof fs.ReadStream),
-
-      TypeError, "Contents should be a ReadStream stream. Received %s",
-
-      getType(stream)
-    )
+    const {filename, enc, mime} = options
 
     invariant(!filename, "Filename required.")
 
@@ -59,7 +49,7 @@ class File {
     const ext = p.extname(filename)
     const base = p.basename(filename, ext)
 
-    this.__stream = stream
+    this.__stream = fs.createReadStream(filename)
 
     this.filename = p.basename(filename)
     this.basename = base
