@@ -4,7 +4,6 @@ import Busboy from "busboy"
 import merge from "lodash.merge"
 import invariant from "@octetstream/invariant"
 
-import waterfall from "lib/util/arrayRunWaterfall"
 import isPlainObject from "lib/util/isPlainObject"
 import map from "lib/util/mapListeners"
 import getType from "lib/util/getType"
@@ -81,6 +80,7 @@ const exec = (request, options) => new Promise((resolve, reject) => {
  *
  * @example
  *
+ * ```js
  * // Simplest Koa.js middleware:
  * import {parse, Body} from "then-busboy"
  *
@@ -101,6 +101,7 @@ const exec = (request, options) => new Promise((resolve, reject) => {
  * }
  *
  * export default multipart
+ * ```
  */
 async function parse(request, options = {}) {
   invariant(
