@@ -29,9 +29,14 @@ const defaults = {
 }
 
 /**
+ * @param {http.IncomingMessage} request
+ * @param {Object.<string, any>} [options = {}]
+ *
+ * @return {Promise<Object.<string, any>>}
+ *
  * @api private
  */
-const exec = ({request, options}) => new Promise((resolve, reject) => {
+const exec = (request, options) => new Promise((resolve, reject) => {
   const entries = []
   const busboy = new Busboy(options)
 
@@ -68,7 +73,7 @@ const exec = ({request, options}) => new Promise((resolve, reject) => {
  * All files and other fields in a single object.
  *
  * @param {http.IncomingMessage} request – HTTP request object
- * @param {object} [options = {}] - then-busboy options
+ * @param {Object.<string, any>} [options = {}] - then-busboy options
  *
  * @return {Promise<Body>}
  *
@@ -113,7 +118,7 @@ async function parse(request, options = {}) {
 
   options = merge({}, defaults, options, {headers: request.headers})
 
-  return waterfall([exec, Body.from], {request, options})
+  return exec(request, options).then(Body.from)
 }
 
 export default parse
