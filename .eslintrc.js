@@ -7,11 +7,6 @@ module.exports = {
     "plugin:ava/recommended"
   ],
   rules: {
-    "ava/no-ignored-test-files": ["error", {
-      files: [
-        "src/test/unit/**/*.mjs"
-      ]
-    }],
     "operator-linebreak": ["error", "after", {
       overrides: {
         "+": "ignore",
@@ -19,18 +14,5 @@ module.exports = {
         ":": "before"
       }
     }]
-  },
-  settings: {
-    "import/resolver": {
-      node: {
-        extensions: [".js", ".mjs"]
-      },
-      "babel-module": {
-        cwd: __dirname,
-        root: [
-          "src"
-        ]
-      }
-    }
   }
 }

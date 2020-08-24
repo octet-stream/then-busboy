@@ -22,21 +22,7 @@
   "scripts": {
     "eslint": "eslint src",
     "staged": "lint-staged",
-    "make": "babel src -d .",
-    "make:esm": "BABEL_ESM=1 babel src -d . --keep-file-extension",
-    "make:test": "babel src -s -d .",
-    "prepare": "npm run cleanup && npm run make && npm run make:esm",
-    "watch": "babel src -w -d .",
-    "cleanup": "rimraf lib test main.js main.js.map",
-    "test:cleanup": "npm run cleanup && npm run make:spec && ava && npm run cleanup && npm run prepare",
-    "test": "ava",
-    "m": "npm run make",
-    "p": "npm run prepare",
-    "w": "npm run watch",
-    "t": "npm run test",
-    "coverage": "npm run cleanup && npm run make:test && nyc npm run test",
-    "report": "npm run cleanup && npm run make:test && nyc npm run test && nyc report -r=html",
-    "ci": "npm run make:test && nyc npm run test && nyc report -r=lcov && codecov"
+    "test": "ava"
   },
   "ava": {
     "files": [
@@ -46,45 +32,27 @@
       "!test/helper/**"
     ]
   },
-  "nyc": {
-    "extension": [
-      ".mjs"
-    ],
-    "exclude": [
-      "test/**",
-      ".babelrc.js"
-    ]
-  },
   "dependencies": {
-    "@octetstream/invariant": "1.2.0",
     "busboy": "0.3.1",
-    "formdata-node": "2.1.4",
+    "formdata-node": "2.2.2",
     "lodash.merge": "4.6.2",
-    "nanoid": "3.1.9",
+    "nanoid": "3.1.12",
     "object-deep-from-entries": "0.3.0"
   },
   "devDependencies": {
-    "@babel/cli": "7.10.1",
-    "@babel/core": "7.10.2",
-    "@babel/plugin-proposal-class-properties": "7.10.1",
-    "@babel/plugin-proposal-decorators": "7.10.1",
-    "@babel/plugin-proposal-export-default-from": "7.10.1",
-    "@babel/plugin-proposal-object-rest-spread": "7.10.1",
-    "@babel/plugin-transform-modules-commonjs": "7.10.1",
     "@octetstream/eslint-config": "4.0.0",
-    "ava": "3.8.2",
+    "ava": "3.12.1",
     "babel-plugin-module-resolver": "4.0.0",
-    "codecov": "3.7.0",
-    "eslint": "7.1.0",
-    "eslint-import-resolver-babel-module": "5.1.2",
-    "eslint-plugin-ava": "10.3.0",
+    "codecov": "3.7.2",
+    "eslint": "7.7.0",
+    "eslint-plugin-ava": "11.0.0",
     "husky": "4.2.5",
-    "lint-staged": "10.2.8",
+    "lint-staged": "10.2.11",
     "nyc": "15.1.0",
     "promise-fs": "2.1.1",
     "proxyquire": "2.1.3",
     "rimraf": "3.0.2",
-    "sinon": "9.0.2",
+    "sinon": "9.0.3",
     "supertest": "4.0.2"
   }
 }
