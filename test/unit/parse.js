@@ -1,13 +1,13 @@
-import request from "supertest"
-import fs from "promise-fs"
-import test from "ava"
+const request = require("supertest")
+const fs = require("promise-fs")
+const test = require("ava")
 
-import mockHeader from "test/helper/mockHeader"
-import mockRequest from "test/helper/mockRequest"
-import mockServer from "test/helper/mockServer"
+const mockHeader = require("../helper/mockHeader")
+const mockRequest = require("../helper/mockRequest")
+const mockServer = require("../helper/mockServer")
 
-import isPlainObject from "lib/util/isPlainObject"
-import parse from "lib/parse"
+const isPlainObject = require("../../lib/util/isPlainObject")
+const parse = require("../../lib/parse")
 
 test("Should return a promise", t => {
   const req = mockRequest()

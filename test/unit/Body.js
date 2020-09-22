@@ -1,11 +1,11 @@
-import FormData from "formdata-node"
-import sinon from "sinon"
-import test from "ava"
+const FormData = require("formdata-node")
+const sinon = require("sinon")
+const test = require("ava")
 
-import File from "lib/File"
-import Body from "lib/Body"
-import Field from "lib/Field"
-import isPlainObject from "lib/util/isPlainObject"
+const File = require("../../lib/File")
+const Body = require("../../lib/Body")
+const Field = require("../../lib/Field")
+const isPlainObject = require("../../lib/util/isPlainObject")
 
 test("Body.json() should return a plain object for given entries", t => {
   t.true(isPlainObject(Body.json([])))

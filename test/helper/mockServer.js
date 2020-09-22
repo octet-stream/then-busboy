@@ -1,7 +1,7 @@
-import http from "http"
-import fs from "fs"
+const http = require("http")
+const fs = require("fs")
 
-import toObject from "object-deep-from-entries"
+const toObject = require("object-deep-from-entries")
 
 const mockServer = busboy => options => http.createServer((req, res) => {
   async function transform(body) {
@@ -31,4 +31,4 @@ const mockServer = busboy => options => http.createServer((req, res) => {
   busboy(req, options).then(transform).then(onFulfilled, onRejected)
 })
 
-export default mockServer
+module.exports = mockServer

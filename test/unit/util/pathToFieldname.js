@@ -1,6 +1,6 @@
-import test from "ava"
+const test = require("ava")
 
-import toFieldname from "lib/util/pathToFieldname"
+const toFieldname = require("../../../lib/util/pathToFieldname")
 
 test("Should return path with one element as-is", t => {
   t.is(toFieldname(["name"]), "name")

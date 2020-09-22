@@ -1,6 +1,6 @@
-import test from "ava"
+const test = require("ava")
 
-import isPlainObject from "lib/util/isPlainObject"
+const isPlainObject = require("../../../lib/util/isPlainObject")
 
 test("Should return a boolean value", t => {
   t.is(typeof isPlainObject(), "boolean")

@@ -1,9 +1,9 @@
-import path from "path"
+const path = require("path")
 
-import test from "ava"
-import fs from "promise-fs"
+const test = require("ava")
+const fs = require("promise-fs")
 
-import File from "lib/File"
+const File = require("../../lib/File")
 
 test("Should create a File with given stream and metadata", t => {
   const ext = path.extname(__filename)

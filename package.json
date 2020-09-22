@@ -20,17 +20,9 @@
     "body"
   ],
   "scripts": {
-    "eslint": "eslint src",
+    "eslint": "eslint lib/**/*.js test/**/*.js .babelrc.js .eslint.js main.js",
     "staged": "lint-staged",
     "test": "ava"
-  },
-  "ava": {
-    "files": [
-      "test/**/*.js",
-      "!test/**/__hook__/**",
-      "!test/**/__helper__/**",
-      "!test/helper/**"
-    ]
   },
   "dependencies": {
     "busboy": "0.3.1",

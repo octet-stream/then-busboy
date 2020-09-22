@@ -1,6 +1,6 @@
-import test from "ava"
+const test = require("ava")
 
-import getFieldPath from "lib/util/getFieldPath"
+const getFieldPath = require("../../../lib/util/getFieldPath")
 
 test("Should return an array with one element", t => {
   const path = getFieldPath("someElement")
