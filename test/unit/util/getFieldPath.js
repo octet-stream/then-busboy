@@ -49,24 +49,6 @@ test("Should support top-level collections with dot notation", t => {
   t.deepEqual(actual, expected)
 })
 
-test("Should throw an error when field name is not a string", t => {
-  const trap = () => getFieldPath({})
-
-  const err = t.throws(trap)
-
-  t.true(err instanceof TypeError)
-  t.is(err.message, "Field name should be a string. Received object")
-})
-
-test("Should throw a TypeError on invocation without any arguments", t => {
-  const trap = () => getFieldPath()
-
-  const err = t.throws(trap)
-
-  t.true(err instanceof TypeError)
-  t.is(err.message, "Field name should be a string. Received undefined")
-})
-
 test("Should throw an error when given field name is empty string", t => {
   const trap = () => getFieldPath("")
 

@@ -206,16 +206,6 @@ test("Should receive files and fields at the same time", async t => {
   t.deepEqual(body, expected)
 })
 
-test("Should throw an error when no request object given", async t => {
-  const err = await t.throwsAsync(parse())
-
-  t.true(err instanceof TypeError)
-  t.is(
-    err.message,
-    "Request must be an instance of http.IncomingMessage. Received undefined"
-  )
-})
-
 test(
   "Should throw an error when request object is not an http.IncomingMessage",
   async t => {
@@ -224,7 +214,7 @@ test(
     t.true(err instanceof TypeError)
     t.is(
       err.message,
-      "Request must be an instance of http.IncomingMessage. Received object"
+      "Request must be an instance of http.IncomingMessage."
     )
   }
 )
@@ -237,7 +227,7 @@ test(
     )
 
     t.true(err instanceof TypeError)
-    t.is(err.message, "Options must be an object. Received string")
+    t.is(err.message, "Options must be an object.")
   }
 )
 
