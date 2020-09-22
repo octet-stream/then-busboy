@@ -304,7 +304,7 @@ test("Should response with error when FILES limit reached", async t => {
   const response = await request(mockServer(parse)(options))
     .post("/")
     .attach("file1", __filename)
-    .attach("file2", "/usr/share/dict/words")
+    .attach("file2", __filename)
 
   t.is(response.status, 413)
   t.is(
