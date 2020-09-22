@@ -20,7 +20,7 @@
     "body"
   ],
   "scripts": {
-    "eslint": "eslint lib/**/*.js test/**/*.js .babelrc.js .eslint.js main.js",
+    "eslint": "eslint lib/**/*.js test/**/*.js .babelrc.js .eslintrc.js main.js",
     "staged": "lint-staged",
     "test": "ava",
     "coverage": "nyc npm run test",
