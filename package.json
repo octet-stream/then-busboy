@@ -22,7 +22,10 @@
   "scripts": {
     "eslint": "eslint lib/**/*.js test/**/*.js .babelrc.js .eslint.js main.js",
     "staged": "lint-staged",
-    "test": "ava"
+    "test": "ava",
+    "coverage": "nyc npm run test",
+    "report": "nyc npm run test && nyc report -r=html",
+    "ci": "nyc npm run test && nyc report -r=json"
   },
   "dependencies": {
     "busboy": "0.3.1",
