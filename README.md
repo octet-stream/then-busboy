@@ -82,11 +82,7 @@ async function multipart(ctx, next) {
 
   ctx.request.body = body.json()
 
-  await next()
-
-  // Cleanup files
-  return Promise.all(Array.from(body.files.values()).map(unlinkFile))
-    .catch(err => err.code !== "ENOENT" && Promise.reject(err))
+  return next()
 }
 
 export default multipart
