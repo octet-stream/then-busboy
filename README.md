@@ -232,7 +232,11 @@ Alias for [File#contents](#contents)
 
 ##### `filename`
 
-Full name of the file
+Full name of the file (generated)
+
+##### `originalFilename`
+
+Full name of the file (original)
 
 ##### `basename`
 
