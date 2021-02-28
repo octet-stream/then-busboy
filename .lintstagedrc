@@ -1,7 +1,6 @@
 {
   "lib/**/*.js": "eslint --fix",
   "test/**/*.js": "eslint --fix",
-  ".babelrc.js": "eslint --fix",
   ".eslintrc.js": "eslint --fix",
   "ava.config.js": "eslint --fix",
   "main.js": "eslint --fix"
