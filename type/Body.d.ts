@@ -4,7 +4,7 @@ type Scalar = string | number | boolean
 
 type Entries = [string[], Scalar]
 
-declare class Body {
+declare class Body<T extends Record<string, any>> {
    /**
    * Check if given value is Body instance
    *
@@ -18,14 +18,14 @@ declare class Body {
    *
    * @param entries
    */
-  static from(entries: Entries): Body
+  static from(entries: Entries): Body<T>
 
   /**
    * Return an object with data taken from given entries or Body
    *
    * @param value
    */
-  static json(value: Body | Entries): Record<string, any>
+  static json(value: Body | Entries): T
 
   /**
    * Return a FormData instance with data taken from given entries or Body
@@ -50,13 +50,12 @@ declare class Body {
   /**
    * Return a new Body that contains fields only
    */
-  fields(): Body
+  fields(): Body<T>
 
   /**
    * Return a new Body that contains files only
    */
-  filed(): Body
-
+  filed(): Body<T>
 
   [Symbol.iterator](): IterableIterator<Scalar>
 
@@ -102,10 +101,12 @@ declare class Body {
   /**
    * Return an object with data taken the current Body instance
    */
-  json(): Record<string, any>
+  json(): T
 
   /**
    * Return a FormData with data taken the current Body instance
    */
   formData(): FormData
 }
+
+export default Body

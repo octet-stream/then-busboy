@@ -6,6 +6,7 @@
   "license": "MIT",
   "repository": "octet-stream/then-busboy",
   "main": "main",
+  "types": "main.d.ts",
   "engines": {
     "node": ">= 10.17 < 11 || >= 12 < 13 || >= 14"
   },
