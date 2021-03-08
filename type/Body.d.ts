@@ -2,9 +2,9 @@ import FormData from "formdata-node"
 
 type Scalar = string | number | boolean
 
-type Entries = [string[], Scalar]
+type Entries = Array<[string | string[], Scalar]>
 
-declare class Body<T extends Record<string, any>> {
+declare class Body<T extends Record<string, any> = Record<string, any>> {
    /**
    * Check if given value is Body instance
    *
@@ -18,21 +18,21 @@ declare class Body<T extends Record<string, any>> {
    *
    * @param entries
    */
-  static from(entries: Entries): Body<T>
+  static from<T extends Record<string, any> = Record<string, any>>(entries: Entries): Body<T>
 
   /**
    * Return an object with data taken from given entries or Body
    *
    * @param value
    */
-  static json(value: Body | Entries): T
+  static json<T extends Record<string, any> = Record<string, any>>(value: Body<T> | Entries): T
 
   /**
    * Return a FormData instance with data taken from given entries or Body
    *
    * @param value
    */
-  static formData(value: Body | Entries): FormData
+  static formData<T extends Record<string, any> = Record<string, any>>(value: Body<T> | Entries): FormData
 
   /**
    * Create a new Body from given entries
@@ -55,7 +55,7 @@ declare class Body<T extends Record<string, any>> {
   /**
    * Return a new Body that contains files only
    */
-  filed(): Body<T>
+  files(): Body<T>
 
   [Symbol.iterator](): IterableIterator<Scalar>
 
@@ -87,7 +87,7 @@ declare class Body<T extends Record<string, any>> {
    *
    * @param thisArg
    */
-  map(callbackFn: (value: any, index: number, array: any[]) => unknown, thisArg: any): unknown[]
+  map(callbackFn: (value: any, index: number, array: any[]) => unknown, thisArg?: any): Body<T>
 
   /**
    * Execute a given callback for each entry of the Body instance
@@ -96,7 +96,7 @@ declare class Body<T extends Record<string, any>> {
    *
    * @param thisArg
    */
-  filter(callbackFn: (value: any, index: number, array: any[]) => boolean, thisArg: any): unknown[]
+  filter(callbackFn: (value: any, index: number, array: any[]) => boolean, thisArg?: any): Body<T>
 
   /**
    * Return an object with data taken the current Body instance

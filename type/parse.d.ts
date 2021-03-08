@@ -2,7 +2,7 @@ import {IncomingMessage} from "http"
 
 import Body from "./Body"
 
-export interface ThenBusboyOptions extends busboy.Options {
+export interface Options extends busboy.Options {
   castTypes?: boolean
 
   /**
@@ -11,6 +11,6 @@ export interface ThenBusboyOptions extends busboy.Options {
   restoreTypes?: boolean
 }
 
-export function parse<T extends Record<string, any>>(request: IncomingMessage): Promise<Body<T>>
+export function parse<T extends Record<string, any>>(request: IncomingMessage, options?: Options): Promise<Body<T>>
 
 export default parse

@@ -26,7 +26,7 @@ declare class File {
 
   path: string
 
-  stream: Readable
+  stream(): Readable
 
   [Symbol.toStringTag]: string
 
