@@ -19,4 +19,6 @@ yarn.lock
 *..map
 *.dockerfile
 
+*.test-d.ts
+
 /test
