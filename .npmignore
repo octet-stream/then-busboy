@@ -2,6 +2,7 @@
 /coverage
 /src
 /.nyc_output
+.husky
 .babelrc.js
 .eslintrc.js
 .editorconfig
@@ -9,7 +10,6 @@
 .gitignore
 .lintstagedrc
 .travis.yml
-.huskyrc.json
 nodemon.json
 coverage.lcov
 npm-debug.log
