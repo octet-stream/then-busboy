@@ -2,6 +2,7 @@
 /coverage
 /src
 /.nyc_output
+.github
 .husky
 .babelrc.js
 .eslintrc.js
@@ -15,6 +16,7 @@ coverage.lcov
 npm-debug.log
 yarn-error.log
 yarn.lock
+ava.config.cjs
 *.map
 *..map
 *.dockerfile
