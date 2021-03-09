@@ -48,6 +48,6 @@ export interface Options extends busboy.Options {
  * export default multipart
  * ```
  */
-export function parse<T extends Record<string, any>>(request: IncomingMessage, options?: Options): Promise<Body<T>>
+export function parse<T extends Record<string, any> = Record<string, any>>(request: IncomingMessage, options?: Options): Promise<Body<T>>
 
 export default parse
