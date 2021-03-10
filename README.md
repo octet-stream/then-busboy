@@ -212,23 +212,7 @@ Return an iterator allows to go through the Body fields path
     + **{string}** env – encoding of the file content
     + **{string}** mime – file mime type
 
-#### Static methods
-
-##### `isFile(value) -> {boolean}`
-
-Check if given value is a File instance.
-
-  - **{any}** value – a value to verify
-
 #### Instance properties
-
-##### `contents`
-
-File contents Readable stream.
-
-##### `stream`
-
-Alias for [File#contents](#contents)
 
 ##### `filename`
 
@@ -260,18 +244,9 @@ Default path of the file
 
 #### Instance methods
 
-##### `read() => {Promise<Buffer>}`
+##### `stream() -> {Readable}`
 
-Read a file from contents stream.
-
-##### `write([path]) => {Promise<void>}`
-
-Write a file content to disk. Optionally you can set a custom path.
-
-  - **{string}** [path = [File#path](#path)] – a path where File content should be saved. (default – [File#path](#path))
-
-By default, file will be saved in system temporary directory `os.tmpdir()`.
-You can take this path from [path](#path) property.
+Returns a Readable stream allowing to consume file's content
 
 ## Fields format
 
