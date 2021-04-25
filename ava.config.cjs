@@ -1,8 +1,5 @@
 module.exports = {
-  files: [
-    "test/**/*.js",
-    "!test/**/__hook__/**",
-    "!test/**/__helper__/**",
-    "!test/helper/**"
-  ]
+  extensions: ["ts"],
+  require: ["dotenv/config", "ts-node/register/transpile-only"],
+  files: ["lib/**/*.test.ts"],
 }
