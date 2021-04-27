@@ -1,5 +1,4 @@
 import {createReadStream} from "fs"
-import {Readable} from "stream"
 
 export interface FileOptions {
   type?: string
@@ -27,7 +26,7 @@ export class File {
     this.enc = options.enc
   }
 
-  stream(): Readable {
-    return createReadStream(this.path)
+  async* stream(): AsyncGenerator<Buffer, void, undefined> {
+    yield* createReadStream(this.path)
   }
 }
