@@ -1,32 +1,47 @@
-import {createReadStream} from "fs"
+import {basename} from "path"
 
-export interface FileOptions {
-  type?: string
+import {File, FileOptions} from "formdata-node"
+
+import isPlainObject from "util/isPlainObject"
+
+export interface BusboyFileOptions extends FileOptions {
   enc?: string
-  lastModified?: number
 }
 
-export class File {
-  path: string
+export class BusboyFile extends File {
+  readonly path: string
 
-  name: string
+  readonly enc?: string
 
-  type: string
+  constructor(parts: any[], path: string, options?: BusboyFileOptions)
+  constructor(
+    parts: any[],
+    path: string,
+    name: string,
+    options?: BusboyFileOptions
+  )
+  constructor(
+    parts: any[],
+    path: string,
+    nameOrOptions?: string | BusboyFileOptions,
+    options?: BusboyFileOptions
+  ) {
+    let name: string | undefined
+    if (isPlainObject(nameOrOptions)) {
+      [options, name] = [nameOrOptions, undefined]
+    } else {
+      [name, options] = [nameOrOptions, undefined]
+    }
 
-  lastModified: number
+    const {enc, ...rest}: BusboyFileOptions = options || {}
 
-  enc?: string
+    super(parts, basename(name || path), rest)
 
-  constructor(path: string, name: string, options: FileOptions = {}) {
     this.path = path
-    this.name = name
-    this.type = options.type || ""
-    this.lastModified = options.lastModified || Date.now()
-
-    this.enc = options.enc
+    this.enc = enc
   }
 
-  async* stream(): AsyncGenerator<Buffer, void, undefined> {
-    yield* createReadStream(this.path)
+  get [Symbol.toStringTag](): string {
+    return "File"
   }
 }

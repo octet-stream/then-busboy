@@ -33,31 +33,31 @@
   "dependencies": {
     "@zoltu/typescript-transformer-append-js-extension": "^1.0.1",
     "busboy": "0.3.1",
-    "formdata-node": "2.4.0",
+    "formdata-node": "3.5.0",
     "lodash.merge": "4.6.2",
-    "nanoid": "3.1.20",
+    "nanoid": "3.1.23",
     "object-deep-from-entries": "0.3.0",
     "ttypescript": "^1.5.12"
   },
   "devDependencies": {
     "@octetstream/eslint-config": "5.0.0",
     "@types/busboy": "^0.2.3",
-    "@types/node": "^14.14.41",
+    "@types/node": "^15.6.1",
     "ava": "3.15.0",
-    "c8": "7.6.0",
-    "codecov": "3.8.1",
-    "dotenv": "^8.2.0",
-    "eslint": "^7.25.0",
-    "eslint-plugin-ava": "11.0.0",
+    "c8": "7.7.2",
+    "codecov": "3.8.2",
+    "dotenv": "^10.0.0",
+    "eslint": "^7.27.0",
+    "eslint-plugin-ava": "12.0.0",
     "husky": "5.1.1",
-    "lint-staged": "10.5.4",
+    "lint-staged": "11.0.0",
     "pinst": "2.1.6",
     "promise-fs": "2.1.1",
     "proxyquire": "2.1.3",
-    "sinon": "9.2.4",
+    "sinon": "11.1.1",
     "supertest": "6.1.3",
-    "ts-node": "^9.1.1",
+    "ts-node": "^10.0.0",
     "tsd": "0.14.0",
-    "typescript": "^4.2.4"
+    "typescript": "^4.3.2"
   }
 }

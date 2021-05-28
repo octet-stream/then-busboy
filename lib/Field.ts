@@ -1,8 +1,8 @@
 import {inspect} from "util"
 
 export interface FieldOptions {
-  fieldnameTruncated?: string
-  valueTruncated?: string
+  fieldnameTruncated?: boolean
+  valueTruncated?: boolean
   enc?: string
   type?: string
 }
@@ -15,9 +15,9 @@ export class Field {
 
   value: unknown
 
-  fieldnameTruncated?: string
+  fieldnameTruncated?: boolean
 
-  valueTruncated?: string
+  valueTruncated?: boolean
 
   enc?: string
 

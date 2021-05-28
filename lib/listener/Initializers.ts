@@ -14,3 +14,5 @@ interface Initializer<T extends OnFile | OnField> {
 export type OnFieldInitializer = Initializer<OnField>
 
 export type OnFileInitializer = Initializer<OnFile>
+
+export type NoopInitializer = Initializer<() => void>

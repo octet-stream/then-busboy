@@ -1,15 +1,15 @@
-import {createWriteStream, promises as fs} from "fs"
+import {createWriteStream} from "fs"
 import {tmpdir} from "os"
 import {join} from "path"
 
 import {nanoid} from "nanoid"
+import {fileFromPath} from "formdata-node"
 
 import {OnFileInitializer} from "./Initializers"
-import {File} from "../File"
+import {FileSizeLimitError} from "../error"
+import {BusboyFile} from "../File"
 
 import getFieldPath from "../util/getFieldPath"
-
-const {stat} = fs
 
 const createOnFile: OnFileInitializer = ({limits}, cb) => (
   fieldname,
@@ -23,18 +23,23 @@ const createOnFile: OnFileInitializer = ({limits}, cb) => (
   async function onEnd() {
     try {
       const fieldPath = getFieldPath(fieldname)
+      const file = await fileFromPath(path, {type: mime})
 
-      const {} = await stat(path)
+      cb(null, [
+        fieldPath,
 
-      const file = new File(path, fieldname)
-
-      cb(null, [fieldPath, null])
+        new BusboyFile([file], path, filename, {enc, type: file.type})
+      ])
     } catch (error) {
       cb(error)
     }
   }
 
-  const onLimit = () => {}
+  const onLimit = () => cb(
+    new FileSizeLimitError(
+      `Limit reached: Available up to ${limits!.fileSize} bytes per file.`
+    )
+  )
 
   stream
     .on("error", cb)

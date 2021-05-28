@@ -2,7 +2,9 @@ import {IncomingMessage} from "http"
 
 import ParseOptions from "./ParseOptions"
 
-const defaults = {}
+const defaults: ParseOptions = {
+  castTypes: true
+}
 
 export const parse = (
   request: IncomingMessage,
