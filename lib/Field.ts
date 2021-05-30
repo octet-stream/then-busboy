@@ -13,7 +13,7 @@ export interface FieldOptions {
 export class Field {
   name: string
 
-  value: unknown
+  #value: unknown
 
   fieldnameTruncated?: boolean
 
@@ -25,7 +25,7 @@ export class Field {
 
   constructor(value: unknown, name: string, options: FieldOptions = {}) {
     this.name = name
-    this.value = value
+    this.#value = value
 
     this.fieldnameTruncated = options.fieldnameTruncated
     this.valueTruncated = options.valueTruncated
@@ -34,7 +34,7 @@ export class Field {
   }
 
   valueOf(): unknown {
-    return this.value
+    return this.#value
   }
 
   get [Symbol.toStringTag]() {

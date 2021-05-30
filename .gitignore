@@ -7,6 +7,7 @@ coverage
 coverage.lcov
 
 npm-debug.log
+*.old
 *.map
 *.dockerfile
 yarn-error.log

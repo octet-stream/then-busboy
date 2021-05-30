@@ -2,7 +2,7 @@ import {basename} from "path"
 
 import {File, FileOptions} from "formdata-node"
 
-import isPlainObject from "util/isPlainObject"
+import isPlainObject from "./util/isPlainObject"
 
 export interface BusboyFileOptions extends FileOptions {
   enc?: string

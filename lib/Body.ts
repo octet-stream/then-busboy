@@ -11,16 +11,22 @@ import {
 } from "./BusboyEntries"
 
 import toFieldname from "./util/pathToFieldName"
+import isField from "./util/isField"
 import isFile from "./util/isFile"
+
+/**
+ * Body instaniation entries
+ */
+type BodyEntries = Array<[BusboyEntryPath, BusboyEntryValue | string]>
 
 export class Body {
   #entries: BusboyEntries
 
-  static from(entries: BusboyEntries): Body {
+  static from(entries: BodyEntries): Body {
     return new Body(entries)
   }
 
-  static json(value: BusboyEntries | Body): object {
+  static json(value: BodyEntries | Body): object {
     if (value instanceof Body) {
       return value.json()
     }
@@ -28,7 +34,7 @@ export class Body {
     return new Body(value).json()
   }
 
-  static formData(value: BusboyEntries | Body): FormData {
+  static formData(value: BodyEntries | Body): FormData {
     if (value instanceof Body) {
       return value.formData()
     }
@@ -36,8 +42,18 @@ export class Body {
     return new Body(value).formData()
   }
 
-  constructor(entries: BusboyEntries) {
-    this.#entries = entries
+  constructor(entries: BodyEntries) {
+    this.#entries = entries.map(([path, value]) => [
+      path,
+
+      isFile(value) || isField(value)
+        ? value
+        : new Field(value, toFieldname(path))
+    ])
+  }
+
+  get [Symbol.toStringTag](): string {
+    return "Body"
   }
 
   get length(): number {
@@ -102,7 +118,7 @@ export class Body {
     const form = new FormData()
 
     for (const [path, value] of this) {
-      form.append(toFieldname(path), value)
+      form.append(toFieldname(path), isFile(value) ? value : value.valueOf())
     }
 
     return form
