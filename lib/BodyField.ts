@@ -11,17 +11,17 @@ export interface BodyFieldOptions {
  * @api private
  */
 export class BodyField {
-  name: string
+  readonly name: string
 
-  #value: unknown
+  readonly #value: unknown
 
-  fieldnameTruncated?: boolean
+  readonly fieldnameTruncated?: boolean
 
-  valueTruncated?: boolean
+  readonly valueTruncated?: boolean
 
-  enc?: string
+  readonly enc?: string
 
-  type?: string
+  readonly type?: string
 
   constructor(value: unknown, name: string, options: BodyFieldOptions = {}) {
     this.name = name
