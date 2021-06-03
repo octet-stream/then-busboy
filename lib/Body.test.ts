@@ -2,10 +2,20 @@ import test from "ava"
 
 import {FormData, File} from "formdata-node"
 
-import {Body} from "./Body"
+import {Body, BodyRawEntries} from "./Body"
 import {Field} from "./Field"
 import {BusboyFile} from "./File"
-import {BusboyEntries} from "./BusboyEntries"
+
+interface Developer {
+  name: string,
+  isHireable: boolean
+  skills: [string, ...string[]]
+  dates: {
+    createdAt: string
+    updatedAt: string
+    deletedAt?: string
+  }
+}
 
 test("Creates an empty Body", t => {
   const body = new Body([])
@@ -45,7 +55,7 @@ test("Creates Body with spec-compatible File", t => {
 })
 
 test("Entries can be converted back to an array", t => {
-  const expected: BusboyEntries = [
+  const expected: BodyRawEntries = [
     [["firstField"], "First value"],
     [["secondField"], "Second value"]
   ]
@@ -62,7 +72,7 @@ test(".json() creates an object from entries", t => {
     firstField: "First value"
   }
 
-  const entries: BusboyEntries = [
+  const entries: BodyRawEntries = [
     [["firstField"], "First value"]
   ]
 
@@ -72,10 +82,11 @@ test(".json() creates an object from entries", t => {
 })
 
 test(".json() returns nested object", t => {
-  const date = Date.now()
+  const date = new Date().toISOString()
 
-  const expected = {
+  const expected: Developer = {
     name: "John Doe",
+    isHireable: false,
     skills: ["JavaScript", "TypeScript", "CoffeeScript"],
     dates: {
       createdAt: date,
@@ -84,8 +95,9 @@ test(".json() returns nested object", t => {
     }
   }
 
-  const entries: BusboyEntries = [
+  const entries: BodyRawEntries = [
     [["name"], "John Doe"],
+    [["isHireable"], false],
     [["skills", 0], "JavaScript"],
     [["skills", 1], "TypeScript"],
     [["skills", 2], "CoffeeScript"],
@@ -94,11 +106,67 @@ test(".json() returns nested object", t => {
     [["dates", "deletedAt"], null]
   ]
 
-  const object = new Body(entries).json()
+  const actual = new Body(entries).json()
+
+  t.deepEqual(actual, expected)
+})
+
+test(".json() returns collection", t => {
+  const date = new Date().toISOString()
+
+  const expected: Developer[] = [
+    {
+      name: "John Doe",
+      isHireable: true,
+      skills: ["JavaScript", "TypeScript", "React", "MobX", "Node.js"],
+      dates: {
+        createdAt: date,
+        updatedAt: date,
+        deletedAt: null
+      }
+    },
+    {
+      name: "Max Doe",
+      isHireable: false,
+      skills: ["TypeScript", "React", "XState", "Node.js", "Rust"],
+      dates: {
+        createdAt: date,
+        updatedAt: date,
+        deletedAt: null
+      }
+    }
+  ]
+
+  const entries: BodyRawEntries = [
+    [[0, "name"], "John Doe"],
+    [[0, "isHireable"], true],
+    [[0, "skills", 0], "JavaScript"],
+    [[0, "skills", 1], "TypeScript"],
+    [[0, "skills", 2], "React"],
+    [[0, "skills", 3], "MobX"],
+    [[0, "skills", 4], "Node.js"],
+    [[0, "dates", "createdAt"], date],
+    [[0, "dates", "updatedAt"], date],
+    [[0, "dates", "deletedAt"], null],
+    [[1, "name"], "Max Doe"],
+    [[1, "isHireable"], false],
+    [[1, "skills", 0], "TypeScript"],
+    [[1, "skills", 1], "React"],
+    [[1, "skills", 2], "XState"],
+    [[1, "skills", 3], "Node.js"],
+    [[1, "skills", 4], "Rust"],
+    [[1, "dates", "createdAt"], date],
+    [[1, "dates", "updatedAt"], date],
+    [[1, "dates", "deletedAt"], null],
+  ]
+
+  const actual = new Body(entries).json()
+
+  t.deepEqual(actual, expected)
 })
 
 test(".formData() returns FormData", t => {
-  const entries: BusboyEntries = [
+  const entries: BodyRawEntries = [
     [["firstField"], "First value"]
   ]
 
@@ -108,7 +176,7 @@ test(".formData() returns FormData", t => {
 })
 
 test(".formData() returns FormData with entries from Body", t => {
-  const entries: BusboyEntries = [
+  const entries: BodyRawEntries = [
     [["firstField"], "First value"],
     [["secondField"], "Second value"]
   ]

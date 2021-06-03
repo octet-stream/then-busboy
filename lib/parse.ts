@@ -12,7 +12,9 @@ import onFilesLimit from "./listener/onFilesLimit"
 import onFieldsLimit from "./listener/onFieldsLimit"
 import onPartsLimit from "./listener/onPartsLimit"
 
-import {Body} from "./Body"
+import map from "./util/mapListeners"
+
+import {Body, BodyEntries, BodyEntry} from "./Body"
 
 const initializers = {
   onFile,
@@ -42,10 +44,38 @@ export const parse = (
 
   const opts = merge({}, defaults, options, {headers: request.headers})
 
-  const entries = []
-  const busboy = new Busboy(opts)
+  const entries: BodyEntries = []
+  const parser = new Busboy(opts)
 
-  const onEntry = (err: Error, entry: unknown) => (
-    err ? reject(err) : entries.push(entry)
-  )
+  const listeners = map(initializers, fn => fn(options, onEntry))
+
+  function unsubscribe() {
+    map(listeners, (fn, name) => parser.off(name, fn))
+  }
+
+  function onError(error: Error): void {
+    unsubscribe()
+    reject(error)
+  }
+
+  function onFinish(): void {
+    unsubscribe()
+    resolve(new Body(entries))
+  }
+
+  function onEntry(error: Error, entry: BodyEntry): void {
+    if (error) {
+      return onError(error)
+    }
+
+    entries.push(entry)
+  }
+
+  map(listeners, (fn, name) => parser.on(name, fn))
+
+  parser
+    .once("error", onError)
+    .once("finish", onFinish)
+
+  request.pipe(parser)
 })

@@ -1,32 +1,42 @@
 import fromEntries from "object-deep-from-entries"
 
-import {FormData} from "formdata-node"
+import {FormData, File, FileLike} from "formdata-node"
 
 import {Field} from "./Field"
-import {
-  BusboyEntries,
-  BusboyEntry,
-  BusboyEntryPath,
-  BusboyEntryValue
-} from "./BusboyEntries"
 
 import toFieldname from "./util/pathToFieldname"
 import isField from "./util/isField"
 import isFile from "./util/isFile"
 
+export type BodyEntryPath = Array<string | number>
+
+export type BodyEntryValue = File | FileLike | Field
+
+export type BodyEntryRawValue =
+  | BodyEntryValue
+  | string
+  | number
+  | boolean
+  | null
+  | undefined
+
+export type BodyEntry = [BodyEntryPath, BodyEntryValue]
+
 /**
  * Body instaniation entries
  */
-type BodyEntries = Array<[BusboyEntryPath, BusboyEntryValue | string]>
+export type BodyEntries = Array<[BodyEntryPath, BodyEntryValue]>
+
+export type BodyRawEntries = Array<[BodyEntryPath, BodyEntryRawValue]>
 
 export class Body {
-  #entries: BusboyEntries
+  #entries: BodyEntries
 
-  static from(entries: BodyEntries): Body {
+  static from(entries: BodyRawEntries): Body {
     return new Body(entries)
   }
 
-  static json(value: BodyEntries | Body): object {
+  static json(value: BodyRawEntries | Body): object {
     if (value instanceof Body) {
       return value.json()
     }
@@ -34,7 +44,7 @@ export class Body {
     return new Body(value).json()
   }
 
-  static formData(value: BodyEntries | Body): FormData {
+  static formData(value: BodyRawEntries | Body): FormData {
     if (value instanceof Body) {
       return value.formData()
     }
@@ -42,10 +52,11 @@ export class Body {
     return new Body(value).formData()
   }
 
-  constructor(entries: BodyEntries) {
+  constructor(entries: BodyRawEntries) {
     this.#entries = entries.map(([path, value]) => [
       path,
 
+      // Convert raw entry scalar values to Field class
       isFile(value) || isField(value)
         ? value
         : new Field(value, toFieldname(path))
@@ -60,17 +71,17 @@ export class Body {
     return this.#entries.length
   }
 
-  * entries(): Generator<BusboyEntry, void, undefined> {
+  * entries(): Generator<BodyEntry, void, undefined> {
     yield* this.#entries.values()
   }
 
-  * keys(): Generator<BusboyEntryPath, void, undefined> {
+  * keys(): Generator<BodyEntryPath, void, undefined> {
     for (const [key] of this) {
       yield key
     }
   }
 
-  * values(): Generator<BusboyEntryValue, void, undefined> {
+  * values(): Generator<BodyEntryValue, void, undefined> {
     for (const [, value] of this) {
       yield value
     }
@@ -81,7 +92,7 @@ export class Body {
   }
 
   files(): Body {
-    const entries: BusboyEntries = []
+    const entries: BodyEntries = []
 
     for (const [path, value] of this) {
       if (isFile(value)) {
@@ -93,7 +104,7 @@ export class Body {
   }
 
   fields(): Body {
-    const entries: BusboyEntries = []
+    const entries: BodyEntries = []
 
     for (const [path, value] of this) {
       if (!isFile(value)) {
@@ -105,7 +116,7 @@ export class Body {
   }
 
   json(): object {
-    const entries: Array<[BusboyEntryPath, unknown]> = []
+    const entries: Array<[BodyEntryPath, unknown]> = []
 
     for (const [path, value] of this) {
       entries.push([path, isFile(value) ? value : value.valueOf()])
