@@ -49,6 +49,16 @@ export class BodyFileDataItem implements BodyFile {
     return this.#enc
   }
 
+  slice(start?: number, end?: number, contentType?: string): BodyFileDataItem {
+    const file = this.#file.slice(start, end, contentType) as File
+
+    return new BodyFileDataItem({
+      path: this.#path,
+      enc: this.#enc,
+      file
+    })
+  }
+
   stream() {
     return this.#file.stream()
   }

@@ -20,4 +20,6 @@ export interface BodyFile extends FileLike {
    * Returns a Promise that resolves with string containing the contents of the File
    */
   text(): Promise<string>
+
+  slice(start?: number, end?: number, contentType?: string): BodyFile
 }
