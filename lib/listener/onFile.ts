@@ -33,14 +33,24 @@ const createOnFile: OnFileInitializer = ({limits}, cb) => (
     }
   }
 
-  const onLimit = () => cb(
-    createError(
-      `Limit reached: Available up to ${limits!.fileSize} bytes per file.`
+  function onLimit() {
+    stream.unpipe(dest)
+
+    cb(
+      createError(
+        `Limit reached: Available up to ${limits!.fileSize} bytes per file.`
+      )
     )
-  )
+  }
+
+  function onError(error: Error) {
+    stream.unpipe(dest)
+
+    cb(error)
+  }
 
   stream
-    .on("error", cb)
+    .on("error", onError)
     .on("limit", onLimit)
     .on("end", onEnd)
     .pipe(dest)
