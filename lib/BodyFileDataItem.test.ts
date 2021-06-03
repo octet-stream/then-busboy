@@ -47,6 +47,14 @@ test("Has correct name property", async t => {
   t.is(actual.name, file.name)
 })
 
+test("Has correct size property", async t => {
+  const file = await fileFromPath(filePath)
+
+  const actual = new BodyFileDataItem({path: filePath, file})
+
+  t.is(actual.size, file.size)
+})
+
 test("Has correct type property", async t => {
   const file = await fileFromPath(filePath)
 
