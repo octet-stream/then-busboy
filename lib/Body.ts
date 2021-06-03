@@ -22,9 +22,6 @@ export type BodyEntryRawValue =
 
 export type BodyEntry = [BodyEntryPath, BodyEntryValue]
 
-/**
- * Body instaniation entries
- */
 export type BodyEntries = Array<[BodyEntryPath, BodyEntryValue]>
 
 export type BodyRawEntries = Array<[BodyEntryPath, BodyEntryRawValue]>
@@ -32,10 +29,9 @@ export type BodyRawEntries = Array<[BodyEntryPath, BodyEntryRawValue]>
 export class Body {
   #entries: BodyEntries
 
-  static from(entries: BodyRawEntries): Body {
-    return new Body(entries)
-  }
-
+  /**
+   * A shortcut for Body#json()
+   */
   static json(value: BodyRawEntries | Body): object {
     if (value instanceof Body) {
       return value.json()
@@ -44,6 +40,9 @@ export class Body {
     return new Body(value).json()
   }
 
+  /**
+   * A shortcut for Body#formData()
+   */
   static formData(value: BodyRawEntries | Body): FormData {
     if (value instanceof Body) {
       return value.formData()
@@ -67,6 +66,9 @@ export class Body {
     return "Body"
   }
 
+  /**
+   * Returns an amount of entries in Body
+   */
   get length(): number {
     return this.#entries.length
   }
@@ -91,6 +93,9 @@ export class Body {
     return this.entries()
   }
 
+  /**
+   * Returns a new Body subset with only files in it
+   */
   files(): Body {
     const entries: BodyEntries = []
 
@@ -103,6 +108,9 @@ export class Body {
     return new Body(entries)
   }
 
+  /**
+   * Returns a new Body subset with only fields in it
+   */
   fields(): Body {
     const entries: BodyEntries = []
 
@@ -115,6 +123,9 @@ export class Body {
     return new Body(entries)
   }
 
+  /**
+   * Returns an object representing Body entries
+   */
   json(): object {
     const entries: Array<[BodyEntryPath, unknown]> = []
 
@@ -125,6 +136,9 @@ export class Body {
     return fromEntries(entries)
   }
 
+  /**
+   * Returns FormData representation of Body entries
+   */
   formData(): FormData {
     const form = new FormData()
 
