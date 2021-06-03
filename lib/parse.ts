@@ -4,7 +4,6 @@ import Busboy from "busboy"
 import merge from "lodash.merge"
 
 import isPlainObject from "./util/isPlainObject"
-import ParseOptions from "./ParseOptions"
 
 import onFile from "./listener/onFile"
 import onField from "./listener/onField"
@@ -15,6 +14,7 @@ import onPartsLimit from "./listener/onPartsLimit"
 import map from "./util/mapListeners"
 
 import {Body, BodyEntries, BodyEntry} from "./Body"
+import type {ParseOptions} from "./ParseOptions"
 
 const initializers = {
   onFile,

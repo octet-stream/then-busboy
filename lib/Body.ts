@@ -3,7 +3,7 @@ import fromEntries from "object-deep-from-entries"
 import {FormData, File, FileLike} from "formdata-node"
 
 import {BodyField} from "./BodyField"
-import {BodyFile} from "./BodyFile"
+import type {BodyFile} from "./BodyFile"
 
 import toFieldname from "./util/pathToFieldname"
 import isField from "./util/isField"

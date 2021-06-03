@@ -1,4 +1,4 @@
-import {FileLike} from "formdata-node"
+import type {FileLike} from "formdata-node"
 
 export interface BodyFile extends FileLike {
   /**

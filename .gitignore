@@ -1,5 +1,4 @@
-/test.mjs
-
+@type
 node_modules
 coverage
 .DS_Store
@@ -11,3 +10,6 @@ npm-debug.log
 *.map
 *.dockerfile
 yarn-error.log
+
+/test.mjs
+/lib/**/*.js

@@ -1,8 +1,5 @@
 import {Readable} from "stream"
 
-import FieldPath from "../util/FieldPath"
-import ParseOptions from "../ParseOptions"
-
 export interface OnField {
   (
     fieldname: string,

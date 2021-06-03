@@ -1,6 +1,6 @@
-import ParseOptions from "../ParseOptions"
 import FieldPath from "../util/FieldPath"
 
+import {ParseOptions} from "../ParseOptions"
 import {OnField, OnFile} from "./Listeners"
 
 interface InitializerCallback {

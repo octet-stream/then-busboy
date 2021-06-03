@@ -1,6 +1,6 @@
-import {File} from "formdata-node"
+import type {File} from "formdata-node"
 
-import {BodyFile} from "./BodyFile"
+import type {BodyFile} from "./BodyFile"
 
 export interface BodyFileDataItemOptions {
   file: File
