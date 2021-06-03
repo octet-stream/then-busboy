@@ -1,7 +1,5 @@
 {
-  "lib/**/*.js": "eslint --fix",
-  "test/**/*.js": "eslint --fix",
+  "lib/**/*.ts": "eslint --fix",
   ".eslintrc.js": "eslint --fix",
-  "ava.config.js": "eslint --fix",
-  "main.js": "eslint --fix"
+  "ava.config.cjs": "eslint --fix"
 }
