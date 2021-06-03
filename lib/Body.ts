@@ -2,7 +2,8 @@ import fromEntries from "object-deep-from-entries"
 
 import {FormData, File, FileLike} from "formdata-node"
 
-import {Field} from "./Field"
+import {BodyField} from "./BodyField"
+import {BodyFile} from "./BodyFile"
 
 import toFieldname from "./util/pathToFieldname"
 import isField from "./util/isField"
@@ -10,7 +11,7 @@ import isFile from "./util/isFile"
 
 export type BodyEntryPath = Array<string | number>
 
-export type BodyEntryValue = File | FileLike | Field
+export type BodyEntryValue = BodyFile | File | FileLike | BodyField
 
 export type BodyEntryRawValue =
   | BodyEntryValue
@@ -55,10 +56,10 @@ export class Body {
     this.#entries = entries.map(([path, value]) => [
       path,
 
-      // Convert raw entry scalar values to Field class
+      // Convert raw entry scalar values to BodyField class
       isFile(value) || isField(value)
         ? value
-        : new Field(value, toFieldname(path))
+        : new BodyField(value, toFieldname(path))
     ])
   }
 

@@ -2,9 +2,9 @@ import test from "ava"
 
 import {FormData, File} from "formdata-node"
 
+import {BodyFileDataItem} from "./BodyFileDataItem"
 import {Body, BodyRawEntries} from "./Body"
-import {Field} from "./Field"
-import {BusboyFile} from "./File"
+import {BodyField} from "./BodyField"
 
 interface Developer {
   name: string,
@@ -30,18 +30,21 @@ test("Creates Body with scalar field", t => {
 
   const [actual] = [...body.values()]
 
-  t.true(actual instanceof Field)
-  t.is((actual as Field).valueOf(), "value")
+  t.true(actual instanceof BodyField)
+  t.is((actual as BodyField).valueOf(), "value")
 })
 
-test("Creates Body with with a File (BusboyFile)", t => {
-  const file = new BusboyFile(["Content"], "file.txt")
+test("Creates Body with a BodyFileDataItem", t => {
+  const file = new BodyFileDataItem({
+    file: new File(["Some content"], "file.txt"),
+    path: "/path/to/a/file"
+  })
 
   const body = new Body([[["file"], file]])
 
   const [actual] = [...body.values()]
 
-  t.true(actual instanceof BusboyFile)
+  t.true(actual instanceof BodyFileDataItem)
 })
 
 test("Creates Body with spec-compatible File", t => {
@@ -62,7 +65,7 @@ test("Entries can be converted back to an array", t => {
 
   const body = new Body(expected)
 
-  const actual = [...body].map(entry => (entry as unknown as Field).valueOf())
+  const actual = [...body].map(entry => (entry as any as BodyField).valueOf())
 
   t.deepEqual([...body], actual)
 })

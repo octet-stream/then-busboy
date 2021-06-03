@@ -1,9 +1,10 @@
 import {NoopInitializer} from "./Initializers"
-import {FilesLimitError} from "../error"
+
+import createError from "../util/requestEntityTooLarge"
 
 const createOnFilesLimit: NoopInitializer = ({limits}, cb) => () => {
   cb(
-    new FilesLimitError(
+    createError(
       `Limit reached: Available up to ${limits!.files} files.`
     )
   )

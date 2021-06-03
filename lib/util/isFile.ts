@@ -1,5 +1,9 @@
 import {File} from "formdata-node"
 
-const isFile = (value: unknown): value is File => !!value && value instanceof File
+import {BodyFile} from "../BodyFile"
+
+const isFile = (value: unknown): value is BodyFile => (
+  !!value && value instanceof File
+)
 
 export default isFile

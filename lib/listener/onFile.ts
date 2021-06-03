@@ -6,10 +6,11 @@ import {nanoid} from "nanoid"
 import {fileFromPath} from "formdata-node"
 
 import {OnFileInitializer} from "./Initializers"
-import {FileSizeLimitError} from "../error"
-import {BusboyFile} from "../File"
+
+import {BodyFileDataItem} from "../BodyFileDataItem"
 
 import getFieldPath from "../util/getFieldPath"
+import createError from "../util/requestEntityTooLarge"
 
 const createOnFile: OnFileInitializer = ({limits}, cb) => (
   fieldname,
@@ -19,24 +20,21 @@ const createOnFile: OnFileInitializer = ({limits}, cb) => (
   mime
 ) => {
   const path = join(tmpdir(), `${nanoid()}__${filename}`)
+  const dest = createWriteStream(path)
 
   async function onEnd() {
     try {
       const fieldPath = getFieldPath(fieldname)
       const file = await fileFromPath(path, {type: mime})
 
-      cb(null, [
-        fieldPath,
-
-        new BusboyFile([file], path, filename, {enc, type: file.type})
-      ])
+      cb(null, [fieldPath, new BodyFileDataItem({file, path, enc})])
     } catch (error) {
       cb(error)
     }
   }
 
   const onLimit = () => cb(
-    new FileSizeLimitError(
+    createError(
       `Limit reached: Available up to ${limits!.fileSize} bytes per file.`
     )
   )
@@ -45,7 +43,7 @@ const createOnFile: OnFileInitializer = ({limits}, cb) => (
     .on("error", cb)
     .on("limit", onLimit)
     .on("end", onEnd)
-    .pipe(createWriteStream(path))
+    .pipe(dest)
 }
 
 export default createOnFile

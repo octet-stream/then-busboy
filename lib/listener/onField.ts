@@ -1,9 +1,10 @@
 import {OnFieldInitializer} from "./Initializers"
-import {FieldSizeLimitError} from "../error"
-import {Field} from "../Field"
+import {BodyField} from "../BodyField"
 
-import getFieldPath from "util/getFieldPath"
-import castType from "util/castType"
+import createError from "../util/requestEntityTooLarge"
+
+import getFieldPath from "../util/getFieldPath"
+import castType from "../util/castType"
 
 const createOnField: OnFieldInitializer = ({castTypes, limits}, cb) => (
   name,
@@ -15,7 +16,7 @@ const createOnField: OnFieldInitializer = ({castTypes, limits}, cb) => (
 ): void => {
   if (valueTruncated) {
     return cb(
-      new FieldSizeLimitError(
+      createError(
         `Limit reached: Available up to ${limits!.fieldSize} bytes per field.`
       )
     )
@@ -31,7 +32,7 @@ const createOnField: OnFieldInitializer = ({castTypes, limits}, cb) => (
     cb(null, [
       path,
 
-      new Field(value, name, {
+      new BodyField(value, name, {
         fieldnameTruncated,
         valueTruncated,
         type,

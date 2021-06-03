@@ -1,9 +1,10 @@
 import {NoopInitializer} from "./Initializers"
-import {PartsLimitError} from "../error"
+
+import createError from "../util/requestEntityTooLarge"
 
 const createOnPartsLimit: NoopInitializer = ({limits}, cb) => () => {
   cb(
-    new PartsLimitError(
+    createError(
       `Limit reached: Available up to ${limits!.parts} parts.`
     )
   )

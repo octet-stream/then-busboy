@@ -47,6 +47,7 @@ export const parse = (
   const entries: BodyEntries = []
   const parser = new Busboy(opts)
 
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
   const listeners = map(initializers, fn => fn(options, onEntry))
 
   function unsubscribe() {

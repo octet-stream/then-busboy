@@ -1,7 +1,7 @@
-import {Field} from "../Field"
+import {BodyField} from "../BodyField"
 
-const isField = (value: unknown): value is Field => (
-  !!value && value instanceof Field
+const isField = (value: unknown): value is BodyField => (
+  !!value && value instanceof BodyField
 )
 
 export default isField

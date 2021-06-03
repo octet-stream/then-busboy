@@ -1,6 +1,6 @@
 import {inspect} from "util"
 
-export interface FieldOptions {
+export interface BodyFieldOptions {
   fieldnameTruncated?: boolean
   valueTruncated?: boolean
   enc?: string
@@ -10,7 +10,7 @@ export interface FieldOptions {
 /**
  * @api private
  */
-export class Field {
+export class BodyField {
   name: string
 
   #value: unknown
@@ -23,7 +23,7 @@ export class Field {
 
   type?: string
 
-  constructor(value: unknown, name: string, options: FieldOptions = {}) {
+  constructor(value: unknown, name: string, options: BodyFieldOptions = {}) {
     this.name = name
     this.#value = value
 
@@ -38,7 +38,7 @@ export class Field {
   }
 
   get [Symbol.toStringTag]() {
-    return "Field"
+    return "BodyField"
   }
 
   [inspect.custom]() {
