@@ -25,7 +25,7 @@ const createOnFile: OnFileInitializer = ({limits}, cb) => (
   async function onEnd() {
     try {
       const fieldPath = getFieldPath(fieldname)
-      const file = await fileFromPath(path, {type: mime})
+      const file = await fileFromPath(path, filename, {type: mime})
 
       cb(null, [fieldPath, new BodyFileDataItem({file, path, enc})])
     } catch (error) {
