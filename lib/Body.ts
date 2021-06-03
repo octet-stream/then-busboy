@@ -10,7 +10,7 @@ import {
   BusboyEntryValue
 } from "./BusboyEntries"
 
-import toFieldname from "./util/pathToFieldName"
+import toFieldname from "./util/pathToFieldname"
 import isField from "./util/isField"
 import isFile from "./util/isFile"
 
