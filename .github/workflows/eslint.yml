@@ -5,11 +5,13 @@ on:
     branches: [master]
     paths:
       - "**.ts"
+      - "package.json"
       - ".github/workflows/eslint.yml"
   pull_request:
     branches: [master]
     paths:
       - "**.ts"
+      - "package.json"
       - ".github/workflows/eslint.yml"
 
 jobs:
