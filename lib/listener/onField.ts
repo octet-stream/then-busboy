@@ -6,7 +6,7 @@ import createError from "../util/requestEntityTooLarge"
 import getFieldPath from "../util/getFieldPath"
 import castType from "../util/castType"
 
-const createOnField: OnFieldInitializer = ({castTypes, limits}, cb) => (
+const createOnField: OnFieldInitializer = ({castTypes, limits}, ee) => (
   name,
   value,
   fieldnameTruncated,
@@ -15,12 +15,16 @@ const createOnField: OnFieldInitializer = ({castTypes, limits}, cb) => (
   type
 ): void => {
   if (valueTruncated) {
-    return cb(
+    return void ee.emit(
+      "error",
+
       createError(
         `Limit reached: Available up to ${limits!.fieldSize} bytes per field.`
       )
     )
   }
+
+  ee.emit("entry:register")
 
   try {
     if (castTypes) {
@@ -29,7 +33,7 @@ const createOnField: OnFieldInitializer = ({castTypes, limits}, cb) => (
 
     const path = getFieldPath(name)
 
-    cb(null, [
+    ee.emit("entry:push", [
       path,
 
       new BodyField(value, name, {
@@ -40,7 +44,7 @@ const createOnField: OnFieldInitializer = ({castTypes, limits}, cb) => (
       })
     ])
   } catch (error) {
-    cb(error)
+    ee.emit(error)
   }
 }
 

@@ -12,7 +12,7 @@ import {BodyFileDataItem} from "../BodyFileDataItem"
 import getFieldPath from "../util/getFieldPath"
 import createError from "../util/requestEntityTooLarge"
 
-const createOnFile: OnFileInitializer = ({limits}, cb) => (
+const createOnFile: OnFileInitializer = ({limits}, ee) => (
   fieldname,
   stream,
   filename,
@@ -22,21 +22,29 @@ const createOnFile: OnFileInitializer = ({limits}, cb) => (
   const path = join(tmpdir(), `${nanoid()}__${filename}`)
   const dest = createWriteStream(path)
 
+  ee.emit("entry:register")
+
   async function onEnd() {
     try {
       const fieldPath = getFieldPath(fieldname)
       const file = await fileFromPath(path, filename, {type: mime})
 
-      cb(null, [fieldPath, new BodyFileDataItem({file, path, enc})])
+      ee.emit(
+        "entry:push",
+
+        [fieldPath, new BodyFileDataItem({file, path, enc})]
+      )
     } catch (error) {
-      cb(error)
+      ee.emit("error", error)
     }
   }
 
   function onLimit() {
     stream.unpipe(dest)
 
-    cb(
+    ee.emit(
+      "error",
+
       createError(
         `Limit reached: Available up to ${limits!.fileSize} bytes per file.`
       )
@@ -46,7 +54,7 @@ const createOnFile: OnFileInitializer = ({limits}, cb) => (
   function onError(error: Error) {
     stream.unpipe(dest)
 
-    cb(error)
+    ee.emit("error", error)
   }
 
   stream

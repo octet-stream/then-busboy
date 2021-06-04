@@ -1,4 +1,5 @@
 import {IncomingMessage} from "http"
+import {EventEmitter} from "events"
 
 import Busboy from "busboy"
 import merge from "lodash.merge"
@@ -51,11 +52,16 @@ export const parse = (
 
   const opts = merge({}, defaults, options, {headers: request.headers})
 
-  const entries: BodyEntries = []
   const parser = new Busboy(opts)
 
+  const ee = new EventEmitter()
+  const entries: BodyEntries = []
+  let isBodyRead = false
+  let entriesLeft = 0
+
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
-  const listeners = map(initializers, fn => fn(opts, onEntry))
+  // const listeners = map(initializers, fn => fn(opts, onEntry))
+  const listeners = map(initializers, fn => fn(opts, ee))
 
   function unsubscribe() {
     map(listeners, (fn, name) => parser.off(name, fn))
@@ -66,24 +72,50 @@ export const parse = (
     reject(error)
   }
 
-  function onFinish(): void {
-    unsubscribe()
-    resolve(new Body(entries))
-  }
-
-  function onEntry(error: Error, entry: BodyEntry): void {
-    if (error) {
-      return onError(error)
+  ee.on("finish", () => {
+    if (isBodyRead && entriesLeft <= 0) {
+      unsubscribe()
+      resolve(new Body(entries))
     }
+  })
 
+  ee.on("entry:register", () => { ++entriesLeft })
+
+  ee.on("entry:push", (entry: BodyEntry) => {
     entries.push(entry)
+
+    if ((--entriesLeft) <= 0) {
+      ee.emit("finish")
+    }
+  })
+
+  // function onFinish(): void {
+  //   isBodyRead = true
+  //   unsubscribe()
+  //   resolve(new Body(entries))
+  // }
+
+  // function onEntry(error: Error, entry: BodyEntry): void {
+  //   if (error) {
+  //     return onError(error)
+  //   }
+
+  //   entries.push(entry)
+  // }
+
+  function onBodyRead() {
+    isBodyRead = true
+
+    ee.emit("finish")
   }
 
   map(listeners, (fn, name) => parser.on(name, fn))
 
+  ee.on("error", onError)
+
   parser
     .once("error", onError)
-    .once("finish", onFinish)
+    .once("finish", onBodyRead)
 
   request.pipe(parser)
 })
