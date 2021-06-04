@@ -14,7 +14,14 @@ import onPartsLimit from "./listener/onPartsLimit"
 import map from "./util/mapListeners"
 
 import {Body, BodyEntries, BodyEntry} from "./Body"
-import type {ParseOptions} from "./ParseOptions"
+
+// eslint-disable-next-line no-undef
+export interface ParseOptions extends busboy.BusboyConfig {
+  /**
+   * Indicates whether then-busboy should cast fields values to their initial type
+   */
+  castTypes: boolean
+}
 
 const initializers = {
   onFile,

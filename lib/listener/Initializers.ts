@@ -1,10 +1,9 @@
-import FieldPath from "../util/FieldPath"
-
-import {ParseOptions} from "../ParseOptions"
-import {OnField, OnFile} from "./Listeners"
+import type {OnField, OnFile} from "./Listeners"
+import type {BodyEntryPath} from "../Body"
+import type {ParseOptions} from "../parse"
 
 interface InitializerCallback {
-  (error: Error | null, result?: [FieldPath, unknown]): void;
+  (error: Error | null, result?: [BodyEntryPath, unknown]): void;
 }
 
 interface Initializer<T extends OnFile | OnField> {

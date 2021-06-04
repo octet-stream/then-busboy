@@ -1,4 +1,5 @@
-import FieldPath from "./FieldPath"
+import type {BodyEntryPath} from "../Body"
+
 import isNaN from "./isNaN"
 
 /**
@@ -29,14 +30,14 @@ const castNumKey = (key: string): string | number => (
 /**
  * @param {string} string
  */
-const fromDotNotation = (string: string): FieldPath => (
+const fromDotNotation = (string: string): BodyEntryPath => (
   string.split(".").map(castNumKey)
 )
 
 /**
  * @param string
  */
-const fromSquareBracesNotation = (string: string): FieldPath => (
+const fromSquareBracesNotation = (string: string): BodyEntryPath => (
   string.split(/[[\]]/).filter(Boolean).map(castNumKey)
 )
 
@@ -62,7 +63,7 @@ const fromSquareBracesNotation = (string: string): FieldPath => (
  *
  * getFieldPath("someCollection.0.name") // -> ["someCollection", 0, "name"]
  */
-function getFieldPath(fieldname: string): FieldPath {
+function getFieldPath(fieldname: string): BodyEntryPath {
   if (!fieldname) {
     throw new Error("Field name cannot be empty.")
   }
