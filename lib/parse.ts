@@ -20,7 +20,7 @@ export interface ParseOptions extends busboy.BusboyConfig {
   /**
    * Indicates whether then-busboy should cast fields values to their initial type
    */
-  castTypes: boolean
+  castTypes?: boolean
 }
 
 const initializers = {
@@ -37,8 +37,8 @@ const defaults: ParseOptions = {
 
 export const parse = (
   request: IncomingMessage,
-  options?: ParseOptions
-) => new Promise((resolve, reject) => {
+  options: ParseOptions = {}
+) => new Promise<Body>((resolve, reject) => {
   if (!(request instanceof IncomingMessage)) {
     throw new TypeError(
       "Expected request argument to be an instance of http.IncomingMessage"
@@ -55,7 +55,7 @@ export const parse = (
   const parser = new Busboy(opts)
 
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
-  const listeners = map(initializers, fn => fn(options, onEntry))
+  const listeners = map(initializers, fn => fn(opts, onEntry))
 
   function unsubscribe() {
     map(listeners, (fn, name) => parser.off(name, fn))

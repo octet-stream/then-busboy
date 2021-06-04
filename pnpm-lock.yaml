@@ -6,6 +6,7 @@ specifiers:
   '@types/http-errors': ^1.8.0
   '@types/lodash.merge': ^4.6.6
   '@types/node': ^15.12.0
+  '@types/supertest': ^2.0.11
   '@typescript-eslint/eslint-plugin': ^4.26.0
   '@typescript-eslint/parser': ^4.26.0
   '@zoltu/typescript-transformer-append-js-extension': ^1.0.1
@@ -19,6 +20,7 @@ specifiers:
   eslint-plugin-ava: 12.0.0
   eslint-plugin-jsx-a11y: ^6.4.1
   eslint-plugin-react: ^7.24.0
+  form-data-encoder: ^0.5.1
   formdata-node: 3.5.1
   http-errors: ^1.8.0
   husky: 6.0.0
@@ -30,6 +32,7 @@ specifiers:
   promise-fs: 2.1.1
   proxyquire: 2.1.3
   sinon: 11.1.1
+  superagent: ^6.1.0
   supertest: 6.1.3
   ts-node: ^10.0.0
   tsd: 0.14.0
@@ -52,6 +55,7 @@ devDependencies:
   '@types/http-errors': 1.8.0
   '@types/lodash.merge': 4.6.6
   '@types/node': 15.12.0
+  '@types/supertest': 2.0.11
   '@typescript-eslint/eslint-plugin': 4.26.0_025fc50e542c8e957dec903a5ef525ba
   '@typescript-eslint/parser': 4.26.0_eslint@7.27.0+typescript@4.3.2
   ava: 3.15.0
@@ -63,12 +67,14 @@ devDependencies:
   eslint-plugin-ava: 12.0.0_eslint@7.27.0
   eslint-plugin-jsx-a11y: 6.4.1_eslint@7.27.0
   eslint-plugin-react: 7.24.0_eslint@7.27.0
+  form-data-encoder: 0.5.1
   husky: 6.0.0
   lint-staged: 11.0.0
   pinst: 2.1.6
   promise-fs: 2.1.1
   proxyquire: 2.1.3
   sinon: 11.1.1
+  superagent: 6.1.0
   supertest: 6.1.3
   ts-node: 10.0.0_4188109388a02e43abe22b47ebba7a11
   tsd: 0.14.0
@@ -313,6 +319,10 @@ packages:
       '@types/node': 15.9.0
     dev: true
 
+  /@types/cookiejar/2.1.2:
+    resolution: {integrity: sha512-t73xJJrvdTjXrn4jLS9VSGRbz0nUY3cl2DMGDU48lKl+HR9dbbjW2A9r3g40VA++mQpy6uuHg33gy7du2BKpog==}
+    dev: true
+
   /@types/http-errors/1.8.0:
     resolution: {integrity: sha512-2aoSC4UUbHDj2uCsCxcG/vRMXey/m17bC7UwitVm5hn22nI8O8Y9iDpA76Orc+DWkQ4zZrOKEshCqR/jSuXAHA==}
     dev: true
@@ -357,6 +367,19 @@ packages:
 
   /@types/parse-json/4.0.0:
     resolution: {integrity: sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==}
+    dev: true
+
+  /@types/superagent/4.1.11:
+    resolution: {integrity: sha512-cZkWBXZI+jESnUTp8RDGBmk1Zn2MkScP4V5bjD7DyqB7L0WNWpblh4KX5K/6aTqxFZMhfo1bhi2cwoAEDVBBJw==}
+    dependencies:
+      '@types/cookiejar': 2.1.2
+      '@types/node': 15.12.0
+    dev: true
+
+  /@types/supertest/2.0.11:
+    resolution: {integrity: sha512-uci4Esokrw9qGb9bvhhSVEjd6rkny/dk5PK/Qz4yxKiyppEI+dOPlNrZBahE3i+PoKFYyDxChVXZ/ysS/nrm1Q==}
+    dependencies:
+      '@types/superagent': 4.1.11
     dev: true
 
   /@typescript-eslint/eslint-plugin/4.26.0_025fc50e542c8e957dec903a5ef525ba:
@@ -1924,6 +1947,12 @@ packages:
       signal-exit: 3.0.3
     dev: true
 
+  /form-data-encoder/0.5.1:
+    resolution: {integrity: sha512-FxKoD5xSvKECE6WGQ0o7tZ+OX1bkxHkLvRNQRA5Q0zGYGpPlSDGuLKkx/GdIhByucmZ9pXbe8ZVJjGDSgKclDg==}
+    dependencies:
+      nanoid: 3.1.23
+    dev: true
+
   /form-data/3.0.1:
     resolution: {integrity: sha512-RHkBKtLWUVwd7SqRIvCZMEvAMoGUp0XU+seQiZejj0COz3RI3hWP4sCv3gZWWLjJTd7rGwcsF5eKZGii0r/hbg==}
     engines: {node: '>= 6'}
@@ -2946,7 +2975,6 @@ packages:
     resolution: {integrity: sha512-FiB0kzdP0FFVGDKlRLEQ1BgDzU87dy5NnzjeW9YZNt+/c3+q82EQDUwniSAUxp/F0gFNI1ZhKU1FqYsMuqZVnw==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
-    dev: false
 
   /natural-compare/1.4.0:
     resolution: {integrity: sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=}
