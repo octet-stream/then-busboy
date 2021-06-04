@@ -10,10 +10,10 @@ export interface BodyFieldOptions {
 /**
  * @api private
  */
-export class BodyField {
+export class BodyField<T = unknown> {
   readonly name: string
 
-  readonly #value: unknown
+  readonly #value: T
 
   readonly fieldnameTruncated?: boolean
 
@@ -23,7 +23,7 @@ export class BodyField {
 
   readonly type?: string
 
-  constructor(value: unknown, name: string, options: BodyFieldOptions = {}) {
+  constructor(value: T, name: string, options: BodyFieldOptions = {}) {
     this.name = name
     this.#value = value
 
@@ -33,15 +33,15 @@ export class BodyField {
     this.type = options.type
   }
 
-  valueOf(): unknown {
+  valueOf(): T {
     return this.#value
   }
 
-  get [Symbol.toStringTag]() {
-    return "BodyField"
+  toString() {
+    return String(this.valueOf())
   }
 
   [inspect.custom]() {
-    return this[Symbol.toStringTag]
+    return `[BodyField: ${this}]`
   }
 }
