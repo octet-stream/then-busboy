@@ -203,3 +203,35 @@ test(".formData() returns FormData with entries from Body", t => {
 
   t.deepEqual([...form], entries.map(([[key], value]) => [key, value]))
 })
+
+test("Static .formData() method returns FormData", t => {
+  t.true(Body.formData([]) instanceof FormData)
+})
+
+test("Static .formData() method takes entries as the argument", t => {
+  const actual = Body.formData([[["field"], "Some value"]])
+
+  t.deepEqual([...actual], [["field", "Some value"]])
+})
+
+test("Static .fromData() method takes another Body as the argument", t => {
+  const body = new Body([[["field"], "Some value"]])
+
+  t.deepEqual([...Body.formData(body)], [["field", "Some value"]])
+})
+
+test("Static .json() method returns an object", t => {
+  t.deepEqual(Body.json([]), {})
+})
+
+test("Static .json() method takes entries as the argument", t => {
+  const actual = Body.json([[["field"], "Some value"]])
+
+  t.deepEqual(actual, {field: "Some value"})
+})
+
+test("Static .json() method takes another Body as the argument", t => {
+  const body = new Body([[["field"], "Some value"]])
+
+  t.deepEqual(Body.json(body), {field: "Some value"})
+})
