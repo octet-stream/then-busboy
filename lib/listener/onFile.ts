@@ -1,4 +1,6 @@
+import {pipeline as cbPipe} from "stream"
 import {createWriteStream} from "fs"
+import {promisify} from "util"
 import {tmpdir} from "os"
 import {join} from "path"
 
@@ -11,6 +13,8 @@ import {BodyFileDataItem} from "../BodyFileDataItem"
 
 import getFieldPath from "../util/getFieldPath"
 import createError from "../util/requestEntityTooLarge"
+
+const pipe = promisify(cbPipe)
 
 const createOnFile: OnFileInitializer = ({limits}, ee) => (
   fieldname,
@@ -57,11 +61,10 @@ const createOnFile: OnFileInitializer = ({limits}, ee) => (
     ee.emit("error", error)
   }
 
-  stream
-    .on("error", onError)
-    .on("limit", onLimit)
-    .on("end", onEnd)
-    .pipe(dest)
+  // Hope this will work when using with pipeline
+  stream.on("limit", onLimit)
+
+  pipe(stream, dest).then(onEnd).catch(onError)
 }
 
 export default createOnFile

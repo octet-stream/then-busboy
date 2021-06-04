@@ -89,20 +89,6 @@ export const parse = (
     }
   })
 
-  // function onFinish(): void {
-  //   isBodyRead = true
-  //   unsubscribe()
-  //   resolve(new Body(entries))
-  // }
-
-  // function onEntry(error: Error, entry: BodyEntry): void {
-  //   if (error) {
-  //     return onError(error)
-  //   }
-
-  //   entries.push(entry)
-  // }
-
   function onBodyRead() {
     isBodyRead = true
 

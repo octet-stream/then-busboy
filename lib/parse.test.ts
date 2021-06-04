@@ -70,14 +70,14 @@ test("Ignores types casting when options.castTypes set to false", async t => {
   t.deepEqual(body, expected)
 })
 
-// test("Parses a File", async t => {
-//   const expected = "My hovercraft is full of eels"
+test("Parses a File", async t => {
+  const expected = "My hovercraft is full of eels"
 
-//   const form = new FormData()
+  const form = new FormData()
 
-//   form.set("file", new File([expected], "file.txt"))
+  form.set("file", new File([expected], "file.txt"))
 
-//   const res = await createRequest(createServer(parse), form)
+  const res = await createRequest(createServer(parse), form)
 
-//   t.deepEqual(res.body, {file: expected})
-// })
+  t.deepEqual(res.body, {file: expected})
+})
