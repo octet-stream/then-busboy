@@ -2,6 +2,9 @@ import test from "ava"
 
 import {FormData, File} from "formdata-node"
 
+import isFile from "./util/isFile"
+import isField from "./util/isField"
+
 import {BodyFileDataItem} from "./BodyFileDataItem"
 import {Body, BodyRawEntries} from "./Body"
 import {BodyField} from "./BodyField"
@@ -234,4 +237,28 @@ test("Static .json() method takes another Body as the argument", t => {
   const body = new Body([[["field"], "Some value"]])
 
   t.deepEqual(Body.json(body), {field: "Some value"})
+})
+
+test(".files() Returns Body with only files in it", t => {
+  const entries: BodyRawEntries = [
+    [["first"], "First field"],
+    [["second"], new File(["Second field"], "file.txt", {type: "text/plain"})],
+    [["third"], "Third field"]
+  ]
+
+  const actual = new Body(entries).files()
+
+  t.true([...actual.values()].every(isFile))
+})
+
+test(".fields() Returns Body with only files in it", t => {
+  const entries: BodyRawEntries = [
+    [["first"], "First field"],
+    [["second"], new File(["Second field"], "file.txt", {type: "text/plain"})],
+    [["third"], "Third field"]
+  ]
+
+  const actual = new Body(entries).fields()
+
+  t.true([...actual.values()].every(isField))
 })
