@@ -23,6 +23,21 @@ test("Creates an empty Body", t => {
   t.is(body.length, 0)
 })
 
+test("Empty body can be converted to an object", t => {
+  const body = new Body([])
+
+  t.deepEqual(body.json(), {})
+})
+
+test("Empty body can be converted to a FormData", t => {
+  const body = new Body([])
+
+  const actual = body.formData()
+
+  t.true(actual instanceof FormData, "Must be a FormData instance")
+  t.deepEqual([...actual], [], "Must be empty")
+})
+
 test("Creates Body with scalar field", t => {
   const body = new Body([
     [["field"], "value"]
