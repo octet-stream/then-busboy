@@ -44,7 +44,7 @@ const createOnFile: OnFileInitializer = ({limits}, ee) => (
   }
 
   function onLimit() {
-    stream.unpipe(dest)
+    stream.unpipe()
 
     ee.emit(
       "error",
@@ -56,7 +56,7 @@ const createOnFile: OnFileInitializer = ({limits}, ee) => (
   }
 
   function onError(error: Error) {
-    stream.unpipe(dest)
+    stream.unpipe()
 
     ee.emit("error", error)
   }
