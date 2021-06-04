@@ -262,3 +262,12 @@ test(".fields() Returns Body with only files in it", t => {
 
   t.true([...actual.values()].every(isField))
 })
+
+test(".keys() returns an iterator allowing to go through keys", t => {
+  const entries: BodyRawEntries = [
+    [["firstField"], "First value"],
+    [["secondField"], "Second value"]
+  ]
+
+  t.deepEqual([...new Body(entries).keys()], entries.map(([path]) => path))
+})
