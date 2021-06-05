@@ -28,19 +28,15 @@ const createOnFile: OnFileInitializer = ({limits}, ee) => (
 
   ee.emit("entry:register")
 
-  async function onEnd() {
-    try {
-      const fieldPath = getFieldPath(fieldname)
-      const file = await fileFromPath(path, filename, {type: mime})
+  async function onFulfilled() {
+    const fieldPath = getFieldPath(fieldname)
+    const file = await fileFromPath(path, filename, {type: mime})
 
-      ee.emit(
-        "entry:push",
+    ee.emit(
+      "entry:push",
 
-        [fieldPath, new BodyFileDataItem({file, path, enc})]
-      )
-    } catch (error) {
-      ee.emit("error", error)
-    }
+      [fieldPath, new BodyFileDataItem({file, path, enc})]
+    )
   }
 
   function onLimit() {
@@ -55,7 +51,7 @@ const createOnFile: OnFileInitializer = ({limits}, ee) => (
     )
   }
 
-  function onError(error: Error) {
+  function onRejected(error: Error) {
     stream.unpipe()
 
     ee.emit("error", error)
@@ -64,7 +60,7 @@ const createOnFile: OnFileInitializer = ({limits}, ee) => (
   // Hope this will work when using with pipeline
   stream.on("limit", onLimit)
 
-  pipe(stream, dest).then(onEnd).catch(onError)
+  pipe(stream, dest).then(onFulfilled).catch(onRejected)
 }
 
 export default createOnFile

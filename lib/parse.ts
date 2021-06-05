@@ -97,7 +97,7 @@ export const parse = (
 
   map(listeners, (fn, name) => parser.on(name, fn))
 
-  ee.on("error", onError)
+  ee.once("error", onError)
 
   parser
     .once("error", onError)
