@@ -271,3 +271,9 @@ test(".keys() returns an iterator allowing to go through keys", t => {
 
   t.deepEqual([...new Body(entries).keys()], entries.map(([path]) => path))
 })
+
+test("Symbol.toStringTag returns correct string", t => {
+  const body = new Body([])
+
+  t.is(body[Symbol.toStringTag], "Body")
+})
