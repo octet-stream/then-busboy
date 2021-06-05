@@ -1,4 +1,6 @@
+import {IncomingMessage} from "http"
 import {promises as fs} from "fs"
+import {Socket} from "net"
 
 import test from "ava"
 
@@ -349,4 +351,23 @@ test("Error thrown for empty field name has correct HTTP status", async t => {
   const {error} = await createRequest(createServer(parse), form)
 
   t.is((error as unknown as HttpError).status, 400)
+})
+
+test("Throws TypeError on incorrect request argument", async t => {
+  // @ts-ignore
+  await t.throwsAsync(parse({}), {
+    instanceOf: TypeError,
+    message: "Expected request argument to be "
+      + "an instance of http.IncomingMessage."
+  })
+})
+
+test("Throws TypeError when options argument is not an object", async t => {
+  const request = new IncomingMessage(new Socket())
+
+  // @ts-ignore
+  await t.throwsAsync(parse(request, []), {
+    instanceOf: TypeError,
+    message: "Expected options argument to be an object."
+  })
 })

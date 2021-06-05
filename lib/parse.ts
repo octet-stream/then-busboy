@@ -43,12 +43,12 @@ export const parse = (
 ) => new Promise<Body>((resolve, reject) => {
   if (!(request instanceof IncomingMessage)) {
     throw new TypeError(
-      "Expected request argument to be an instance of http.IncomingMessage"
+      "Expected request argument to be an instance of http.IncomingMessage."
     )
   }
 
   if (!isPlainObject(options)) {
-    throw new TypeError("Options expected to be an object")
+    throw new TypeError("Expected options argument to be an object.")
   }
 
   const opts = merge({}, defaults, options, {headers: request.headers})
