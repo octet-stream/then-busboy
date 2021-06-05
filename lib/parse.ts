@@ -68,8 +68,6 @@ export const parse = (
   let isBodyRead = false
   let entriesLeft = 0
 
-  // eslint-disable-next-line @typescript-eslint/no-use-before-define
-  // const listeners = map(initializers, fn => fn(opts, onEntry))
   const listeners = map(initializers, fn => fn(opts, ee))
 
   function unsubscribe() {
