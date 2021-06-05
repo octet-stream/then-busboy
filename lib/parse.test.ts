@@ -60,8 +60,7 @@ test("Ignores types casting when options.castTypes set to false", async t => {
 
   const form = new FormData()
 
-  Object.entries(expected)
-    .forEach(([name, value]) => form.set(name, String(value)))
+  Object.entries(expected).forEach(([name, value]) => form.set(name, value))
 
   const {body} = await createRequest(
     createServer(parse, {castTypes: false}),
