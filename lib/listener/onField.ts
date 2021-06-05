@@ -46,7 +46,7 @@ const createOnField: OnFieldInitializer = ({castTypes, limits}, ee) => (
       })
     ])
   } catch (error) {
-    ee.emit(error)
+    ee.emit("error", error)
   }
 }
 
