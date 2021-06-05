@@ -1,3 +1,5 @@
+import createError from "http-errors"
+
 import type {BodyEntryPath} from "../Body"
 
 import isNaN from "./isNaN"
@@ -65,7 +67,7 @@ const fromSquareBracesNotation = (string: string): BodyEntryPath => (
  */
 function getFieldPath(fieldname: string): BodyEntryPath {
   if (!fieldname) {
-    throw new Error("Field name cannot be empty.")
+    throw createError(400, "Field name cannot be empty.")
   }
 
   if (DOT_EXPR.test(fieldname)) {
@@ -76,7 +78,7 @@ function getFieldPath(fieldname: string): BodyEntryPath {
     return fromSquareBracesNotation(fieldname)
   }
 
-  throw new Error(`Unexpected field name format: ${fieldname}`)
+  throw createError(400, `Incorrect field name format at: ${fieldname}`)
 }
 
 export default getFieldPath

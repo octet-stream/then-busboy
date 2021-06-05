@@ -300,3 +300,53 @@ test("Throws an error wnen given amount of files exceeded limit", async t => {
 
   t.is((error as any).text, "Files limit exceeded: Available up to 1 files.")
 })
+
+test("Field name format error has correct HTTP status", async t => {
+  const form = new FormData()
+
+  form.set("field[", "Broken field part :(")
+
+  const {error} = await createRequest(createServer(parse), form)
+
+  t.is((error as unknown as HttpError).status, 400)
+})
+
+test("Throws an error on incorrect field name format", async t => {
+  const form = new FormData()
+
+  form.set("field[", "Broken field part :(")
+
+  const {error} = await createRequest(createServer(parse), form)
+
+  t.is((error as any).text, "Incorrect field name format at: field[")
+})
+
+test("Throws an error on incorrect field name format in file part", async t => {
+  const form = new FormData()
+
+  form.set("files[]", new File(["Broken file part :("], "file.txt"))
+
+  const {error} = await createRequest(createServer(parse), form)
+
+  t.is((error as any).text, "Incorrect field name format at: files[]")
+})
+
+test("Throws an error for empty field name", async t => {
+  const form = new FormData()
+
+  form.set("", "Empty field name")
+
+  const {error} = await createRequest(createServer(parse), form)
+
+  t.is((error as any).text, "Field name cannot be empty.")
+})
+
+test("Error thrown for empty field name has correct HTTP status", async t => {
+  const form = new FormData()
+
+  form.set("", "Empty field name")
+
+  const {error} = await createRequest(createServer(parse), form)
+
+  t.is((error as unknown as HttpError).status, 400)
+})
