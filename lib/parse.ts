@@ -4,14 +4,13 @@ import {EventEmitter} from "events"
 import Busboy from "busboy"
 import merge from "lodash.merge"
 
-import isPlainObject from "./util/isPlainObject"
-
 import onFile from "./listener/onFile"
 import onField from "./listener/onField"
 import onFilesLimit from "./listener/onFilesLimit"
 import onFieldsLimit from "./listener/onFieldsLimit"
 import onPartsLimit from "./listener/onPartsLimit"
 
+import isPlainObject from "./util/isPlainObject"
 import map from "./util/mapListeners"
 
 import {Body, BodyEntries} from "./Body"
