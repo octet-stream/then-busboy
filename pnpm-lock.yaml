@@ -37,6 +37,7 @@ specifiers:
   ts-node: ^10.0.0
   tsd: 0.14.0
   ttypescript: ^1.5.12
+  typed-emitter: ^1.3.1
   typescript: ^4.3.2
 
 dependencies:
@@ -78,6 +79,7 @@ devDependencies:
   supertest: 6.1.3
   ts-node: 10.0.0_4188109388a02e43abe22b47ebba7a11
   tsd: 0.14.0
+  typed-emitter: 1.3.1
   typescript: 4.3.2
 
 packages:
@@ -4184,6 +4186,10 @@ packages:
   /type-fest/0.8.1:
     resolution: {integrity: sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==}
     engines: {node: '>=8'}
+    dev: true
+
+  /typed-emitter/1.3.1:
+    resolution: {integrity: sha512-2h7utWyXgd2R2u2IuL8B4yu1gqMxbgUj2VS/MGVbFhEVQNJKXoQQoS5CBMh+eW31zFeSmDfEQ3qQf4xy5SlPVQ==}
     dev: true
 
   /typedarray-to-buffer/3.1.5:

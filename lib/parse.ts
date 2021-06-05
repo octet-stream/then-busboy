@@ -1,6 +1,8 @@
 import {IncomingMessage} from "http"
 import {EventEmitter} from "events"
 
+import type TypedEmitter from "typed-emitter"
+
 import Busboy from "busboy"
 import merge from "lodash.merge"
 
@@ -22,6 +24,13 @@ export interface ParseOptions extends busboy.BusboyConfig {
    * Indicates whether then-busboy should cast fields values to their initial type
    */
   castTypes?: boolean
+}
+
+interface ParserEvents extends EventEmitter {
+  finish(): void
+  error(error: Error): void
+  "entry:push"(entry: BodyEntry): void
+  "entry:register"(): void
 }
 
 const initializers = {
@@ -54,7 +63,7 @@ export const parse = (
 
   const parser = new Busboy(opts)
 
-  const ee = new EventEmitter()
+  const ee = new EventEmitter() as TypedEmitter<ParserEvents>
   const entries: BodyEntries = []
   let isBodyRead = false
   let entriesLeft = 0
@@ -81,7 +90,7 @@ export const parse = (
 
   ee.on("entry:register", () => { ++entriesLeft })
 
-  ee.on("entry:push", (entry: BodyEntry) => {
+  ee.on("entry:push", entry => {
     entries.push(entry)
 
     if ((--entriesLeft) <= 0) {
