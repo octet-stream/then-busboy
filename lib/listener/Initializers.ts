@@ -1,10 +1,9 @@
-import {EventEmitter} from "events"
-
+import type {BodyEntriesEvents} from "../BodyEntriesEvents"
 import type {OnField, OnFile} from "./Listeners"
 import type {ParseOptions} from "../parse"
 
 interface Initializer<T extends OnFile | OnField> {
-  (options: ParseOptions, emitter: EventEmitter): T
+  (options: ParseOptions, emitter: BodyEntriesEvents): T
 }
 
 export type OnFieldInitializer = Initializer<OnField>

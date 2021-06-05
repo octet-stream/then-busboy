@@ -1,8 +1,6 @@
 import {IncomingMessage} from "http"
 import {EventEmitter} from "events"
 
-import type TypedEmitter from "typed-emitter"
-
 import Busboy from "busboy"
 import merge from "lodash.merge"
 
@@ -16,7 +14,8 @@ import onPartsLimit from "./listener/onPartsLimit"
 
 import map from "./util/mapListeners"
 
-import {Body, BodyEntries, BodyEntry} from "./Body"
+import {Body, BodyEntries} from "./Body"
+import {BodyEntriesEvents} from "./BodyEntriesEvents"
 
 // eslint-disable-next-line no-undef
 export interface ParseOptions extends busboy.BusboyConfig {
@@ -24,13 +23,6 @@ export interface ParseOptions extends busboy.BusboyConfig {
    * Indicates whether then-busboy should cast fields values to their initial type
    */
   castTypes?: boolean
-}
-
-interface ParserEvents extends EventEmitter {
-  finish(): void
-  error(error: Error): void
-  "entry:push"(entry: BodyEntry): void
-  "entry:register"(): void
 }
 
 const initializers = {
@@ -63,7 +55,7 @@ export const parse = (
 
   const parser = new Busboy(opts)
 
-  const ee = new EventEmitter() as TypedEmitter<ParserEvents>
+  const ee = new EventEmitter() as BodyEntriesEvents
   const entries: BodyEntries = []
   let isBodyRead = false
   let entriesLeft = 0
