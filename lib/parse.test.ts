@@ -10,6 +10,17 @@ import createServer from "./__helper__/createServer"
 
 import {parse} from "./parse"
 
+interface Developer {
+  name: string,
+  isHireable: boolean
+  skills: [string, ...string[]]
+  dates: {
+    createdAt: string
+    updatedAt: string
+    deletedAt?: string
+  }
+}
+
 test("Parses empty form into empty object", async t => {
   const form = new FormData()
 
@@ -98,6 +109,90 @@ test("Parses form with both files and fields", async t => {
   const {body} = await createRequest(createServer(parse), form)
 
   t.deepEqual(body, expected)
+})
+
+test("Supports parsing of nested objects", async t => {
+  const date = new Date().toISOString()
+
+  const expected: Developer = {
+    name: "John Doe",
+    isHireable: false,
+    skills: ["JavaScript", "TypeScript", "CoffeeScript"],
+    dates: {
+      createdAt: date,
+      updatedAt: date,
+      deletedAt: null
+    }
+  }
+
+  const form = new FormData()
+
+  form.set("name", "John Doe")
+  form.set("isHireable", false)
+  form.set("skills[0]", "JavaScript")
+  form.set("skills[1]", "TypeScript")
+  form.set("skills[2]", "CoffeeScript")
+  form.set("dates[createdAt]", date)
+  form.set("dates[updatedAt]", date)
+  form.set("dates[deletedAt]", String(null))
+
+  const {body} = await createRequest(createServer(parse), form)
+
+  t.deepEqual<typeof expected>(body, expected)
+})
+
+test("Support parsing of collections", async t => {
+  const date = new Date().toISOString()
+
+  const expected: Developer[] = [
+    {
+      name: "John Doe",
+      isHireable: true,
+      skills: ["JavaScript", "TypeScript", "React", "MobX", "Node.js"],
+      dates: {
+        createdAt: date,
+        updatedAt: date,
+        deletedAt: null
+      }
+    },
+    {
+      name: "Max Doe",
+      isHireable: false,
+      skills: ["TypeScript", "React", "XState", "Node.js", "Rust"],
+      dates: {
+        createdAt: date,
+        updatedAt: date,
+        deletedAt: null
+      }
+    }
+  ]
+
+  const form = new FormData()
+
+  form.set("[0][name]", "John Doe")
+  form.set("[0][isHireable]", true)
+  form.set("[0][skills][0]", "JavaScript")
+  form.set("[0][skills][1]", "TypeScript")
+  form.set("[0][skills][2]", "React")
+  form.set("[0][skills][3]", "MobX")
+  form.set("[0][skills][4]", "Node.js")
+  form.set("[0][dates][createdAt]", date)
+  form.set("[0][dates][updatedAt]", date)
+  form.set("[0][dates][deletedAt]", String(null))
+  form.set("[1][name]", "Max Doe")
+  form.set("[1][isHireable]", false)
+  form.set("[1][skills][0]", "TypeScript")
+  form.set("[1][skills][1]", "React")
+  form.set("[1][skills][2]", "XState")
+  form.set("[1][skills][3]", "Node.js")
+  form.set("[1][skills][4]", "Rust")
+  form.set("[1][dates][createdAt]", date)
+  form.set("[1][dates][updatedAt]", date)
+  form.set("[1][dates][deletedAt]", String(null))
+
+  const {body} = await createRequest(createServer(parse), form)
+
+  t.deepEqual<typeof expected>(body, expected)
 })
 
 test("Throws error when file size limit exceeded", async t => {
