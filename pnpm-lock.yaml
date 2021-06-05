@@ -2,27 +2,27 @@ lockfileVersion: 5.3
 
 specifiers:
   '@octetstream/eslint-config': 5.0.0
-  '@types/busboy': ^0.2.3
-  '@types/http-errors': ^1.8.0
-  '@types/lodash.merge': ^4.6.6
-  '@types/node': ^15.12.0
-  '@types/supertest': ^2.0.11
-  '@typescript-eslint/eslint-plugin': ^4.26.0
-  '@typescript-eslint/parser': ^4.26.0
-  '@zoltu/typescript-transformer-append-js-extension': ^1.0.1
+  '@types/busboy': 0.2.3
+  '@types/http-errors': 1.8.0
+  '@types/lodash.merge': 4.6.6
+  '@types/node': 15.12.0
+  '@types/supertest': 2.0.11
+  '@typescript-eslint/eslint-plugin': 4.26.0
+  '@typescript-eslint/parser': 4.26.0
+  '@zoltu/typescript-transformer-append-js-extension': 1.0.1
   ava: 3.15.0
   busboy: 0.3.1
   c8: 7.7.2
   codecov: 3.8.2
-  dotenv: ^10.0.0
-  eslint: ^7.27.0
-  eslint-config-airbnb-typescript: ^12.3.1
+  dotenv: 10.0.0
+  eslint: 7.27.0
+  eslint-config-airbnb-typescript: 12.3.1
   eslint-plugin-ava: 12.0.0
-  eslint-plugin-jsx-a11y: ^6.4.1
-  eslint-plugin-react: ^7.24.0
-  form-data-encoder: ^0.5.1
+  eslint-plugin-jsx-a11y: 6.4.1
+  eslint-plugin-react: 7.24.0
+  form-data-encoder: 0.5.1
   formdata-node: 3.5.1
-  http-errors: ^1.8.0
+  http-errors: 1.8.0
   husky: 6.0.0
   lint-staged: 11.0.0
   lodash.merge: 4.6.2
@@ -32,23 +32,20 @@ specifiers:
   promise-fs: 2.1.1
   proxyquire: 2.1.3
   sinon: 11.1.1
-  superagent: ^6.1.0
   supertest: 6.1.3
-  ts-node: ^10.0.0
+  ts-node: 10.0.0
   tsd: 0.14.0
-  ttypescript: ^1.5.12
-  typed-emitter: ^1.3.1
-  typescript: ^4.3.2
+  ttypescript: 1.5.12
+  typed-emitter: 1.3.1
+  typescript: 4.3.2
 
 dependencies:
-  '@zoltu/typescript-transformer-append-js-extension': 1.0.1
   busboy: 0.3.1
   formdata-node: 3.5.1
   http-errors: 1.8.0
   lodash.merge: 4.6.2
   nanoid: 3.1.23
   object-deep-from-entries: 0.3.0
-  ttypescript: 1.5.12_ts-node@10.0.0+typescript@4.3.2
 
 devDependencies:
   '@octetstream/eslint-config': 5.0.0_eslint@7.27.0
@@ -59,6 +56,7 @@ devDependencies:
   '@types/supertest': 2.0.11
   '@typescript-eslint/eslint-plugin': 4.26.0_025fc50e542c8e957dec903a5ef525ba
   '@typescript-eslint/parser': 4.26.0_eslint@7.27.0+typescript@4.3.2
+  '@zoltu/typescript-transformer-append-js-extension': 1.0.1
   ava: 3.15.0
   c8: 7.7.2
   codecov: 3.8.2
@@ -75,10 +73,10 @@ devDependencies:
   promise-fs: 2.1.1
   proxyquire: 2.1.3
   sinon: 11.1.1
-  superagent: 6.1.0
   supertest: 6.1.3
   ts-node: 10.0.0_4188109388a02e43abe22b47ebba7a11
   tsd: 0.14.0
+  ttypescript: 1.5.12_ts-node@10.0.0+typescript@4.3.2
   typed-emitter: 1.3.1
   typescript: 4.3.2
 
@@ -318,7 +316,7 @@ packages:
   /@types/busboy/0.2.3:
     resolution: {integrity: sha1-ZpetKYcyRsUw8Jo/9aQIYYJCMNU=}
     dependencies:
-      '@types/node': 15.9.0
+      '@types/node': 15.12.0
     dev: true
 
   /@types/cookiejar/2.1.2:
@@ -357,10 +355,6 @@ packages:
 
   /@types/node/15.12.0:
     resolution: {integrity: sha512-+aHJvoCsVhO2ZCuT4o5JtcPrCPyDE3+1nvbDprYes+pPkEsbjH7AGUCNtjMOXS0fqH14t+B7yLzaqSz92FPWyw==}
-    dev: true
-
-  /@types/node/15.9.0:
-    resolution: {integrity: sha512-AR1Vq1Ei1GaA5FjKL5PBqblTZsL5M+monvGSZwe6sSIdGiuu7Xr/pNwWJY+0ZQuN8AapD/XMB5IzBAyYRFbocA==}
     dev: true
 
   /@types/normalize-package-data/2.4.0:
@@ -492,7 +486,7 @@ packages:
 
   /@zoltu/typescript-transformer-append-js-extension/1.0.1:
     resolution: {integrity: sha512-7Lp30MtJO7YHZW19yJWhkuJrf+Y78COHopeZli7fiWrbIRvodsSXZIa7cFX/c4PFwFJt55N/7Pp/t6VH0fwBVQ==}
-    dev: false
+    dev: true
 
   /acorn-jsx/5.3.1_acorn@7.4.1:
     resolution: {integrity: sha512-K0Ptm/47OKfQRpNQ2J/oIN/3QYiK6FwW+eJbILhsdxh2WTLdl+30o8aGdTbm5JbffpFFAg/g+zi1E+jvJha5ng==}
@@ -1994,6 +1988,7 @@ packages:
 
   /function-bind/1.1.1:
     resolution: {integrity: sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==}
+    dev: true
 
   /functional-red-black-tree/1.0.1:
     resolution: {integrity: sha1-GwqzvVU7Kg1jmdKcDj6gslIHgyc=}
@@ -2153,6 +2148,7 @@ packages:
     engines: {node: '>= 0.4.0'}
     dependencies:
       function-bind: 1.1.1
+    dev: true
 
   /hosted-git-info/2.8.9:
     resolution: {integrity: sha512-mxIDAb9Lsm6DoOJ7xH+5+X4y1LU/4Hi50L9C5sIswK3JzULS4bwk1FvjdBgvYR4bzT4tuUQiC15FE2f5HbLvYw==}
@@ -2345,6 +2341,7 @@ packages:
     resolution: {integrity: sha512-6A2fkfq1rfeQZjxrZJGerpLCTHRNEBiSgnu0+obeJpEPZRUooHgsizvzv0ZjJwOz3iWIHdJtVWJ/tmPr3D21/A==}
     dependencies:
       has: 1.0.3
+    dev: true
 
   /is-date-object/1.0.4:
     resolution: {integrity: sha512-/b4ZVsG7Z5XVtIxs/h9W8nvfLgSAyKYdtGWQLbqy6jA1icmgjf8WCoTKgeS4wy5tYaPePouzFMANbnj94c2Z+A==}
@@ -3276,6 +3273,7 @@ packages:
 
   /path-parse/1.0.7:
     resolution: {integrity: sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==}
+    dev: true
 
   /path-to-regexp/1.8.0:
     resolution: {integrity: sha512-n43JRhlUKUAlibEJhPeir1ncUID16QnEjNpwzNdO3Lm4ywrBpBZ5oLD0I6br9evr1Y9JTqwRtAh7JLoOzAQdVA==}
@@ -3584,6 +3582,7 @@ packages:
     dependencies:
       is-core-module: 2.4.0
       path-parse: 1.0.7
+    dev: true
 
   /resolve/2.0.0-next.3:
     resolution: {integrity: sha512-W8LucSynKUIDu9ylraa7ueVZ7hc0uAgJBxVsQSKOXOyle8a93qXhcz+XAXZ8bIq2d6i4Ehddn6Evt+0/UwKk6Q==}
@@ -4144,7 +4143,7 @@ packages:
       resolve: 1.20.0
       ts-node: 10.0.0_4188109388a02e43abe22b47ebba7a11
       typescript: 4.3.2
-    dev: false
+    dev: true
 
   /type-check/0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}

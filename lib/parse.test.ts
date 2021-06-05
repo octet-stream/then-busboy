@@ -3,6 +3,7 @@ import {promises as fs} from "fs"
 import test from "ava"
 
 import {FormData, File, fileFromPath} from "formdata-node"
+import {HttpError} from "http-errors"
 
 import createRequest from "./__helper__/createRequest"
 import createServer from "./__helper__/createServer"
@@ -97,4 +98,31 @@ test("Parses form with both files and fields", async t => {
   const {body} = await createRequest(createServer(parse), form)
 
   t.deepEqual(body, expected)
+})
+
+test("Throws error on file limit", async t => {
+  const form = new FormData()
+
+  form.set("file", await fileFromPath("license"))
+
+  const {error} = await createRequest(
+    createServer(parse, {
+      limits: {
+        fileSize: 3 // set limit to 1 byte
+      }
+    }),
+
+    form
+  )
+
+  t.is(
+    (error as unknown as HttpError).status, 413,
+
+    "The error status must be 413"
+  )
+  t.is(
+    (error as unknown as HttpError).text,
+
+    "Limit reached: Available up to 3 bytes per file."
+  )
 })
