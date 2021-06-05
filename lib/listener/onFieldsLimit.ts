@@ -7,7 +7,7 @@ const createOnFieldsLimit: NoopInitializer = ({limits}, ee) => () => {
     "error",
 
     createError(
-      `Limit reached: Available up to ${limits!.fields} fields.`
+      `Fields limit exceeded: Available up to ${limits!.fields} fields.`
     )
   )
 }

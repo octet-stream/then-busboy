@@ -19,7 +19,9 @@ const createOnField: OnFieldInitializer = ({castTypes, limits}, ee) => (
       "error",
 
       createError(
-        `Limit reached: Available up to ${limits!.fieldSize} bytes per field.`
+        `Field size limit exceeded: Available up to ${
+          limits!.fieldSize
+        } bytes per field.`
       )
     )
   }

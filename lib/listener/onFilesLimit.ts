@@ -7,7 +7,7 @@ const createOnFilesLimit: NoopInitializer = ({limits}, ee) => () => {
     "error",
 
     createError(
-      `Limit reached: Available up to ${limits!.files} files.`
+      `Files limit exceeded: Available up to ${limits!.files} files.`
     )
   )
 }

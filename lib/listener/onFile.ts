@@ -46,7 +46,9 @@ const createOnFile: OnFileInitializer = ({limits}, ee) => (
       "error",
 
       createError(
-        `Limit reached: Available up to ${limits!.fileSize} bytes per file.`
+        `File size limit exceeded: Available up to ${
+          limits!.fileSize
+        } bytes per file.`
       )
     )
   }

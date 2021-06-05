@@ -7,7 +7,7 @@ const createOnPartsLimit: NoopInitializer = ({limits}, ee) => () => {
     "error",
 
     createError(
-      `Limit reached: Available up to ${limits!.parts} parts.`
+      `Parts limit exceeded: Available up to ${limits!.parts} parts.`
     )
   )
 }

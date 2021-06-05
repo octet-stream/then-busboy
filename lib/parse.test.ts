@@ -100,7 +100,7 @@ test("Parses form with both files and fields", async t => {
   t.deepEqual(body, expected)
 })
 
-test("Throws error on file limit", async t => {
+test("Throws error when file size limit exceeded", async t => {
   const form = new FormData()
 
   form.set("file", await fileFromPath("license"))
@@ -121,8 +121,87 @@ test("Throws error on file limit", async t => {
     "The error status must be 413"
   )
   t.is(
-    (error as unknown as HttpError).text,
+    (error as any).text,
 
-    "Limit reached: Available up to 3 bytes per file."
+    "File size limit exceeded: Available up to 3 bytes per file."
   )
+})
+
+test("Throws an error when field size limit exceeded", async t => {
+  const form = new FormData()
+
+  form.set("field", "Some a very very long string as field's value")
+
+  const {error} = await createRequest(
+    createServer(parse, {
+      limits: {
+        fieldSize: 4
+      }
+    }),
+
+    form
+  )
+
+  t.is(
+    (error as any).text,
+
+    "Field size limit exceeded: Available up to 4 bytes per field."
+  )
+})
+
+test("Throws an error when parts limit exceeded", async t => {
+  const form = new FormData()
+
+  form.set("field", "First")
+  form.set("file", await fileFromPath("license"))
+
+  const {error} = await createRequest(
+    createServer(parse, {
+      limits: {
+        parts: 1
+      }
+    }),
+
+    form
+  )
+
+  t.is((error as any).text, "Parts limit exceeded: Available up to 1 parts.")
+})
+
+test("Throws an error when given amount of fields exceeded limit", async t => {
+  const form = new FormData()
+
+  form.set("first", "First")
+  form.set("second", "Second")
+
+  const {error} = await createRequest(
+    createServer(parse, {
+      limits: {
+        fields: 1
+      }
+    }),
+
+    form
+  )
+
+  t.is((error as any).text, "Fields limit exceeded: Available up to 1 fields.")
+})
+
+test("Throws an error wnen given amount of files exceeded limit", async t => {
+  const form = new FormData()
+
+  form.set("license", await fileFromPath("license"))
+  form.set("readme", await fileFromPath("readme.md"))
+
+  const {error} = await createRequest(
+    createServer(parse, {
+      limits: {
+        files: 1
+      }
+    }),
+
+    form
+  )
+
+  t.is((error as any).text, "Files limit exceeded: Available up to 1 files.")
 })
