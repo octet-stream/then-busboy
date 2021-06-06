@@ -115,7 +115,7 @@ test("Can be read as stream", async t => {
     file: await fileFromPath(filePath)
   })
 
-  const chunks: Buffer[] = []
+  const chunks: Uint8Array[] = []
   for await (const chunk of file.stream()) {
     chunks.push(chunk)
   }
