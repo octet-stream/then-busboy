@@ -9,7 +9,7 @@ interface MapListenersCallback {
 }
 
 function mapListeners(listeners: object, fn: MapListenersCallback): object {
-  const result: Record<string, any> = {}
+  const result: Record<string, unknown> = {}
 
   for (const [key, value] of Object.entries(listeners)) {
     const name = key.startsWith("on") ? leadToLowerCase(key.slice(2)) : key
