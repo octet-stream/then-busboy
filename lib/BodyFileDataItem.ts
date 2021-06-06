@@ -1,4 +1,4 @@
-import type {File} from "formdata-node"
+import type {File, Blob} from "formdata-node"
 
 import type {BodyFile} from "./BodyFile"
 
@@ -49,19 +49,19 @@ export class BodyFileDataItem implements BodyFile {
     return this.#enc
   }
 
-  slice(start?: number, end?: number, contentType?: string) {
+  slice(start?: number, end?: number, contentType?: string): Blob {
     return this.#file.slice(start, end, contentType)
   }
 
-  stream() {
+  stream(): {[Symbol.asyncIterator](): AsyncIterableIterator<Uint8Array>} {
     return this.#file.stream()
   }
 
-  arrayBuffer() {
+  arrayBuffer(): Promise<ArrayBuffer> {
     return this.#file.arrayBuffer()
   }
 
-  text() {
+  text(): Promise<string> {
     return this.#file.text()
   }
 }
