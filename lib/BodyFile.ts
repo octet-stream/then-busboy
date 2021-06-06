@@ -1,4 +1,4 @@
-import type {FileLike} from "formdata-node"
+import type {FileLike, Blob} from "formdata-node"
 
 export interface BodyFile extends FileLike {
   /**
@@ -21,5 +21,5 @@ export interface BodyFile extends FileLike {
    */
   text(): Promise<string>
 
-  slice(start?: number, end?: number, contentType?: string): BodyFile
+  slice(start?: number, end?: number, contentType?: string): Blob
 }
