@@ -14,7 +14,7 @@ import isPlainObject from "./util/isPlainObject"
 import map from "./util/mapListeners"
 
 import {Body, BodyEntries} from "./Body"
-import {BodyEntriesEvents} from "./BodyEntriesEvents"
+import type {BodyEntriesEvents} from "./BodyEntriesEvents"
 
 // eslint-disable-next-line no-undef
 export interface ParseOptions extends busboy.BusboyConfig {
