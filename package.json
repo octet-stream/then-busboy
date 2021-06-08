@@ -7,6 +7,10 @@
   "repository": "octet-stream/then-busboy",
   "main": "lib/cjs/index.js",
   "types": "@types/index.d.ts",
+  "exports": {
+    "import": "./lib/esm/index.js",
+    "require": "./lib/cjs/index.js"
+  },
   "engines": {
     "node": ">= 12.2"
   },
