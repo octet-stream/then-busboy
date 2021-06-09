@@ -137,11 +137,11 @@ Return a FormData instance with data taken from given entries or Body
 
 Return an amount of entries and files in current Body instance
 
-##### `get fields() -> {Body}`
+##### `fields() -> {Body}`
 
 Return a new Body that contains **fields** only
 
-##### `get files() -> {Body}`
+##### `files() -> {Body}`
 
 Return a new Body that contains **files** only
 
@@ -155,39 +155,6 @@ Return an object with data taken the current Body instance
 
 Return a FormData with data taken the current Body instance
 
-##### `map(callback[, ctx]) -> {Body}`
-
-Create a new Body with the results of calling a provided function on every entry in the calling Body
-
-  - **{function}** callback – Function to execute for each entry. It accepts four arguments:
-    + **{any}** value – A value(s) of the current entry.
-    + **{string}** name – Name of the current entry.
-    + **{string[]}** path – Path of the current entry.
-    + **{Array<[string[], any]>}** entries – An array of entries of the current Body instance
-  - **{any}** [ctx = null] – Value to use as **this** context when executing the given **callback**
-
-##### `filter(predicate[, ctx]) -> {Body}`
-
-Create a new Body with all entries that pass the test implemented in given function
-
-  - **{function}** predicate – Function is a predicate, to test each entry of the Body. Return `true` to keep the entry, `false` otherwise. It accepts four arguments:
-    + **{any}** value – A value(s) of the current entry.
-    + **{string}** name – Name of the current entry.
-    + **{string[]}** path – Path of the current entry.
-    + **{Array<[string[], any]>}** entries – An array of entries of the current Body instance
-  - **{any}** [ctx = null] – Value to use as **this** context when executing the given **callback**
-
-##### `forEach(callback[, ctx]) -> {Body}`
-
-Execute a given callback for each entry of the Body instance
-
-  - **{function}** callback – Function to execute for each entry, taking four arguments:
-    + **{any}** value – A value(s) of the current entry.
-    + **{string}** name – Name of the current entry.
-    + **{string[]}** path – Path of the current entry.
-    + **{Array<[string[], any]>}** entries – An array of entries of the current Body instance
-  - **{any}** [ctx = null] – Value to use as **this** context when executing the given **callback**
-
 ##### `entries() -> {Array<[string[], any]>}`
 
 Return an array of entries in current Body instance
@@ -196,51 +163,31 @@ Return an array of entries in current Body instance
 
 Return an iterator allows to go through the Body values
 
-##### `names() -> {Iterator}`
-
-Return an iterator allows to go through the Body fields name
-
-##### `paths() -> {Iterator}`
+##### `keys() -> {Iterator}`
 
 Return an iterator allows to go through the Body fields path
 
-### `constructor File(options)`
+### `interface BodyFile`
 
-  - **{object}** options – an object that contains the following information about file:
-    + **{stream.Readable}** contents – the content of the file.
-    + **{string}** filename – name of the file (with an extension)
-    + **{string}** env – encoding of the file content
-    + **{string}** mime – file mime type
+This interface reflects internal representation of a File. It is not meant to be constructed manually, but since it's compatible with files from the browsers, you can use these in Body if you need to.
 
 #### Instance properties
 
-##### `filename`
+##### `name`
 
-Full name of the file (generated)
+Contains original name of file taken from the filename property within the form-data.
 
-##### `originalFilename`
+##### `type`
 
-Full name of the file (original)
-
-##### `basename`
-
-Name of the file without extension
-
-##### `extname`
-
-File extension
-
-##### `mime`
-
-File mime type
+File MIME type
 
 ##### `enc`
 
-File contents encoding
+Contains a value from transfer encoding header
 
 ##### `path`
 
-Default path of the file
+Path to the file on disk
 
 #### Instance methods
 
