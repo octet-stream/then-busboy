@@ -2,11 +2,9 @@
 
 Promise-based wrapper around Busboy. Processes multipart/form-data content and returns it as a single object.
 
-![CI](https://github.com/octet-stream/then-busboy/workflows/CI/badge.svg?branch=master)
-![ESLint](https://github.com/octet-stream/then-busboy/workflows/ESLint/badge.svg)
 [![Code Coverage](https://codecov.io/github/octet-stream/then-busboy/coverage.svg?branch=master)](https://codecov.io/github/octet-stream/then-busboy?branch=master)
-[![dependencies Status](https://david-dm.org/octet-stream/then-busboy/status.svg)](https://david-dm.org/octet-stream/then-busboy)
-[![devDependencies Status](https://david-dm.org/octet-stream/then-busboy/dev-status.svg)](https://david-dm.org/octet-stream/then-busboy?type=dev)
+[![CI](https://github.com/octet-stream/then-busboy/workflows/CI/badge.svg)](https://github.com/octet-stream/then-busboy/actions/workflows/ci.yml)
+[![ESLint](https://github.com/octet-stream/then-busboy/workflows/ESLint/badge.svg)](https://github.com/octet-stream/then-busboy/actions/workflows/eslint.yml)
 
 ## Installation
 
