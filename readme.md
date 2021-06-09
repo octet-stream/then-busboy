@@ -325,14 +325,7 @@ Then you will receive:
 
 ## Limits
 
-On limits (if some of them set) `then-busboy` will throw an error,
-there are exposed classes that you can use to handle each kind of limit errors:
-
-- FieldSizeLimitError - on field size limit reached
-- FieldsLimitError - on fields limit reached
-- FileSizeLimitError - on file size limit reached
-- FilesLimitError - on files limit reached
-- PartsLimitError - on parts (both files and fields) limit reached
+When`limits` options are set, `then-busboy` may reject with HTTP 413 error if specified limit(s) exceeded. That will be a regular error from object [`http-errors`](https://npmjs.com/http-errors) package.
 
 ## Related links
 
