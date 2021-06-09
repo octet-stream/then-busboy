@@ -105,12 +105,6 @@ Create an object that allows to manipulate FormData fields taken `then-busboy`
 
 #### Static methods
 
-##### `isBody(value) -> {boolean}`
-
-Check if given value is instance of Body
-
-  - **{any}** value – a value to verify
-
 ##### `from(entries) -> {Body}`
 
 Create a new Body from given entries. An alias of `new Body(entries)`
@@ -131,9 +125,11 @@ Return a FormData instance with data taken from given entries or Body
 
 #### Instance properties
 
-##### `get length() -> {number}`
+##### `length -> {number}`
 
 Return an amount of entries and files in current Body instance
+
+#### Instance methods
 
 ##### `fields() -> {Body}`
 
@@ -142,8 +138,6 @@ Return a new Body that contains **fields** only
 ##### `files() -> {Body}`
 
 Return a new Body that contains **files** only
-
-#### Instance methods
 
 ##### `json() -> {object}`
 
