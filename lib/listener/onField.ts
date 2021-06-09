@@ -26,7 +26,7 @@ const createOnField: OnFieldInitializer = ({castTypes, limits}, ee) => (
     )
   }
 
-  ee.emit("entry:register")
+  ee.emit("register")
 
   try {
     if (castTypes) {
@@ -35,7 +35,7 @@ const createOnField: OnFieldInitializer = ({castTypes, limits}, ee) => (
 
     const path = getFieldPath(name)
 
-    ee.emit("entry:push", [
+    ee.emit("push", [
       path,
 
       new BodyField(value, name, {

@@ -26,14 +26,14 @@ const createOnFile: OnFileInitializer = ({limits}, ee) => (
   const path = join(tmpdir(), `${nanoid()}__${filename}`)
   const dest = createWriteStream(path)
 
-  ee.emit("entry:register")
+  ee.emit("register")
 
   async function onFulfilled() {
     const fieldPath = getFieldPath(fieldname)
     const file = await fileFromPath(path, filename, {type: mime})
 
     ee.emit(
-      "entry:push",
+      "push",
 
       [fieldPath, new BodyFileDataItem({file, path, enc})]
     )

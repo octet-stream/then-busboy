@@ -77,9 +77,9 @@ export const parse = (
     }
   })
 
-  ee.on("entry:register", () => { ++entriesLeft })
+  ee.on("register", () => { ++entriesLeft })
 
-  ee.on("entry:push", entry => {
+  ee.on("push", entry => {
     entries.push(entry)
 
     if ((--entriesLeft) <= 0) {

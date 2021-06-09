@@ -1,12 +1,12 @@
 import type TypedEmitter from "typed-emitter"
 
-import {BodyEntry} from "./Body"
+import type {BodyEntry} from "./Body"
 
 export interface BodyEntriesEventsList {
   finish(): void;
   error(error: Error): void;
-  "entry:push"(entry: BodyEntry): void;
-  "entry:register"(): void;
+  push(entry: BodyEntry): void;
+  register(): void;
 }
 
 export type BodyEntriesEvents = TypedEmitter<BodyEntriesEventsList>
