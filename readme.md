@@ -96,7 +96,7 @@ and take a look at [Body](https://github.com/octet-stream/then-busboy#constructo
 
 + **http.IncomingMessage** request – HTTP request object
 + **{object}** [options = {}]
-  - **{boolean}** restoreTypes – allow to restore type of each value (default – true)
+  - **{boolean}** castTypes – allow to restore type of each value (default – true)
   - more information about busboy options [here](https://github.com/mscdex/busboy#busboy-methods).
 
 ### `constructor Body(entries)`
