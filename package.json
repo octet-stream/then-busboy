@@ -6,7 +6,7 @@
   "license": "MIT",
   "repository": "octet-stream/then-busboy",
   "main": "lib/cjs/index.js",
-  "types": "@types/index.d.ts",
+  "types": "@type/index.d.ts",
   "exports": {
     "import": "./lib/esm/index.js",
     "require": "./lib/cjs/index.js"
