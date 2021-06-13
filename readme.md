@@ -31,7 +31,7 @@ We'll write a simple server that will parse form-data request, read files conten
 import {createServer} from "http"
 import {parse} from "then-busboy"
 
-const handler = (req, res) => parser(req)
+const handler = (req, res) => parse(req)
   .then(async body => {
     const result = []
 
