@@ -22,32 +22,30 @@ yarn add then-busboy
 
 ## Usage
 
-then-busboy works fine even with a pure Node.js HTTP server.
-Let's take a look to the tiny example:
+then-busboy is framework agnostic module, which means you can use it with different HTTP frameworks, or you can choose to use it pure Node.js HTTP server to hanlde `multipart/form-data` requests.
+
+Let's take a look at the example with `http` module from Node.js.
+We'll write a simple server that will parse form-data request, read files content and then send them back as JSON:
 
 ```js
-import parse from "then-busboy"
-
 import {createServer} from "http"
+import {parse} from "then-busboy"
 
-function handler(req, res) {
-  // Get result from then-busboy
-  function onFulfilled(body) {
-    res.writeHead("Content-Type", "application/json")
+const handler = (req, res) => parser(req)
+  .then(async body => {
+    const result = []
 
-    // You can also do something with each file and a field.
-    res.end(JSON.stringify(body.json()))
-  }
+    for (const [path, value] of body) {
+      result.push([path, isFile(value) ? await value.text() : value])
+    }
 
-  // Handle errors
-  function onRejected(err) {
-    res.statusCode = err.status || 500
-    res.end(String(err))
-  }
-
-  // Call `then-busboy` with `req`
-  parse(req).then(onFulfilled, onRejected)
-}
+    res.setHeader("Content-Type", "application/json")
+    res.end(JSON.stringify(Body.json(result)))
+  })
+  .catch(error => {
+    res.statusCode = error.status || 500
+    res.end(error.message)
+  })
 
 createServer(handler)
   .listen(2319, () => console.log("Server started on http://localhost:2319"))
