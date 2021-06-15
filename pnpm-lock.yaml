@@ -21,7 +21,7 @@ specifiers:
   eslint-plugin-jsx-a11y: 6.4.1
   eslint-plugin-react: 7.24.0
   form-data-encoder: 1.0.0
-  formdata-node: 3.5.3
+  formdata-node: 3.5.4
   http-errors: 1.8.0
   husky: 6.0.0
   lint-staged: 11.0.0
@@ -40,7 +40,7 @@ specifiers:
 
 dependencies:
   busboy: 0.3.1
-  formdata-node: 3.5.3
+  formdata-node: 3.5.4
   http-errors: 1.8.0
   lodash.merge: 4.6.2
   nanoid: 3.1.23
@@ -1955,8 +1955,8 @@ packages:
       mime-types: 2.1.31
     dev: true
 
-  /formdata-node/3.5.3:
-    resolution: {integrity: sha512-RZeImYDwVTWoGHTg5M5d8kHTWOXLdKpjWrFazaU0vOwzRnrAHbutYYoWl732CVASuzsKDYNP8Z0B37xUSIyGrg==}
+  /formdata-node/3.5.4:
+    resolution: {integrity: sha512-1uQGEK8LbsFaNW1pHFnYnK5+BBQkZWB+yEyZrNthh3Ud+zXsHQW0DhuamOWosQuyq1FY7YfZY+xOvyjl5mIaSw==}
     engines: {node: '>= 12.4'}
     dependencies:
       domexception: 2.0.1
