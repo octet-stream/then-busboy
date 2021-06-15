@@ -35,6 +35,8 @@ test("Returns true for file-ish object", t => {
 
     size!: number
 
+    type!: string
+
     lastModified!: number
 
     async* stream(): AsyncGenerator<Uint8Array> {
