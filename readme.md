@@ -1,6 +1,6 @@
 # then-busboy
 
-Promise-based wrapper around Busboy. Processes multipart/form-data content and returns it as a single object.
+Promise-based wrapper around Busboy. Processes multipart/form-data request body and returns it in a single object.
 
 [![Code Coverage](https://codecov.io/github/octet-stream/then-busboy/coverage.svg?branch=master)](https://codecov.io/github/octet-stream/then-busboy?branch=master)
 [![CI](https://github.com/octet-stream/then-busboy/workflows/CI/badge.svg)](https://github.com/octet-stream/then-busboy/actions/workflows/ci.yml)
