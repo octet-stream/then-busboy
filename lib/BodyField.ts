@@ -8,16 +8,31 @@ export interface BodyFieldOptions {
 }
 
 export class BodyField<T = unknown> {
-  readonly name: string
-
   readonly #value: T
 
+  /**
+   * Returns the name of the field
+   */
+  readonly name: string
+
+  /**
+   * Indicates whether the fieldname was truncated
+   */
   readonly fieldnameTruncated?: boolean
 
+  /**
+   * Indicates whether the value was truncated
+   */
   readonly valueTruncated?: boolean
 
+  /**
+   * Returns Content-Transfer-Encoding value
+   */
   readonly enc?: string
 
+  /**
+   * Returns a value from Content-Type header
+   */
   readonly type?: string
 
   constructor(value: T, name: string, options: BodyFieldOptions = {}) {
@@ -30,10 +45,16 @@ export class BodyField<T = unknown> {
     this.type = options.type
   }
 
+  /**
+   * Returns the value of the BodyField
+   */
   valueOf(): T {
     return this.#value
   }
 
+  /**
+   * Returns string representation of the BodyField value
+   */
   toString() {
     return String(this.valueOf())
   }
