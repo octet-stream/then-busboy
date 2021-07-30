@@ -14,7 +14,6 @@ specifiers:
   busboy: 0.3.1
   c8: 7.8.0
   codecov: 3.8.3
-  dotenv: 10.0.0
   eslint: 7.31.0
   eslint-config-airbnb-typescript: 12.3.1
   eslint-plugin-ava: 12.0.0
@@ -59,7 +58,6 @@ devDependencies:
   ava: 3.15.0
   c8: 7.8.0
   codecov: 3.8.3
-  dotenv: 10.0.0
   eslint: 7.31.0
   eslint-config-airbnb-typescript: 12.3.1_6010ae60852770971f2bba63c9aeb4b0
   eslint-plugin-ava: 12.0.0_eslint@7.31.0
@@ -1448,11 +1446,6 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       is-obj: 2.0.0
-    dev: true
-
-  /dotenv/10.0.0:
-    resolution: {integrity: sha512-rlBi9d8jpv9Sf1klPjNfFAuWDjKLwTIJJ/VxtoTwIR6hnZxcEOQCZg2oIL3MWBYw5GpUDKOEnND7LXTbIpQ03Q==}
-    engines: {node: '>=10'}
     dev: true
 
   /duplexer3/0.1.4:
