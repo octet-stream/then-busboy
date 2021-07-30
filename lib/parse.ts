@@ -1,5 +1,4 @@
 import {IncomingMessage} from "http"
-import {EventEmitter} from "events"
 
 import Busboy from "busboy"
 import merge from "lodash.merge"
@@ -13,8 +12,8 @@ import onPartsLimit from "./listener/onPartsLimit"
 import isPlainObject from "./util/isPlainObject"
 import map from "./util/mapListeners"
 
-import {Body, BodyEntries} from "./Body"
-import type {BodyEntriesEvents} from "./BodyEntriesEvents"
+import {BodyEntries} from "./BodyEntries"
+import {Body} from "./Body"
 
 // eslint-disable-next-line no-undef
 export interface ParseOptions extends busboy.BusboyConfig {
@@ -53,13 +52,9 @@ export const parse = (
   const opts = merge({}, defaults, options, {headers: request.headers})
 
   const parser = new Busboy(opts)
+  const entries = new BodyEntries()
 
-  const ee = new EventEmitter() as BodyEntriesEvents
-  const entries: BodyEntries = []
-  let isBodyRead = false
-  let entriesLeft = 0
-
-  const listeners = map(initializers, fn => fn(opts, ee))
+  const listeners = map(initializers, fn => fn(opts, entries))
 
   function unsubscribe() {
     map(listeners, (fn, name) => parser.off(name, fn))
@@ -70,32 +65,16 @@ export const parse = (
     reject(error)
   }
 
-  ee.on("finish", () => {
-    if (isBodyRead && entriesLeft <= 0) {
-      unsubscribe()
-      resolve(new Body(entries))
-    }
+  entries.once("finish", body => {
+    unsubscribe()
+    resolve(body)
   })
 
-  ee.on("register", () => { ++entriesLeft })
-
-  ee.on("push", entry => {
-    entries.push(entry)
-
-    if ((--entriesLeft) <= 0) {
-      ee.emit("finish")
-    }
-  })
-
-  function onBodyRead() {
-    isBodyRead = true
-
-    ee.emit("finish")
-  }
+  const onBodyRead = () => entries.finish(true)
 
   map(listeners, (fn, name) => parser.on(name, fn))
 
-  ee.once("error", onError)
+  entries.once("error", onError)
 
   parser
     .once("error", onError)

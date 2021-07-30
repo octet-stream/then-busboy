@@ -16,7 +16,7 @@ import createError from "../util/requestEntityTooLarge"
 
 const pipe = promisify(cbPipe)
 
-const createOnFile: OnFileInitializer = ({limits}, ee) => (
+const createOnFile: OnFileInitializer = ({limits}, entries) => (
   fieldname,
   stream,
   filename,
@@ -26,23 +26,19 @@ const createOnFile: OnFileInitializer = ({limits}, ee) => (
   const path = join(tmpdir(), `${nanoid()}__${filename}`)
   const dest = createWriteStream(path)
 
-  ee.emit("register")
+  entries.enqueue()
 
   async function onFulfilled() {
     const fieldPath = getFieldPath(fieldname)
     const file = await fileFromPath(path, filename, {type: mime})
 
-    ee.emit(
-      "push",
-
-      [fieldPath, new BodyFileDataItem({file, path, enc})]
-    )
+    entries.pull([fieldPath, new BodyFileDataItem({file, path, enc})])
   }
 
   function onLimit() {
     stream.unpipe()
 
-    ee.emit(
+    entries.emit(
       "error",
 
       createError(
@@ -55,8 +51,7 @@ const createOnFile: OnFileInitializer = ({limits}, ee) => (
 
   function onRejected(error: Error) {
     stream.unpipe()
-
-    ee.emit("error", error)
+    entries.emit("error", error)
   }
 
   // Hope this will work when using with pipeline

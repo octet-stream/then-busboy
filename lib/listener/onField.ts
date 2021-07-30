@@ -6,7 +6,7 @@ import createError from "../util/requestEntityTooLarge"
 import getFieldPath from "../util/getFieldPath"
 import castType from "../util/castType"
 
-const createOnField: OnFieldInitializer = ({castTypes, limits}, ee) => (
+const createOnField: OnFieldInitializer = ({castTypes, limits}, entries) => (
   name,
   value,
   fieldnameTruncated,
@@ -15,7 +15,7 @@ const createOnField: OnFieldInitializer = ({castTypes, limits}, ee) => (
   type
 ): void => {
   if (valueTruncated) {
-    return void ee.emit(
+    return void entries.emit(
       "error",
 
       createError(
@@ -26,7 +26,7 @@ const createOnField: OnFieldInitializer = ({castTypes, limits}, ee) => (
     )
   }
 
-  ee.emit("register")
+  entries.enqueue()
 
   try {
     if (castTypes) {
@@ -35,7 +35,7 @@ const createOnField: OnFieldInitializer = ({castTypes, limits}, ee) => (
 
     const path = getFieldPath(name)
 
-    ee.emit("push", [
+    entries.pull([
       path,
 
       new BodyField(value, name, {
@@ -46,7 +46,7 @@ const createOnField: OnFieldInitializer = ({castTypes, limits}, ee) => (
       })
     ])
   } catch (error) {
-    ee.emit("error", error)
+    entries.emit("error", error)
   }
 }
 

@@ -2,8 +2,8 @@ import {NoopInitializer} from "./Initializers"
 
 import createError from "../util/requestEntityTooLarge"
 
-const createOnPartsLimit: NoopInitializer = ({limits}, ee) => () => {
-  ee.emit(
+const createOnPartsLimit: NoopInitializer = ({limits}, entries) => () => {
+  entries.emit(
     "error",
 
     createError(
