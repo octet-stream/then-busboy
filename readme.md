@@ -93,7 +93,9 @@ export default multipart
   - **{boolean}** castTypes – allow to restore type of each value (default – true)
   - more information about busboy options [here](https://github.com/mscdex/busboy#busboy-methods).
 
-### `constructor Body(entries)`
+### `class Body`
+
+##### `constructor(entries) -> {Body}`
 
 Create an object that allows to manipulate FormData fields taken `then-busboy`
 
@@ -180,6 +182,46 @@ Path to the file on disk
 ##### `stream() -> {Readable}`
 
 Returns a Readable stream allowing to consume file's content
+
+### `class BodyField`
+
+BodyField class in the internal representation of a regular FormData value.
+
+##### `constructor(value: unknown, name: string[, options]) -> {BodyField}`
+
+Creates a new instance of the BodyField class.
+
+#### Instance properties
+
+##### `name`
+
+Returns the name of the field.
+
+##### `fieldnameTruncated`
+
+Indicates whether the fieldname was truncated.
+
+##### `valueTruncated`
+
+Indicates whether the value was truncated.
+
+##### `enc`
+
+Returns a value from Content-Transfer-Encoding header.
+
+##### `type`
+
+Returns a value from Content-Type header.
+
+#### Instance methods
+
+##### `valueOf() -> {unknown}`
+
+Returns the value of the BodyField.
+
+##### `toString() -> {string}`
+
+Returns string representation of the BodyField value.
 
 ## Fields format
 

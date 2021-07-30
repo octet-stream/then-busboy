@@ -7,31 +7,34 @@ export interface BodyFieldOptions {
   type?: string
 }
 
+/**
+ * BodyField class in the internal representation of a regular FormData value.
+ */
 export class BodyField<T = unknown> {
   readonly #value: T
 
   /**
-   * Returns the name of the field
+   * Returns the name of the field.
    */
   readonly name: string
 
   /**
-   * Indicates whether the fieldname was truncated
+   * Indicates whether the fieldname was truncated.
    */
   readonly fieldnameTruncated?: boolean
 
   /**
-   * Indicates whether the value was truncated
+   * Indicates whether the value was truncated.
    */
   readonly valueTruncated?: boolean
 
   /**
-   * Returns Content-Transfer-Encoding value
+   * Returns a value from Content-Transfer-Encoding header.
    */
   readonly enc?: string
 
   /**
-   * Returns a value from Content-Type header
+   * Returns a value from Content-Type header.
    */
   readonly type?: string
 
@@ -46,14 +49,14 @@ export class BodyField<T = unknown> {
   }
 
   /**
-   * Returns the value of the BodyField
+   * Returns the value of the BodyField.
    */
   valueOf(): T {
     return this.#value
   }
 
   /**
-   * Returns string representation of the BodyField value
+   * Returns string representation of the BodyField value.
    */
   toString() {
     return String(this.valueOf())
