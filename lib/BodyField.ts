@@ -7,9 +7,6 @@ export interface BodyFieldOptions {
   type?: string
 }
 
-/**
- * @api private
- */
 export class BodyField<T = unknown> {
   readonly name: string
 
