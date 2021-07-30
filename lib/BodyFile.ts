@@ -1,5 +1,8 @@
 import type {FileLike, Blob} from "formdata-node"
 
+/**
+ * BodyFile interface represends a File look-a-like object with two additional properties: path and enc.
+ */
 export interface BodyFile extends FileLike {
   /**
    * Returns a full path to file on disk
