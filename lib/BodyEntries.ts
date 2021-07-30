@@ -21,7 +21,8 @@ export class BodyEntries extends (EventEmitter as new () => BodyEntriesEvents) {
   #isBodyRead = false
 
   /**
-   * Enqueues a new pending body entry
+   * Enqueues a new pending body entry.
+   * You **nust** call this method *before* you add an entry to the list via `.pull()` method.
    */
   enqueue(): void {
     this.#pending += 1
