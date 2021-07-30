@@ -57,13 +57,9 @@ because then-busboy always returns a Promise.
 So, let's see on a simple middleware example for [Koa.js](https://koajs.com):
 
 ```js
-import {promises as fs} from "fs"
-
 import {parse} from "then-busboy"
 
 const toLowerCase = string => String.prototype.toLowerCase.call(string)
-
-const unlinkFile = ({path}) => fs.unlink(path)
 
 async function multipart(ctx, next) {
   if (["post", "put"].includes(toLowerCase(ctx.method)) === false) {
