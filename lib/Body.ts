@@ -23,9 +23,11 @@ export type BodyEntryRawValue =
 
 export type BodyEntry = [BodyEntryPath, BodyEntryValue]
 
-export type BodyEntries = Array<[BodyEntryPath, BodyEntryValue]>
+export type BodyRawEntry = [BodyEntryPath, BodyEntryRawValue]
 
-export type BodyRawEntries = Array<[BodyEntryPath, BodyEntryRawValue]>
+export type BodyEntries = Array<BodyEntry>
+
+export type BodyRawEntries = Array<BodyRawEntry>
 
 export class Body {
   #entries: BodyEntries
