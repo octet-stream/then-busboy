@@ -5,7 +5,10 @@ import {tmpdir} from "os"
 import {join} from "path"
 
 import {nanoid} from "nanoid"
-import {fileFromPath} from "formdata-node"
+
+// Disable this rule due to https://github.com/import-js/eslint-plugin-import/issues/1868
+// eslint-disable-next-line import/no-unresolved
+import {fileFromPath} from "formdata-node/file-from-path"
 
 import {OnFileInitializer} from "./Initializers"
 

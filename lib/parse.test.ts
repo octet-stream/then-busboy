@@ -4,7 +4,10 @@ import {Socket} from "net"
 
 import test from "ava"
 
-import {FormData, File, fileFromPath} from "formdata-node"
+// eslint-disable-next-line import/no-unresolved
+import {fileFromPath} from "formdata-node/file-from-path"
+
+import {FormData, File} from "formdata-node"
 import {HttpError} from "http-errors"
 
 import createRequest from "./__helper__/createRequest"

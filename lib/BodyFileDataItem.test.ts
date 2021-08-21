@@ -3,7 +3,10 @@ import {promises} from "fs"
 
 import test from "ava"
 
-import {fileFromPath, File} from "formdata-node"
+// eslint-disable-next-line import/no-unresolved
+import {fileFromPath} from "formdata-node/file-from-path"
+
+import {File} from "formdata-node"
 
 import {BodyFileDataItem} from "./BodyFileDataItem"
 
