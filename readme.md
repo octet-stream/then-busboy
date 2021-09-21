@@ -22,7 +22,7 @@ yarn add then-busboy
 
 ## Usage
 
-then-busboy is framework agnostic module, which means you can use it with different HTTP frameworks, or you can choose to use it pure Node.js HTTP server to hanlde `multipart/form-data` requests.
+then-busboy is framework agnostic module, which means you can use it with different HTTP frameworks, or you can choose to use it pure Node.js HTTP server to handle `multipart/form-data` requests.
 
 Let's take a look at the example with `http` module from Node.js.
 We'll write a simple server that will parse form-data request, read files content and then send them back as JSON:
