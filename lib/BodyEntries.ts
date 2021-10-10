@@ -7,7 +7,7 @@ import type {BodyEntry} from "./Body"
 import {Body} from "./Body"
 
 interface BodyEntriesEventsList {
-  error(error: Error): void
+  error(error: unknown): void
   finish(body: Body): void
 }
 

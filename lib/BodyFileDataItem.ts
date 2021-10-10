@@ -53,7 +53,7 @@ export class BodyFileDataItem implements BodyFile {
     return this.#file.slice(start, end, contentType)
   }
 
-  stream(): {[Symbol.asyncIterator](): AsyncIterableIterator<Uint8Array>} {
+  stream(): AsyncIterable<Uint8Array> {
     return this.#file.stream()
   }
 
