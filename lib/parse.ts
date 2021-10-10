@@ -35,6 +35,38 @@ const defaults: ParseOptions = {
   castTypes: true
 }
 
+/**
+ * Parses `multipart/form-data` body and returns an object with the data of that body
+ *
+ * @param request HTTP IncomingMessage object
+ * @param options Parser options
+ *
+ * Simplest usage example:
+ *
+ * ```js
+ * import {createServer} from "http"
+ * import {parse} from "then-busboy"
+ *
+ * const handler = (req, res) => parse(req)
+ *   .then(async body => {
+ *     const result = []
+ *
+ *     for (const [path, value] of body) {
+ *       result.push([path, isFile(value) ? await value.text() : value])
+ *     }
+ *
+ *     res.setHeader("Content-Type", "application/json")
+ *     res.end(JSON.stringify(Body.json(result)))
+ *   })
+ *   .catch(error => {
+ *     res.statusCode = error.status || 500
+ *     res.end(error.message)
+ *   })
+ *
+ * createServer(handler)
+ *   .listen(2319, () => console.log("Server started on http://localhost:2319"))
+ * ```
+ */
 export const parse = (
   request: IncomingMessage,
   options: ParseOptions = {}
