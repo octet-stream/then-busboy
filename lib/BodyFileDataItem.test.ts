@@ -147,6 +147,6 @@ test("Can be sliced to empty file", async t => {
 
   const actual = new BodyFileDataItem({path: filePath, file}).slice(0, 0)
 
-  t.is<number>(actual.size, 0, "Must have 0 size")
-  t.is<string>(await actual.text(), "", "Must return empty string")
+  t.is(actual.size, 0, "Must have 0 size")
+  t.is(await actual.text(), "", "Must return empty string")
 })

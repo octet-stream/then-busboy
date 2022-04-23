@@ -22,10 +22,9 @@ const pipe = promisify(cbPipe)
 const createOnFile: OnFileInitializer = ({limits}, entries) => (
   fieldname,
   stream,
-  filename,
-  enc,
-  mime
+  info
 ) => {
+  const {filename, mimeType: mime, encoding: enc} = info
   const path = join(tmpdir(), `${nanoid()}__${filename}`)
   const dest = createWriteStream(path)
 

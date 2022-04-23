@@ -1,6 +1,6 @@
 import {IncomingMessage} from "http"
 
-import Busboy from "busboy"
+import busboy from "busboy"
 import merge from "lodash.merge"
 
 import onFile from "./listener/onFile"
@@ -83,7 +83,7 @@ export const parse = (
 
   const opts = merge({}, defaults, options, {headers: request.headers})
 
-  const parser = new Busboy(opts)
+  const parser = busboy(opts)
   const entries = new BodyEntries()
 
   const listeners = map(initializers, fn => fn(opts, entries))

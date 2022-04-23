@@ -1,6 +1,6 @@
 import {Server} from "http"
 
-import {Encoder} from "form-data-encoder"
+import {FormDataEncoder} from "form-data-encoder"
 import {FormData} from "formdata-node"
 
 import supertest from "supertest"
@@ -14,7 +14,7 @@ import supertest from "supertest"
  * @returns Server response
  */
 async function createRequest(server: Server, body: FormData) {
-  const encoder = new Encoder(body)
+  const encoder = new FormDataEncoder(body)
 
   const request = supertest(server).post("/").set(encoder.headers)
 
