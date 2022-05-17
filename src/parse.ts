@@ -83,7 +83,7 @@ export const parse = (
 
   if (input instanceof IncomingMessage) {
     readable = input
-    headers = options.headers ?? input.headers
+    headers = input.headers
   } else if (isAsyncIterable(input)) {
     readable = Readable.from(input)
     headers = options.headers
