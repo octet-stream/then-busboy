@@ -1,6 +1,6 @@
 import isFunction from "./isFunction.js"
 
-function isIterable(value: unknown): value is AsyncIterable<Uint8Array> {
+function isAsyncIterable(value: unknown): value is AsyncIterable<Uint8Array> {
   if (!value || typeof value !== "object") {
     return false
   }
@@ -12,4 +12,4 @@ function isIterable(value: unknown): value is AsyncIterable<Uint8Array> {
   return false
 }
 
-export default isIterable
+export default isAsyncIterable
