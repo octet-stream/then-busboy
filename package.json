@@ -41,6 +41,7 @@
     "postpublish": "pinst --enable"
   },
   "dependencies": {
+    "@types/busboy": "0.2.4",
     "busboy": "0.3.1",
     "formdata-node": "4.3.0",
     "http-errors": "1.8.0",
@@ -50,7 +51,6 @@
   },
   "devDependencies": {
     "@octetstream/eslint-config": "5.0.0",
-    "@types/busboy": "0.2.4",
     "@types/http-errors": "1.8.1",
     "@types/lodash.merge": "4.6.6",
     "@types/node": "16.10.3",
