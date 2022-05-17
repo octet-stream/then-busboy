@@ -1,4 +1,4 @@
-import {Server} from "http"
+import {Server} from "node:http"
 
 import {FormDataEncoder} from "form-data-encoder"
 import {FormData} from "formdata-node"

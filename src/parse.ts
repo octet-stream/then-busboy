@@ -41,7 +41,7 @@ const defaults: ParseOptions = {
 /**
  * Parses `multipart/form-data` body and returns an object with the data of that body
  *
- * @param request HTTP IncomingMessage object
+ * @param input HTTP IncomingMessage or AsyncIterable object
  * @param options Parser options
  *
  * Simplest usage example:

@@ -1,5 +1,5 @@
+import {readFile} from "node:fs/promises"
 import {IncomingMessage} from "node:http"
-import {promises as fs} from "node:fs"
 import {Readable} from "node:stream"
 import {Socket} from "node:net"
 
@@ -105,7 +105,7 @@ test("Parses form with a File", async t => {
 test("Parses form with both files and fields", async t => {
   const expected = {
     field: "Field content",
-    file: await fs.readFile("license", "utf-8")
+    file: await readFile("license", "utf-8")
   }
 
   const form = new FormData()

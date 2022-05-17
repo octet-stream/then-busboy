@@ -1,4 +1,4 @@
-import {createServer, Server} from "http"
+import {createServer, Server} from "node:http"
 
 import type {HttpError} from "http-errors"
 

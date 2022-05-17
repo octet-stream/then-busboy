@@ -1,5 +1,5 @@
-import {resolve} from "path"
-import {promises} from "fs"
+import {readFile} from "node:fs/promises"
+import {resolve} from "node:path"
 
 import test from "ava"
 
@@ -9,8 +9,6 @@ import {fileFromPath} from "formdata-node/file-from-path"
 import {File} from "formdata-node"
 
 import {BodyFileDataItem} from "./BodyFileDataItem.js"
-
-const {readFile} = promises
 
 const filePath = resolve("license")
 

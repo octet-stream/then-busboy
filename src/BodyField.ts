@@ -1,4 +1,4 @@
-import {inspect} from "util"
+import {inspect} from "node:util"
 
 export interface BodyFieldOptions {
   fieldnameTruncated?: boolean

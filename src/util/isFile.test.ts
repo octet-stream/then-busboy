@@ -1,6 +1,6 @@
 import test from "ava"
 
-import {createReadStream} from "fs"
+import {createReadStream} from "node:fs"
 
 import {File, Blob, FileLike} from "formdata-node"
 

@@ -1,8 +1,8 @@
-import {pipeline as cbPipe} from "stream"
-import {createWriteStream} from "fs"
-import {promisify} from "util"
-import {tmpdir} from "os"
-import {join} from "path"
+import {pipeline as cbPipe} from "node:stream"
+import {createWriteStream} from "node:fs"
+import {promisify} from "node:util"
+import {tmpdir} from "node:os"
+import {join} from "node:path"
 
 import {nanoid} from "nanoid"
 
