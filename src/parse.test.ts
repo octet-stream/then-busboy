@@ -298,7 +298,7 @@ test("Accepts fetch Response as the input", async t => {
   const response = new Response(form as globalThis.FormData)
   const headers = lowercase(Object.fromEntries(response.headers))
 
-  // * TS does not recognise AsyncIterable in NodeJS.ReadableStream for some reason
+  // * TS does not recognise AsyncIterable in NodeJS.ReadableStream because it yields Buffer | string instead of Uint8Array
   // * Need to figure out the way to fix that
   const body = await parse(response.body as AsyncIterable<Uint8Array>, {headers})
   const actual = body.json() as unknown as RawBody
