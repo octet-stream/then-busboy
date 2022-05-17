@@ -43,10 +43,10 @@
   "dependencies": {
     "@types/busboy": "0.2.4",
     "busboy": "0.3.1",
-    "formdata-node": "4.3.0",
+    "formdata-node": "4.3.2",
     "http-errors": "1.8.0",
     "lodash.merge": "4.6.2",
-    "nanoid": "3.1.29",
+    "nanoid": "3.3.4",
     "object-deep-from-entries": "0.4.0"
   },
   "devDependencies": {

@@ -20,12 +20,12 @@ specifiers:
   eslint-plugin-jsx-a11y: 6.4.1
   eslint-plugin-react: 7.26.1
   form-data-encoder: 1.6.0
-  formdata-node: 4.3.0
+  formdata-node: 4.3.2
   http-errors: 1.8.0
   husky: 7.0.2
   lint-staged: 11.2.2
   lodash.merge: 4.6.2
-  nanoid: 3.1.29
+  nanoid: 3.3.4
   object-deep-from-entries: 0.4.0
   pinst: 2.1.6
   promise-fs: 2.1.1
@@ -40,10 +40,10 @@ specifiers:
 dependencies:
   '@types/busboy': 0.2.4
   busboy: 0.3.1
-  formdata-node: 4.3.0
+  formdata-node: 4.3.2
   http-errors: 1.8.0
   lodash.merge: 4.6.2
-  nanoid: 3.1.29
+  nanoid: 3.3.4
   object-deep-from-entries: 0.4.0
 
 devDependencies:
@@ -422,6 +422,7 @@ packages:
 
   /@types/node/16.4.7:
     resolution: {integrity: sha512-aDDY54sst8sx47CWT6QQqIZp45yURq4dic0+HCYfYNcY5Ejlb/CLmFnRLfy3wQuYafOeh3lB/DAKaqRKBtcZmA==}
+    dev: false
 
   /@types/normalize-package-data/2.4.0:
     resolution: {integrity: sha512-f5j5b/Gf71L+dbqxIpQ4Z2WlmI/mPJ0fOkGGmFgtb6sAu97EPczzbS3/tJKxmcYDj55OX6ssqwDAWOHIYDRDGA==}
@@ -2155,8 +2156,8 @@ packages:
       mime-types: 2.1.32
     dev: true
 
-  /formdata-node/4.3.0:
-    resolution: {integrity: sha512-TwqhWUZd2jB5l0kUhhcy1XYNsXq46NH6k60zmiu7xsxMztul+cCMuPSAQrSDV62zznhBKJdA9O+zeWj5i5Pbfg==}
+  /formdata-node/4.3.2:
+    resolution: {integrity: sha512-k7lYJyzDOSL6h917favP8j1L0/wNyylzU+x+1w4p5haGVHNlP58dbpdJhiCUsDbWsa9HwEtLp89obQgXl2e0qg==}
     engines: {node: '>= 12.20'}
     dependencies:
       node-domexception: 1.0.0
@@ -3153,8 +3154,8 @@ packages:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
     dev: true
 
-  /nanoid/3.1.29:
-    resolution: {integrity: sha512-dW2pUSGZ8ZnCFIlBIA31SV8huOGCHb6OwzVCc7A69rb/a+SgPBwfmLvK5TKQ3INPbRkcI8a/Owo0XbiTNH19wg==}
+  /nanoid/3.3.4:
+    resolution: {integrity: sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
     dev: false
