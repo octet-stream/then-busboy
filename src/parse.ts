@@ -71,7 +71,8 @@ const defaults: ParseOptions = {
  * ```
  */
 export const parse = (
-  // TODO: Use AsyncIterable<Uint8Array | Buffer | string> as the source type for compatibility with NodeJS.ReadableStream. Replace it with AsyncIterable<Uint8Array>, when it gets fixed.
+  // TODO: I use AsyncIterable<Uint8Array | Buffer | string> as the source type for compatibility with NodeJS.ReadableStream.
+  // TODO: It should be replaced with AsyncIterable<Uint8Array>, when it gets fixed.
   source: AsyncIterable<Uint8Array | Buffer | string>,
   options: ParseOptions = {}
 ) => new Promise<Body>((resolve, reject) => {
