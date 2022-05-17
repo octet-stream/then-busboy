@@ -71,7 +71,8 @@ const defaults: ParseOptions = {
  * ```
  */
 export const parse = (
-  input: IncomingMessage | AsyncIterable<Uint8Array>,
+  // TODO: Use AsyncIterable<Uint8Array | Buffer | string> as the source type for compatibility with NodeJS.ReadableStream. Replace it with AsyncIterable<Uint8Array>, when it gets fixed.
+  source: AsyncIterable<Uint8Array | Buffer | string>,
   options: ParseOptions = {}
 ) => new Promise<Body>((resolve, reject) => {
   let headers: IncomingHttpHeaders | undefined
@@ -81,15 +82,15 @@ export const parse = (
     throw new TypeError("Expected options argument to be an object.")
   }
 
-  if (input instanceof IncomingMessage) {
-    readable = input
-    headers = input.headers
-  } else if (isAsyncIterable(input)) {
-    readable = Readable.from(input)
+  if (source instanceof IncomingMessage) {
+    readable = source
+    headers = source.headers
+  } else if (isAsyncIterable(source)) {
+    readable = Readable.from(source)
     headers = options.headers
   } else {
     throw new TypeError(
-      "Input must be IncomingMessage or "
+      "The source argument must be instance of IncomingMessage or "
         + "an object with callable @@asyncIterator property."
     )
   }

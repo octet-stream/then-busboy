@@ -129,9 +129,9 @@ body.formData() // -> FormData
 
 ## API
 
-### `parse(request[, options]) -> {Promise<Body>}`
+### `parse(source[, options]) -> {Promise<Body>}`
 
-+ **{IncomingMessage | AsyncIterable<Uint8Array>}** request – HTTP request object
++ **{IncomingMessage | AsyncIterable<Uint8Array>}** source – HTTP source object
 + **{object}** [options = {}]
   - **{boolean}** castTypes – allow to restore type of each value (default – true)
   - more information about busboy options [here](https://github.com/mscdex/busboy#busboy-methods).
