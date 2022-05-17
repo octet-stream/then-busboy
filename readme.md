@@ -96,8 +96,7 @@ const encoder = new FormDataEncoder(form)
 
 const body = await parse(encoder, {
   headers: {
-    "content-type": encoder.contentType,
-    "content-length": encoder.contentLength
+    "content-type": encoder.contentType
   }
 })
 
