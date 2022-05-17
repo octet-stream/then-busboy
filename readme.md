@@ -24,7 +24,7 @@ yarn add then-busboy
 
 then-busboy is framework agnostic module, which means you can use it with different HTTP frameworks, or you can choose to use it pure Node.js HTTP server to handle `multipart/form-data` requests.
 
-Let's take a look at the example with `http` module from Node.js.
+1. Let's take a look at the example with `http` module from Node.js.
 We'll write a simple server that will parse form-data request, read files content and then send them back as JSON:
 
 ```js
@@ -54,15 +54,13 @@ createServer(handler)
 **Note:** You can use [asynchronous function](https://github.com/tc39/ecmascript-asyncawait) syntax,
 because then-busboy always returns a Promise.
 
-So, let's see on a simple middleware example for [Koa.js](https://koajs.com):
+2. Miniaml multipart middleware implementation for [Koa.js](https://koajs.com):
 
 ```js
 import {parse} from "then-busboy"
 
-const toLowerCase = string => String.prototype.toLowerCase.call(string)
-
 async function multipart(ctx, next) {
-  if (["post", "put"].includes(toLowerCase(ctx.method)) === false) {
+  if (["post", "put"].includes(ctx.method.toLowerCase()) === false) {
     return next()
   }
 
@@ -80,11 +78,61 @@ async function multipart(ctx, next) {
 export default multipart
 ```
 
+3. You can also use `AsyncIterable` value as the input. That way you can parse FormData from other that just HTTP requests. Let's take a loook at the example with [`form-data-encoder`](https://github.com/octet-stream/form-data-encoder) and [`formdata-node`](https://github.com/octet-stream/form-data) as the input:
+
+```js
+import {fileFromPath} from "formdata-node/file-from-path"
+import {FormDataEncoder} from "form-data-encoder"
+import {FormData} from "formdata-node"
+import {parse} from "then-busboy"
+
+const form = new FormData()
+
+form.set("greeting", "Hello, World!")
+form.set("file", new File(["On Soviet Moon landscape see binoculars through YOU"], "file.txt"))
+form.set("fileFromPath", await fileFromPath("path/to/a/file"))
+
+const encoder = new FormDataEncoder(form)
+
+const body = await parse(encoder, {
+  headers: {
+    "content-type": encoder.contentType,
+    "content-length": encoder.contentLength
+  }
+})
+
+console.log(body.json()) // -> {greeting: string, file: BodyFile, fileFromPath: BodyFile}
+```
+
+4. Because `then-busboy` accepts AsyncIterable as the input, you can also read [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) body like that:
+
+```js
+import {Response, FormData} from "node-fetch"
+import {parse} from "then-bosboy"
+
+const form = new FormData()
+
+form.set("greeting", "Hello, World!")
+form.set("file", new File(["On Soviet Moon landscape see binoculars through YOU"], "file.txt"))
+
+const response = new Respone(form)
+
+// then-busboy will parse the input and return its own Body instance from which you can create a complete object by calling .json() method or a FormData using .formData() method.
+// The difference with Response.formData() is that then-busboy will save all files to file system and create a *reference* to each of them,
+// while Response (currently) will dump them into RAM, which can be less efficient in some scenarious
+const body = await parse(response.body, {
+  headers: response.headers.get("content-type")
+})
+
+body.json() // -> {greeting: string, file: BodyFile}
+body.formData() // -> FormData
+```
+
 ## API
 
 ### `parse(request[, options]) -> {Promise<Body>}`
 
-+ **http.IncomingMessage** request – HTTP request object
++ **{IncomingMessage | AsyncIterable<Uint8Array>}** request – HTTP request object
 + **{object}** [options = {}]
   - **{boolean}** castTypes – allow to restore type of each value (default – true)
   - more information about busboy options [here](https://github.com/mscdex/busboy#busboy-methods).

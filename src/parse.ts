@@ -71,7 +71,7 @@ const defaults: ParseOptions = {
  * ```
  */
 export const parse = (
-  input: IncomingMessage | AsyncIterable<Uint8Array> | Iterable<Uint8Array>,
+  input: IncomingMessage | AsyncIterable<Uint8Array>,
   options: ParseOptions = {}
 ) => new Promise<Body>((resolve, reject) => {
   let headers: IncomingHttpHeaders | undefined
@@ -85,7 +85,6 @@ export const parse = (
     readable = input
     headers = options.headers ?? input.headers
   } else if (isAsyncIterable(input)) {
-    console.log({input, options})
     readable = Readable.from(input)
     headers = options.headers
   } else {

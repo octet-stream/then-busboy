@@ -11,6 +11,7 @@ import {fileFromPath} from "formdata-node/file-from-path"
 import {FormDataEncoder} from "form-data-encoder"
 import {FormData, File} from "formdata-node"
 import {HttpError} from "http-errors"
+import {Response} from "node-fetch"
 
 import createRequest from "./__helper__/createRequest.js"
 import createServer from "./__helper__/createServer.js"
@@ -261,6 +262,45 @@ test("Accepts Readable stream as the input", async t => {
   const headers = lowercase(encoder.headers)
 
   const body = await parse(Readable.from(encoder), {headers})
+  const actual = body.json() as unknown as RawBody
+
+  t.deepEqual<NormalizedBody, NormalizedBody>(
+    {
+      field: actual.field,
+      file: await actual.file.text()
+    },
+
+    {
+      field: expected.field,
+      file: await expected.file.text()
+    }
+  )
+})
+
+test("Accepts fetch Response as the input", async t => {
+  interface RawBody {
+    field: string
+    file: File
+  }
+
+  interface NormalizedBody {
+    field: string
+    file: string
+  }
+
+  const form = new FormData()
+
+  form.set("field", "Hello, world!")
+  form.set("file", await fileFromPath("license"))
+
+  const expected = Object.fromEntries(form) as unknown as RawBody
+
+  const response = new Response(form as globalThis.FormData)
+  const headers = lowercase(Object.fromEntries(response.headers))
+
+  // * TS does not recognise AsyncIterable in NodeJS.ReadableStream for some reason
+  // * Need to figure out the way to fix that
+  const body = await parse(response.body as AsyncIterable<Uint8Array>, {headers})
   const actual = body.json() as unknown as RawBody
 
   t.deepEqual<NormalizedBody, NormalizedBody>(

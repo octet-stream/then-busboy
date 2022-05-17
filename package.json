@@ -71,6 +71,7 @@
     "husky": "8.0.1",
     "lint-staged": "12.4.1",
     "lowercase-keys": "^3.0.0",
+    "node-fetch": "^3.2.4",
     "pinst": "3.0.0",
     "promise-fs": "2.1.1",
     "proxyquire": "2.1.3",
