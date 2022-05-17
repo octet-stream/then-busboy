@@ -123,7 +123,7 @@ export const parse = (
 
   parser
     .once("error", onError)
-    .once("finish", onBodyRead)
+    .once("close", onBodyRead)
 
   readable.pipe(parser)
 })
