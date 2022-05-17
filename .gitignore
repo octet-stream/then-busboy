@@ -10,6 +10,6 @@ coverage
 *.map
 ..map
 *.old
-@type
 
-/lib/**/*.js
+@type
+/lib
