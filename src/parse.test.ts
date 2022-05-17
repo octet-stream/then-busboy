@@ -1,12 +1,14 @@
-import {IncomingMessage} from "http"
-import {promises as fs} from "fs"
-import {Socket} from "net"
+import {IncomingMessage} from "node:http"
+import {promises as fs} from "node:fs"
+import {Readable} from "node:stream"
+import {Socket} from "node:net"
 
 import test from "ava"
+import lowercase from "lowercase-keys"
 
 // eslint-disable-next-line import/no-unresolved
 import {fileFromPath} from "formdata-node/file-from-path"
-
+import {FormDataEncoder} from "form-data-encoder"
 import {FormData, File} from "formdata-node"
 import {HttpError} from "http-errors"
 
@@ -14,6 +16,7 @@ import createRequest from "./__helper__/createRequest.js"
 import createServer from "./__helper__/createServer.js"
 
 import {parse} from "./parse.js"
+import {Body} from "./Body.js"
 
 interface Developer {
   name: string,
@@ -200,6 +203,80 @@ test("Support parsing of collections", async t => {
   t.deepEqual(body, expected)
 })
 
+test("Accepts AsyncIterable as the input", async t => {
+  interface RawBody {
+    field: string
+    file: File
+  }
+
+  interface NormalizedBody {
+    field: string
+    file: string
+  }
+
+  const form = new FormData()
+
+  form.set("field", "Hello, world!")
+  form.set("file", await fileFromPath("license"))
+
+  const expected = Object.fromEntries(form) as unknown as RawBody
+
+  const encoder = new FormDataEncoder(form)
+  const headers = lowercase(encoder.headers)
+
+  const body = await parse(encoder.encode(), {headers})
+  const actual = body.json() as unknown as RawBody
+
+  t.deepEqual<NormalizedBody, NormalizedBody>(
+    {
+      field: actual.field,
+      file: await actual.file.text()
+    },
+
+    {
+      field: expected.field,
+      file: await expected.file.text()
+    }
+  )
+})
+
+test("Accepts Readable stream as the input", async t => {
+  interface RawBody {
+    field: string
+    file: File
+  }
+
+  interface NormalizedBody {
+    field: string
+    file: string
+  }
+
+  const form = new FormData()
+
+  form.set("field", "Hello, world!")
+  form.set("file", await fileFromPath("license"))
+
+  const expected = Object.fromEntries(form) as unknown as RawBody
+
+  const encoder = new FormDataEncoder(form)
+  const headers = lowercase(encoder.headers)
+
+  const body = await parse(Readable.from(encoder), {headers})
+  const actual = body.json() as unknown as RawBody
+
+  t.deepEqual<NormalizedBody, NormalizedBody>(
+    {
+      field: actual.field,
+      file: await actual.file.text()
+    },
+
+    {
+      field: expected.field,
+      file: await expected.file.text()
+    }
+  )
+})
+
 test("Throws error when file size limit exceeded", async t => {
   const form = new FormData()
 
@@ -362,8 +439,8 @@ test("Throws TypeError on incorrect request argument", async t => {
   // @ts-ignore
   await t.throwsAsync(parse({}), {
     instanceOf: TypeError,
-    message: "Expected request argument to be "
-      + "an instance of http.IncomingMessage."
+    message: "Input must be IncomingMessage or "
+      + "an object with callable @@asyncIterator property."
   })
 })
 

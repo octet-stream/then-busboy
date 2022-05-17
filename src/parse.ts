@@ -1,4 +1,6 @@
-import {IncomingMessage} from "http"
+import type {IncomingHttpHeaders} from "node:http"
+import {IncomingMessage} from "node:http"
+import {Readable} from "node:stream"
 
 import busboy from "busboy"
 import merge from "lodash.merge"
@@ -10,6 +12,7 @@ import onFieldsLimit from "./listener/onFieldsLimit.js"
 import onPartsLimit from "./listener/onPartsLimit.js"
 
 import isPlainObject from "./util/isPlainObject.js"
+import isAsyncIterable from "./util/isAsyncIterable.js"
 import map from "./util/mapListeners.js"
 
 import {BodyEntries} from "./BodyEntries.js"
@@ -68,20 +71,31 @@ const defaults: ParseOptions = {
  * ```
  */
 export const parse = (
-  request: IncomingMessage,
+  input: IncomingMessage | AsyncIterable<Uint8Array> | Iterable<Uint8Array>,
   options: ParseOptions = {}
 ) => new Promise<Body>((resolve, reject) => {
-  if (!(request instanceof IncomingMessage)) {
-    throw new TypeError(
-      "Expected request argument to be an instance of http.IncomingMessage."
-    )
-  }
+  let headers: IncomingHttpHeaders | undefined
+  let readable: Readable
 
   if (!isPlainObject(options)) {
     throw new TypeError("Expected options argument to be an object.")
   }
 
-  const opts = merge({}, defaults, options, {headers: request.headers})
+  if (input instanceof IncomingMessage) {
+    readable = input
+    headers = options.headers ?? input.headers
+  } else if (isAsyncIterable(input)) {
+    console.log({input, options})
+    readable = Readable.from(input)
+    headers = options.headers
+  } else {
+    throw new TypeError(
+      "Input must be IncomingMessage or "
+        + "an object with callable @@asyncIterator property."
+    )
+  }
+
+  const opts = merge({}, defaults, options, {headers})
 
   const parser = busboy(opts)
   const entries = new BodyEntries()
@@ -112,5 +126,5 @@ export const parse = (
     .once("error", onError)
     .once("finish", onBodyRead)
 
-  request.pipe(parser)
+  readable.pipe(parser)
 })
