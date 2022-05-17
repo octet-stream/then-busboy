@@ -262,7 +262,7 @@ test("Accepts Readable stream as the input", async t => {
   const headers = lowercase(encoder.headers)
 
   const body = await parse(Readable.from(encoder), {headers})
-  const actual = body.json() as unknown as RawBody
+  const actual = body.json<RawBody>()
 
   t.deepEqual<NormalizedBody, NormalizedBody>(
     {
@@ -301,7 +301,7 @@ test("Accepts fetch Response as the input", async t => {
   // * TS does not recognise AsyncIterable in NodeJS.ReadableStream because it yields Buffer | string instead of Uint8Array
   // * Need to figure out the way to fix that
   const body = await parse(response.body as AsyncIterable<Uint8Array>, {headers})
-  const actual = body.json() as unknown as RawBody
+  const actual = body.json<RawBody>()
 
   t.deepEqual<NormalizedBody, NormalizedBody>(
     {

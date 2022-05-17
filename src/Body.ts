@@ -129,14 +129,14 @@ export class Body {
   /**
    * Returns an object representing Body entries
    */
-  json(): object {
+  json<T = unknown>(): T {
     const entries: Array<[BodyEntryPath, unknown]> = []
 
     for (const [path, value] of this) {
       entries.push([path, isFile(value) ? value : value.valueOf()])
     }
 
-    return fromEntries(entries)
+    return fromEntries(entries) as unknown as T
   }
 
   /**
