@@ -35,12 +35,12 @@ export class Body {
   /**
    * A shortcut for Body#json()
    */
-  static json(value: BodyRawEntries | Body): object {
+  static json<T = unknown>(value: BodyRawEntries | Body): T {
     if (value instanceof Body) {
       return value.json()
     }
 
-    return new Body(value).json()
+    return new Body(value).json<T>()
   }
 
   /**
