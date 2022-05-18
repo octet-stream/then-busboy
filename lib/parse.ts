@@ -15,7 +15,8 @@ import map from "./util/mapListeners"
 import {BodyEntries} from "./BodyEntries"
 import {Body} from "./Body"
 
-type BusboyConfig = ConstructorParameters<typeof Busboy>[0]
+type BusboyConfig = Omit<ConstructorParameters<typeof Busboy>[0], "headers">
+
 export interface ParseOptions extends BusboyConfig {
   /**
    * Indicates whether then-busboy should cast fields values to their initial type
@@ -31,7 +32,7 @@ const initializers = {
   onPartsLimit
 }
 
-const defaults: Partial<ParseOptions> = {
+const defaults: ParseOptions = {
   castTypes: true
 }
 
@@ -69,7 +70,7 @@ const defaults: Partial<ParseOptions> = {
  */
 export const parse = (
   request: IncomingMessage,
-  options: Partial<ParseOptions> = {}
+  options: ParseOptions = {}
 ) => new Promise<Body>((resolve, reject) => {
   if (!(request instanceof IncomingMessage)) {
     throw new TypeError(
