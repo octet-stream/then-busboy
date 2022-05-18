@@ -15,8 +15,8 @@ import map from "./util/mapListeners"
 import {BodyEntries} from "./BodyEntries"
 import {Body} from "./Body"
 
-// eslint-disable-next-line no-undef
-export interface ParseOptions extends busboy.BusboyConfig {
+type BusboyConfig = ConstructorParameters<typeof Busboy>[0]
+export interface ParseOptions extends BusboyConfig {
   /**
    * Indicates whether then-busboy should cast fields values to their initial type
    */
@@ -31,7 +31,7 @@ const initializers = {
   onPartsLimit
 }
 
-const defaults: ParseOptions = {
+const defaults: Partial<ParseOptions> = {
   castTypes: true
 }
 
@@ -69,7 +69,7 @@ const defaults: ParseOptions = {
  */
 export const parse = (
   request: IncomingMessage,
-  options: ParseOptions = {}
+  options: Partial<ParseOptions> = {}
 ) => new Promise<Body>((resolve, reject) => {
   if (!(request instanceof IncomingMessage)) {
     throw new TypeError(
