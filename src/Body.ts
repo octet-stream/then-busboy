@@ -71,6 +71,8 @@ export class Body {
 
   /**
    * Returns an amount of entries in Body
+   *
+   * @deprecated This property will be removed in v6.x
    */
   get length(): number {
     return this.#entries.length
