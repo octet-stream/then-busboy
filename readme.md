@@ -131,7 +131,7 @@ body.formData() // -> FormData
 
 ### `parse(source[, options]) -> {Promise<Body>}`
 
-+ **{AsyncIterable}** source – AsyncIterable multipart/form-data source.
++ **{AsyncIterable}** source – Incoming HTTP multipart/form-data source.
 + **{object}** [options = {}]
   - **{boolean}** castTypes – allow to restore type of each value (default – true)
   - more information about busboy options [here](https://github.com/mscdex/busboy).
