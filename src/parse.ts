@@ -18,8 +18,9 @@ import map from "./util/mapListeners.js"
 import {BodyEntries} from "./BodyEntries.js"
 import {Body} from "./Body.js"
 
-// eslint-disable-next-line no-undef
-export interface ParseOptions extends busboy.BusboyConfig {
+type BusboyConfig = Omit<ConstructorParameters<typeof Busboy>[0], "headers">
+
+export interface ParseOptions extends BusboyConfig {
   /**
    * Indicates whether then-busboy should cast fields values to their initial type
    */
