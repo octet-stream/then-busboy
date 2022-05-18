@@ -18,9 +18,7 @@ import map from "./util/mapListeners.js"
 import {BodyEntries} from "./BodyEntries.js"
 import {Body} from "./Body.js"
 
-type BusboyConfig = Omit<ConstructorParameters<typeof Busboy>[0], "headers">
-
-export interface ParseOptions extends BusboyConfig {
+export interface ParseOptions extends busboy.BusboyConfig {
   /**
    * Indicates whether then-busboy should cast fields values to their initial type
    */
@@ -42,7 +40,7 @@ const defaults: ParseOptions = {
 /**
  * Parses `multipart/form-data` body and returns an object with the data of that body
  *
- * @param input HTTP IncomingMessage or AsyncIterable object
+ * @param source HTTP IncomingMessage or AsyncIterable object
  * @param options Parser options
  *
  * Simplest usage example:
