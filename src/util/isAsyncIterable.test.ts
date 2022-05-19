@@ -17,13 +17,13 @@ test("Returns true for Readable stream", t => {
 })
 
 test("Return true for an object with callable @@asyncIterator property", t => {
-  async function* source() {}
+  async function* source() { /* noop */ }
 
   t.true(isAsyncIterable({[Symbol.asyncIterator]: source}))
 })
 
 test("Return true for async generator", t => {
-  async function* source() {}
+  async function* source() { /* noop */ }
 
   t.true(isAsyncIterable(source()))
 })
