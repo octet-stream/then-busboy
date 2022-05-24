@@ -8,12 +8,16 @@ import castType from "../util/castType"
 
 const createOnField: OnFieldInitializer = ({castTypes, limits}, entries) => (
   name,
-  value,
-  fieldnameTruncated,
-  valueTruncated,
-  enc,
-  type
+  rawValue,
+  info
 ): void => {
+  const {
+    encoding: enc,
+    mimeType: type,
+    nameTruncated: fieldnameTruncated,
+    valueTruncated
+  } = info
+
   if (valueTruncated) {
     return void entries.emit(
       "error",
@@ -29,21 +33,23 @@ const createOnField: OnFieldInitializer = ({castTypes, limits}, entries) => (
   entries.enqueue()
 
   try {
-    if (castTypes) {
-      value = castType(String(value))
-    }
-
     const path = getFieldPath(name)
+    const value = castTypes ? castType(String(rawValue)) : rawValue
 
     entries.pull([
       path,
 
-      new BodyField(value, name, {
-        fieldnameTruncated,
-        valueTruncated,
-        type,
-        enc
-      })
+      new BodyField(
+        value,
+        name,
+
+        {
+          fieldnameTruncated,
+          valueTruncated,
+          type,
+          enc
+        }
+      )
     ])
   } catch (error) {
     entries.emit("error", error)
