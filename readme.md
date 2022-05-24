@@ -117,7 +117,9 @@ const response = new Respone(form)
 // The difference with Response.formData() is that then-busboy will save all files to file system and create a *reference* to each of them,
 // while Response (currently) will dump them into RAM, which can be less efficient in some scenarious
 const body = await parse(response.body, {
-  headers: response.headers.get("content-type")
+  headers: {
+    "content-type": response.headers.get("content-type")
+  }
 })
 
 body.json() // -> {greeting: string, file: BodyFile}
