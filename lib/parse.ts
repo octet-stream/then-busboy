@@ -1,4 +1,6 @@
+import type {IncomingHttpHeaders} from "http"
 import {IncomingMessage} from "http"
+import {Readable} from "stream"
 
 import Busboy from "busboy"
 import merge from "lodash.merge"
@@ -12,10 +14,11 @@ import onPartsLimit from "./listener/onPartsLimit"
 import isPlainObject from "./util/isPlainObject"
 import map from "./util/mapListeners"
 
+import {isAsyncIterable} from "./util/isAsyncIterable"
 import {BodyEntries} from "./BodyEntries"
 import {Body} from "./Body"
 
-type BusboyConfig = Omit<ConstructorParameters<typeof Busboy>[0], "headers">
+type BusboyConfig = ConstructorParameters<typeof Busboy>[0]
 
 export interface ParseOptions extends BusboyConfig {
   /**
@@ -39,7 +42,7 @@ const defaults: ParseOptions = {
 /**
  * Parses `multipart/form-data` body and returns an object with the data of that body
  *
- * @param request HTTP IncomingMessage object
+ * @param source HTTP IncomingMessage object
  * @param options Parser options
  *
  * Simplest usage example:
@@ -69,20 +72,32 @@ const defaults: ParseOptions = {
  * ```
  */
 export const parse = (
-  request: IncomingMessage,
+  // TODO: I use AsyncIterable<Uint8Array | Buffer | string> as the source type for compatibility with NodeJS.ReadableStream.
+  // TODO: It should be replaced with AsyncIterable<Uint8Array>, when it gets fixed.
+  source: AsyncIterable<Uint8Array | Buffer | string>,
   options: ParseOptions = {}
 ) => new Promise<Body>((resolve, reject) => {
-  if (!(request instanceof IncomingMessage)) {
-    throw new TypeError(
-      "Expected request argument to be an instance of http.IncomingMessage."
-    )
-  }
+  let headers: IncomingHttpHeaders
+  let readable: Readable
 
   if (!isPlainObject(options)) {
     throw new TypeError("Expected options argument to be an object.")
   }
 
-  const opts = merge({}, defaults, options, {headers: request.headers})
+  if (source instanceof IncomingMessage) {
+    readable = source
+    headers = source.headers
+  } else if (isAsyncIterable(source)) {
+    readable = Readable.from(source)
+    headers = options.headers
+  } else {
+    throw new TypeError(
+      "The source argument must be instance of IncomingMessage or "
+        + "an object with callable @@asyncIterator property."
+    )
+  }
+
+  const opts = merge({}, defaults, options, {headers})
 
   const parser = new Busboy(opts)
   const entries = new BodyEntries()
@@ -113,5 +128,5 @@ export const parse = (
     .once("error", onError)
     .once("finish", onBodyRead)
 
-  request.pipe(parser)
+  readable.pipe(parser)
 })
