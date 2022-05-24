@@ -2,7 +2,7 @@ import type {IncomingHttpHeaders} from "http"
 import {IncomingMessage} from "http"
 import {Readable} from "stream"
 
-import Busboy from "busboy"
+import busboy from "busboy"
 import merge from "lodash.merge"
 
 import onFile from "./listener/onFile"
@@ -18,9 +18,7 @@ import {isAsyncIterable} from "./util/isAsyncIterable"
 import {BodyEntries} from "./BodyEntries"
 import {Body} from "./Body"
 
-type BusboyConfig = ConstructorParameters<typeof Busboy>[0]
-
-export interface ParseOptions extends BusboyConfig {
+export interface ParseOptions extends busboy.BusboyConfig {
   /**
    * Indicates whether then-busboy should cast fields values to their initial type
    */
@@ -77,7 +75,7 @@ export const parse = (
   source: AsyncIterable<Uint8Array | Buffer | string>,
   options: ParseOptions = {}
 ) => new Promise<Body>((resolve, reject) => {
-  let headers: IncomingHttpHeaders
+  let headers: IncomingHttpHeaders | undefined
   let readable: Readable
 
   if (!isPlainObject(options)) {
@@ -99,7 +97,7 @@ export const parse = (
 
   const opts = merge({}, defaults, options, {headers})
 
-  const parser = new Busboy(opts)
+  const parser = busboy(opts)
   const entries = new BodyEntries()
 
   const listeners = map(initializers, fn => fn(opts, entries))
