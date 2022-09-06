@@ -9,7 +9,8 @@
   "types": "@type/index.d.ts",
   "exports": {
     "import": "./lib/esm/index.js",
-    "require": "./lib/cjs/index.js"
+    "require": "./lib/cjs/index.js",
+    "types": "./@type/index.d.ts"
   },
   "engines": {
     "node": ">= 12.4"
