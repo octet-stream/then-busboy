@@ -1,10 +1,8 @@
 export default {
+  failFast: true,
   extensions: {
     ts: "module"
   },
-  nodeArguments: [
-    "--loader=ts-node/esm/transpile-only"
-  ],
   files: [
     "src/**/*.test.ts"
   ]
