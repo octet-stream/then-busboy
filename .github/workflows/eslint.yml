@@ -2,13 +2,13 @@ name: ESLint
 
 on:
   push:
-    branches: [master]
+    branches: [main]
     paths:
       - "**.ts"
       - "package.json"
       - ".github/workflows/eslint.yml"
   pull_request:
-    branches: [master]
+    branches: [main]
     paths:
       - "**.ts"
       - "package.json"
@@ -22,6 +22,6 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 14
+          node-version: 20
       - run: npm install
       - run: npm run eslint
