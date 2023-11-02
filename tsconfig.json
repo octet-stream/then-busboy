@@ -1,25 +1,22 @@
 {
   "include": [
-    "src/**/*.ts"
+    "**/*.ts"
   ],
   "exclude": [
-    "node_modules",
-    "src/__helper__/**",
-    "src/**/*.test.ts"
+    "node_modules"
   ],
   "compilerOptions": {
     "outDir": "lib",
     "target": "es2018",
-    "module": "es2020",
+    "module": "node16",
     "noImplicitAny": true,
     "baseUrl": "src",
     "checkJs": false,
     "allowJs": false,
     "skipLibCheck": false,
     "strict": true,
-    "resolveJsonModule": true,
     "isolatedModules": true,
-    "moduleResolution": "node",
+    "moduleResolution": "node16",
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
     "removeComments": true

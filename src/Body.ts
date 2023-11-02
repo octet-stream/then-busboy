@@ -138,7 +138,7 @@ export class Body {
       entries.push([path, isFile(value) ? value : value.valueOf()])
     }
 
-    return fromEntries(entries) as unknown as T
+    return (fromEntries as any)(entries) as unknown as T
   }
 
   /**

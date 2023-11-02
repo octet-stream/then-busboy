@@ -1,6 +1,6 @@
 import {EventEmitter} from "node:events"
 
-import type TypedEmitter from "typed-emitter"
+import type * as ti from "typed-emitter"
 
 import type {BodyEntry} from "./Body.js"
 import {Body} from "./Body.js"
@@ -10,7 +10,7 @@ type BodyEntriesEventsList = {
   finish(body: Body): void
 }
 
-type BodyEntriesEvents = TypedEmitter<BodyEntriesEventsList>
+type BodyEntriesEvents = ti.default<BodyEntriesEventsList>
 
 export class BodyEntries extends (EventEmitter as new () => BodyEntriesEvents) {
   #entries: BodyEntry[] = []
