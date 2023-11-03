@@ -44,6 +44,13 @@
     "prepublishOnly": "pinst --disable",
     "postpublish": "pinst --enable"
   },
+  "pnpm": {
+    "updateConfig": {
+      "ignoreDependencies": [
+        "nanoid"
+      ]
+    }
+  },
   "dependencies": {
     "@types/busboy": "1.5.2",
     "busboy": "1.6.0",
@@ -85,7 +92,6 @@
     "supertest": "6.3.3",
     "ts-node": "10.9.1",
     "tsup": "7.2.0",
-    "ttypescript": "1.5.12",
     "typescript": "5.2.2"
   }
 }
