@@ -40,9 +40,7 @@
     "build:types": "tsc --project tsconfig.d.ts.json",
     "build": "del-cli lib && tsup",
     "test": "cross-env NODE_OPTIONS=\"--no-warnings --loader=ts-node/esm\" ava",
-    "postinstall": "husky install",
-    "prepublishOnly": "pinst --disable",
-    "postpublish": "pinst --enable"
+    "prepare": "npx is-in-ci || husky install"
   },
   "pnpm": {
     "updateConfig": {
