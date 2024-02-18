@@ -37,10 +37,8 @@
   ],
   "scripts": {
     "eslint": "eslint src/**/*.ts",
-    "staged": "lint-staged",
     "coverage": "c8 pnpm test",
     "ci": "c8 pnpm test && c8 report --reporter=json",
-    "build:types": "tsc --project tsconfig.d.ts.json",
     "build": "del-cli lib && unbuild",
     "test": "NODE_OPTIONS=\"--no-warnings --import tsx\" ava",
     "prepare": "npx is-in-ci || husky install"
