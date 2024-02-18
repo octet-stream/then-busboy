@@ -1,4 +1,4 @@
-import isNaN from "./isNaN.js"
+import {isNaN} from "./isNaN.js"
 
 type CastResult =
   | string
@@ -12,9 +12,9 @@ type CastResult =
  *
  * @param value
  *
- * @api private
+ * @internal
  */
-function castType(value: string): CastResult {
+export function castValueType(value: string): CastResult {
   if (value === "null") {
     return null
   }
@@ -37,5 +37,3 @@ function castType(value: string): CastResult {
 
   return value
 }
-
-export default castType

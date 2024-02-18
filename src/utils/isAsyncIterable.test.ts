@@ -2,7 +2,7 @@ import {Readable} from "node:stream"
 
 import test from "ava"
 
-import isAsyncIterable from "./isAsyncIterable.js"
+import {isAsyncIterable} from "./isAsyncIterable.js"
 
 test("Returns false for null", t => {
   t.false(isAsyncIterable(null))

@@ -10,7 +10,6 @@
     "target": "es2018",
     "module": "node16",
     "noImplicitAny": true,
-    "baseUrl": "src",
     "checkJs": false,
     "allowJs": false,
     "skipLibCheck": false,

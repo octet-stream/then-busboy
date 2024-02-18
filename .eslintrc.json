@@ -2,5 +2,9 @@
   "extends": [
     "@octetstream/eslint-config/typescript/esm",
     "@octetstream/eslint-config/typescript/ava"
-  ]
+  ],
+  "rules": {
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": "error"
+  }
 }

@@ -1,6 +1,6 @@
 import test from "ava"
 
-import isNaN from "./isNaN.js"
+import {isNaN} from "./isNaN.js"
 
 test("Returns true for NaN value", t => {
   t.true(isNaN(NaN))
